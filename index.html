@@ -575,15 +575,55 @@
   #upgrade-field.row-view {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    padding: 50px 12px 12px 12px;
+    gap: 4px;
+    padding: 50px 10px 12px 10px;
     overflow-y: auto;
     align-items: stretch;
+  }
+  /* Each character gets a labeled row */
+  .upgrade-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 6px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.03);
+    min-height: 52px;
+    flex-wrap: wrap;
+  }
+  .upgrade-row-label {
+    font-size: 9px;
+    font-family: 'Press Start 2P', monospace;
+    color: var(--dim);
+    min-width: 42px;
+    text-align: right;
+    flex-shrink: 0;
+    padding-right: 4px;
+    border-right: 1px solid var(--border);
+    margin-right: 2px;
+    line-height: 1.4;
+  }
+  /* rainbow label for Яси */
+  .upgrade-row-label.lgbtq-label {
+    background: linear-gradient(90deg,#ff5555,#ffaa00,#ffff44,#44dd44,#4488ff,#cc44ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  /* Rainbow row bg for Яси */
+  .upgrade-row.lgbtq-row {
+    background: linear-gradient(90deg,
+      rgba(255,0,0,0.07),rgba(255,128,0,0.07),
+      rgba(255,255,0,0.07),rgba(0,180,0,0.07),
+      rgba(0,80,255,0.07),rgba(150,0,255,0.07));
+    border: 1px solid rgba(180,80,255,0.25);
   }
   #upgrade-field.row-view .upgrade-badge {
     position: static !important;
     animation: none !important;
-    width: 100%;
+    width: auto !important;
+    flex-shrink: 0;
     box-sizing: border-box;
     justify-content: flex-start;
   }
@@ -2260,16 +2300,54 @@ function toggleLayout() {
   const btn = document.getElementById('layout-toggle-btn');
   if (rowViewActive) {
     field.classList.add('row-view');
+    // Get all badges and group by upid (character)
     const badges = Array.from(field.querySelectorAll('.upgrade-badge'));
-    badges.sort((a,b) => {
-      const la = parseInt(a.className.match(/lvl-(\d+)/)?.[1]||0);
-      const lb = parseInt(b.className.match(/lvl-(\d+)/)?.[1]||0);
-      return la - lb;
+    // Remove existing row wrappers if any
+    field.querySelectorAll('.upgrade-row').forEach(r => {
+      // move badges back to field before removing
+      r.querySelectorAll('.upgrade-badge').forEach(b => field.appendChild(b));
+      r.remove();
     });
-    badges.forEach(b => field.appendChild(b));
+    // Order characters by level
+    const charOrder = UPGRADES.map(u => u.id);
+    const charNames = {};
+    UPGRADES.forEach(u => charNames[u.id] = u.name);
+    const isLgbtq = {};
+    UPGRADES.forEach(u => isLgbtq[u.id] = !!u.lgbtq);
+    // Group badges per character
+    const groups = {};
+    charOrder.forEach(id => groups[id] = []);
+    badges.forEach(b => {
+      const id = b.dataset.upid;
+      if (groups[id]) groups[id].push(b);
+    });
+    // Build rows
+    charOrder.forEach(id => {
+      if (groups[id].length === 0) return;
+      const row = document.createElement('div');
+      const lgbtq = isLgbtq[id];
+      row.className = 'upgrade-row' + (lgbtq ? ' lgbtq-row' : '');
+      // Label
+      const label = document.createElement('div');
+      label.className = 'upgrade-row-label' + (lgbtq ? ' lgbtq-label' : '');
+      label.textContent = charNames[id] || id;
+      row.appendChild(label);
+      // Badges
+      groups[id].forEach(b => {
+        b.style.left = '';
+        b.style.top = '';
+        row.appendChild(b);
+      });
+      field.appendChild(row);
+    });
     btn.textContent = '🎲';
     btn.title = 'Разхвърляй';
   } else {
+    // Move badges out of rows back to field
+    field.querySelectorAll('.upgrade-row').forEach(r => {
+      r.querySelectorAll('.upgrade-badge').forEach(b => field.appendChild(b));
+      r.remove();
+    });
     field.classList.remove('row-view');
     btn.textContent = '📋';
     btn.title = 'Наредени редове';

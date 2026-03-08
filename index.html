@@ -576,50 +576,58 @@
   #upgrade-field.row-view {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 8px;
     padding: 50px 10px 12px 10px;
     overflow-y: auto;
     align-items: stretch;
   }
-  /* Each character gets a labeled row */
   .upgrade-row {
     display: flex;
     flex-direction: row;
-    align-items: center;
-    gap: 6px;
-    padding: 4px 6px;
-    border-radius: 8px;
-    background: #0d0d18;
-    border: 1px solid rgba(255,255,255,0.06);
-    min-height: 52px;
-    flex-wrap: wrap;
+    align-items: flex-start;
+    border-radius: 10px;
+    background: #12121e;
+    border: 1px solid rgba(255,255,255,0.07);
+    overflow: hidden;
+    min-height: 70px;
+  }
+  .upgrade-row.lgbtq-row {
+    background: linear-gradient(90deg,
+      rgba(255,0,0,0.06),rgba(255,128,0,0.06),
+      rgba(255,255,0,0.06),rgba(0,180,0,0.06),
+      rgba(0,80,255,0.06),rgba(150,0,255,0.06));
+    border: 1px solid rgba(180,80,255,0.3);
   }
   .upgrade-row-label {
     font-size: 9px;
     font-family: 'Press Start 2P', monospace;
     color: var(--dim);
-    min-width: 42px;
-    text-align: right;
-    flex-shrink: 0;
-    padding-right: 4px;
-    border-right: 1px solid var(--border);
-    margin-right: 2px;
-    line-height: 1.4;
+    width: 52px;
+    min-width: 52px;
+    padding: 10px 6px;
+    border-right: 1px solid rgba(255,255,255,0.08);
+    background: rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    line-height: 1.6;
+    align-self: stretch;
   }
-  /* rainbow label for Яси */
   .upgrade-row-label.lgbtq-label {
     background: linear-gradient(90deg,#ff5555,#ffaa00,#ffff44,#44dd44,#4488ff,#cc44ff);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-  /* Rainbow row bg for Яси */
-  .upgrade-row.lgbtq-row {
-    background: linear-gradient(90deg,
-      rgba(255,0,0,0.07),rgba(255,128,0,0.07),
-      rgba(255,255,0,0.07),rgba(0,180,0,0.07),
-      rgba(0,80,255,0.07),rgba(150,0,255,0.07));
-    border: 1px solid rgba(180,80,255,0.25);
+  .upgrade-row-badges {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 8px 10px;
+    align-items: center;
   }
   #upgrade-field.row-view .upgrade-badge {
     position: static !important;
@@ -627,7 +635,6 @@
     width: auto !important;
     flex-shrink: 0;
     box-sizing: border-box;
-    justify-content: flex-start;
   }
 
   /* ===== UNIQUE OUTLINES per upgrade level ===== */
@@ -2334,12 +2341,15 @@ function toggleLayout() {
       label.className = 'upgrade-row-label' + (lgbtq ? ' lgbtq-label' : '');
       label.textContent = charNames[id] || id;
       row.appendChild(label);
-      // Badges
+      // Badges container
+      const badgesWrap = document.createElement('div');
+      badgesWrap.className = 'upgrade-row-badges';
       groups[id].forEach(b => {
         b.style.left = '';
         b.style.top = '';
-        row.appendChild(b);
+        badgesWrap.appendChild(b);
       });
+      row.appendChild(badgesWrap);
       field.appendChild(row);
     });
     btn.textContent = '🎲';
@@ -2350,6 +2360,7 @@ function toggleLayout() {
       r.querySelectorAll('.upgrade-badge').forEach(b => field.appendChild(b));
       r.remove();
     });
+    field.querySelectorAll('.upgrade-row-badges').forEach(w => w.remove());
     field.classList.remove('row-view');
     btn.textContent = '📋';
     btn.title = 'Наредени редове';

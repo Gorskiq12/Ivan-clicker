@@ -755,11 +755,9 @@
     background-clip: text;
   }
   .upgrade-badge.lgbtq-badge-field {
-    background: rgba(30,10,50,0.95);
-    border: 2px solid transparent;
-    border-image: linear-gradient(135deg, #ff0000, #ff7700, #ffff00, #00aa00, #0000ff, #8b00ff) 1;
-    box-shadow: 0 0 10px rgba(180,80,255,0.4);
-    isolation: isolate;
+    background: rgba(20,10,35,0.97);
+    border: 2px solid #8b00ff;
+    box-shadow: 0 0 10px rgba(180,80,255,0.5), inset 0 0 0 1px rgba(255,100,255,0.15);
   }
   .upgrade-badge.lgbtq-badge-field .ub-name {
     background: linear-gradient(90deg, #ff5555, #ffaa00, #ffff44, #44dd44, #4488ff, #cc44ff);
@@ -1949,10 +1947,9 @@ function spawnBadge(u) {
   const boostedClass = tiers > 0 ? ' xp-boosted' : '';
   if (boostedClass) badge.classList.add('xp-boosted');
 
-  const flagBg = u.lgbtq ? '<div style="position:absolute;inset:0;border-radius:6px;overflow:hidden;background:linear-gradient(90deg,rgba(255,0,0,0.15),rgba(255,128,0,0.15),rgba(255,255,0,0.15),rgba(0,180,0,0.15),rgba(0,80,255,0.15),rgba(150,0,255,0.15));pointer-events:none;z-index:0;"></div>' : '';
-  badge.innerHTML = flagBg
-    + '<img src="' + u.img() + '" style="position:relative;z-index:1;width:32px;height:32px;object-fit:cover;object-position:' + (u.imgPos || '50% 15%') + ';border-radius:50%;flex-shrink:0;" />'
-    + '<div class="ub-info" style="position:relative;z-index:1;"><div class="ub-name">' + u.name + '</div></div>';
+  badge.innerHTML =
+    '<img src="' + u.img() + '" style="width:32px;height:32px;object-fit:cover;object-position:' + (u.imgPos || '50% 15%') + ';border-radius:50%;flex-shrink:0;" />'
+    + '<div class="ub-info"><div class="ub-name">' + u.name + '</div></div>';
 
   if (tiers > 0) {
     const tierEl = document.createElement('div');

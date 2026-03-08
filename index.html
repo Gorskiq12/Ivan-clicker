@@ -579,8 +579,11 @@
     flex-direction: column;
     gap: 8px;
     padding: 50px 10px 12px 10px;
-    overflow-y: auto;
+    overflow-y: scroll;
+    overflow-x: hidden;
     align-items: stretch;
+    scrollbar-width: thin;
+    scrollbar-color: #7b2ff7 #0a0a12;
   }
   .upgrade-row {
     display: flex;
@@ -589,7 +592,7 @@
     border-radius: 10px;
     background: #12121e;
     border: 1px solid rgba(255,255,255,0.07);
-    overflow: visible;
+    overflow: hidden;
     flex-shrink: 0;
   }
   .upgrade-row.lgbtq-row {
@@ -623,7 +626,7 @@
   .upgrade-row-badges {
     position: relative;
     flex: 1;
-    overflow: visible;
+    overflow: hidden;
   }
   #upgrade-field.row-view .upgrade-badge {
     position: absolute !important;

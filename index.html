@@ -238,6 +238,8 @@
     z-index: 5;
   }
   .upgrade-badge .ub-icon { font-size: 20px; }
+  .upgrade-badge img { border: none !important; outline: none !important; }
+  .lvl-4 img { border: none !important; box-shadow: none !important; }
   .upgrade-badge .ub-info { display: flex; flex-direction: column; gap: 1px; }
   .upgrade-badge .ub-name { font-size: 12px; font-weight: 700; color: var(--accent); }
   .upgrade-badge .ub-count { font-size: 10px; color: var(--dim); font-weight: 300; }
@@ -248,7 +250,6 @@
   .lvl-2 .ub-name { color: #e08060; }
   .lvl-3 { border-color: #2a5a3a; }
   .lvl-3 .ub-name { color: var(--green); }
-  .lvl-4 { border-color: #4a3a6a; }
   .lvl-4 .ub-name { color: #a060e0; }
   .lvl-5 { border-color: #6a4a2a; }
   .lvl-5 .ub-name { color: #e0a040; }
@@ -657,6 +658,7 @@
     box-shadow: 0 0 10px rgba(249,115,22,0.4);
   }
   .lvl-4 .ub-name { color: #fb923c; }
+  .lvl-4 img { box-shadow: none !important; outline: none !important; }
   /* lvl-5 Бубу: purple/gold */
   .lvl-5 {
     border: 2px solid #a855f7;
@@ -2341,7 +2343,9 @@ function toggleLayout() {
       // Badges container
       const badgesWrap = document.createElement('div');
       badgesWrap.className = 'upgrade-row-badges';
-      groups[id].forEach(b => {
+      // Shuffle badges randomly
+      const shuffled = groups[id].slice().sort(() => Math.random() - 0.5);
+      shuffled.forEach(b => {
         b.style.left = '';
         b.style.top = '';
         badgesWrap.appendChild(b);

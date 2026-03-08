@@ -293,9 +293,118 @@
     flex-direction: column;
     gap: 6px;
   }
-  #shop-list::-webkit-scrollbar { width: 4px; }
-  #shop-list::-webkit-scrollbar-track { background: transparent; }
-  #shop-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  /* ===== GLOBAL CUSTOM SCROLLBARS ===== */
+
+  /* Shop list — gold theme */
+  #shop-list {
+    scrollbar-width: thin;
+    scrollbar-color: #f0c040 #0a0a12;
+  }
+  #shop-list::-webkit-scrollbar { width: 8px; }
+  #shop-list::-webkit-scrollbar-track {
+    background: #0a0a14;
+    border-radius: 8px;
+    border: 1px solid rgba(240,192,64,0.1);
+  }
+  #shop-list::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #f0c040, #c07010);
+    border-radius: 8px;
+    border: 2px solid #0a0a14;
+    box-shadow: 0 0 6px rgba(240,192,64,0.5);
+  }
+  #shop-list::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #ffd060, #e09020);
+    box-shadow: 0 0 12px rgba(240,192,64,0.8);
+  }
+
+  /* Achievements list — green theme */
+  #ach-list {
+    scrollbar-width: thin;
+    scrollbar-color: #44dd44 #0a0a12;
+  }
+  #ach-list::-webkit-scrollbar { width: 8px; }
+  #ach-list::-webkit-scrollbar-track {
+    background: #0a0a14;
+    border-radius: 8px;
+    border: 1px solid rgba(68,221,68,0.1);
+  }
+  #ach-list::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #44ff88, #22aa44);
+    border-radius: 8px;
+    border: 2px solid #0a0a14;
+    box-shadow: 0 0 6px rgba(68,221,68,0.5);
+  }
+  #ach-list::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #66ffaa, #33cc66);
+    box-shadow: 0 0 12px rgba(68,221,68,0.8);
+  }
+
+  /* XP upgrades list — purple theme */
+  #xpu-list {
+    scrollbar-width: thin;
+    scrollbar-color: #b060ff #0a0a12;
+  }
+  #xpu-list::-webkit-scrollbar { width: 8px; }
+  #xpu-list::-webkit-scrollbar-track {
+    background: #0a0a14;
+    border-radius: 8px;
+    border: 1px solid rgba(176,96,255,0.1);
+  }
+  #xpu-list::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #c080ff, #7020d0);
+    border-radius: 8px;
+    border: 2px solid #0a0a14;
+    box-shadow: 0 0 6px rgba(176,96,255,0.5);
+  }
+  #xpu-list::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #d0a0ff, #9040f0);
+    box-shadow: 0 0 12px rgba(176,96,255,0.8);
+  }
+
+  /* Leaderboard / modal scrollbars — blue theme */
+  #leaderboard-body,
+  .modal-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: #4488ff #0a0a12;
+  }
+  #leaderboard-body::-webkit-scrollbar,
+  .modal-scroll::-webkit-scrollbar { width: 8px; }
+  #leaderboard-body::-webkit-scrollbar-track,
+  .modal-scroll::-webkit-scrollbar-track {
+    background: #0a0a14;
+    border-radius: 8px;
+    border: 1px solid rgba(68,136,255,0.1);
+  }
+  #leaderboard-body::-webkit-scrollbar-thumb,
+  .modal-scroll::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #4488ff, #0044cc);
+    border-radius: 8px;
+    border: 2px solid #0a0a14;
+    box-shadow: 0 0 6px rgba(68,136,255,0.5);
+  }
+  #leaderboard-body::-webkit-scrollbar-thumb:hover,
+  .modal-scroll::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #66aaff, #2266ee);
+    box-shadow: 0 0 12px rgba(68,136,255,0.8);
+  }
+
+  /* Global fallback — rainbow gradient */
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track {
+    background: #0a0a14;
+    border-radius: 8px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #a060ff, #f0c040, #ff6030);
+    border-radius: 8px;
+    border: 2px solid #0a0a14;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #c090ff, #ffd060, #ff8050);
+  }
+  ::-webkit-scrollbar-corner { background: #0a0a14; }
+
 
   .shop-item {
     background: var(--upgrade-bg);

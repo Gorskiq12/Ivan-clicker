@@ -552,6 +552,135 @@
     color: #c880ff !important;
   }
 
+
+  /* ===== LAYOUT TOGGLE ===== */
+  #layout-toggle-btn {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    z-index: 20;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 5px 8px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--dim);
+    transition: background 0.2s, color 0.2s;
+    line-height: 1;
+  }
+  #layout-toggle-btn:hover { background: rgba(255,255,255,0.14); color: #fff; }
+
+  /* ROW VIEW */
+  #upgrade-field.row-view {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 50px 12px 12px 12px;
+    overflow-y: auto;
+    align-items: stretch;
+  }
+  #upgrade-field.row-view .upgrade-badge {
+    position: static !important;
+    animation: none !important;
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: flex-start;
+  }
+
+  /* ===== UNIQUE OUTLINES per upgrade level ===== */
+  /* lvl-1 Сашко: grey-blue */
+  .lvl-1 {
+    border: 2px solid #4a7aa0;
+    box-shadow: 0 0 6px rgba(74,122,160,0.3);
+  }
+  .lvl-1 .ub-name { color: #7bbcde; }
+  /* lvl-2 Яси: rainbow (already lgbtq-badge-field, but also as fallback) */
+  /* lvl-3 Вики: green neon */
+  .lvl-3 {
+    border: 2px solid #22c55e;
+    box-shadow: 0 0 8px rgba(34,197,94,0.35);
+  }
+  .lvl-3 .ub-name { color: #4ade80; }
+  /* lvl-4 Стефан: red/orange fire */
+  .lvl-4 {
+    border: 2px solid #f97316;
+    box-shadow: 0 0 10px rgba(249,115,22,0.4);
+  }
+  .lvl-4 .ub-name { color: #fb923c; }
+  /* lvl-5 Бубу: purple/gold */
+  .lvl-5 {
+    border: 2px solid #a855f7;
+    box-shadow: 0 0 12px rgba(168,85,247,0.45);
+  }
+  .lvl-5 .ub-name { color: #c084fc; }
+  /* lvl-6 Емір: gold divine */
+  .lvl-6 {
+    border: 2px solid #f59e0b;
+    box-shadow: 0 0 14px rgba(245,158,11,0.55), 0 0 30px rgba(245,158,11,0.2);
+  }
+  .lvl-6 .ub-name { color: #fbbf24; }
+
+  /* Badge size grows with level */
+  .upgrade-badge.lvl-1 img { width: 28px !important; height: 28px !important; }
+  .upgrade-badge.lvl-2 img { width: 30px !important; height: 30px !important; }
+  .upgrade-badge.lvl-3 img { width: 34px !important; height: 34px !important; }
+  .upgrade-badge.lvl-4 img { width: 38px !important; height: 38px !important; }
+  .upgrade-badge.lvl-5 img { width: 44px !important; height: 44px !important; }
+  .upgrade-badge.lvl-6 img { width: 52px !important; height: 52px !important; }
+  .upgrade-badge.lvl-1 .ub-name { font-size: 10px; }
+  .upgrade-badge.lvl-2 .ub-name { font-size: 11px; }
+  .upgrade-badge.lvl-3 .ub-name { font-size: 12px; }
+  .upgrade-badge.lvl-4 .ub-name { font-size: 13px; }
+  .upgrade-badge.lvl-5 .ub-name { font-size: 14px; }
+  .upgrade-badge.lvl-6 .ub-name { font-size: 15px; }
+
+  /* ===== THEMATIC DECORATIONS per level ===== */
+  /* Сашко (lvl-1): small coin/star decoration */
+  .upgrade-badge.lvl-1::after {
+    content: '🪙';
+    position: absolute;
+    top: -8px; right: -8px;
+    font-size: 12px;
+  }
+  /* Вики (lvl-3): leaf/green */
+  .upgrade-badge.lvl-3::after {
+    content: '🌿';
+    position: absolute;
+    top: -8px; right: -8px;
+    font-size: 13px;
+  }
+  /* Стефан (lvl-4): fire */
+  .upgrade-badge.lvl-4::after {
+    content: '🔥';
+    position: absolute;
+    top: -8px; right: -8px;
+    font-size: 14px;
+  }
+  /* Бубу (lvl-5): crown */
+  .upgrade-badge.lvl-5::after {
+    content: '👑';
+    position: absolute;
+    top: -9px; right: -9px;
+    font-size: 16px;
+  }
+  /* Емір (lvl-6): lightning divine */
+  .upgrade-badge.lvl-6::after {
+    content: '⚡';
+    position: absolute;
+    top: -10px; right: -10px;
+    font-size: 18px;
+    filter: drop-shadow(0 0 6px gold);
+  }
+
+  /* ===== SHOP ITEM unique outlines ===== */
+  .shop-item[data-id="sashko"] { border-left: 3px solid #4a7aa0; }
+  .shop-item[data-id="qsi"]    { /* already lgbtq-item */ }
+  .shop-item[data-id="viki"]   { border-left: 3px solid #22c55e; }
+  .shop-item[data-id="stefan"] { border-left: 3px solid #f97316; }
+  .shop-item[data-id="bubu"]   { border-left: 3px solid #a855f7; }
+  .shop-item[data-id="emir"]   { border-left: 3px solid #f59e0b; box-shadow: 0 0 8px rgba(245,158,11,0.25); }
+
   /* LGBTQ rainbow for Яси */
   .lgbtq-badge {
     font-size: 14px;
@@ -1250,6 +1379,7 @@ const IMG_EMIR = "data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BS
   <!-- MIDDLE -->
   <div id="mid-panel">
     <h2>— КУПЕНИ ЪПГРЕЙДИ —</h2>
+    <button id="layout-toggle-btn" onclick="toggleLayout()" title="Смени изглед">📋</button>
     <div id="upgrade-field"></div>
   </div>
 
@@ -1356,7 +1486,7 @@ function xpForLevel(lvl) {
 const UPGRADES = [
   { id: 'sashko', name: 'Сашко',  img: () => IMG_SASHKO, basePrice: 15,       cps: 0.1,  desc: 'Помага малко ама пак е нещо', unlockAt: 0 },
   { id: 'qsi',    name: 'Яси',    img: () => IMG_YASI,   basePrice: 100,      cps: 1,    desc: 'По-ефективен от Сашко',       unlockAt: 1,  lgbtq: true, imgPos: '50% 60%' },
-  { id: 'viki',   name: 'Вики',   img: () => IMG_VIKI,   basePrice: 1100,     cps: 8,    desc: 'Сериозен принос',             unlockAt: 10, imgPos: '50% 35%' },
+  { id: 'viki',   name: 'Вики',   img: () => IMG_VIKI,   basePrice: 1100,     cps: 8,    desc: 'Сериозен тип',             unlockAt: 10, imgPos: '50% 35%' },
   { id: 'stefan', name: 'Стефан', img: () => IMG_STEFAN, basePrice: 12000,    cps: 47,   desc: 'Доминира продукцията',        unlockAt: 100 },
   { id: 'bubu',   name: 'Бубу',   img: () => IMG_BUBU,   basePrice: 130000,   cps: 260,  desc: 'Легендарен генератор',        unlockAt: 1000 },
   { id: 'emir',   name: 'Емир',   img: () => IMG_EMIR,   basePrice: 1400000,  cps: 1400, desc: 'Абсолютен бог на NC',         unlockAt: 10000 },
@@ -1384,7 +1514,7 @@ const XP_UPGRADES = [
   { id: 'xpu_q3', target: 'qsi',    tier: 3, name: 'Яси★',     levelCost: 7,  mult: 5,   desc: 'Яси е легенда' },
   // Вики boosts
   { id: 'xpu_v1', target: 'viki',   tier: 1, name: 'Вики+',    levelCost: 2,  mult: 2,   desc: 'Вики удвоява продукцията' },
-  { id: 'xpu_v2', target: 'viki',   tier: 2, name: 'Вики++',   levelCost: 3,  mult: 3,   desc: 'Вики е неудържима' },
+  { id: 'xpu_v2', target: 'viki',   tier: 2, name: 'Вики++',   levelCost: 3,  mult: 3,   desc: 'Вики е неудържим' },
   // Стефан boosts
   { id: 'xpu_t1', target: 'stefan', tier: 1, name: 'Стефан+',  levelCost: 3,  mult: 2,   desc: 'Стефан доминира двойно' },
   { id: 'xpu_t2', target: 'stefan', tier: 2, name: 'Стефан++', levelCost: 5,  mult: 3,   desc: 'Стефан е абсолютен господар' },
@@ -1770,9 +1900,10 @@ function spawnBadge(u) {
   const boostedClass = tiers > 0 ? ' xp-boosted' : '';
   if (boostedClass) badge.classList.add('xp-boosted');
 
-  badge.innerHTML =
-    '<img src="' + u.img() + '" style="width:32px;height:32px;object-fit:cover;object-position:' + (u.imgPos || '50% 15%') + ';border-radius:50%;flex-shrink:0;" />'
-    + '<div class="ub-info"><div class="ub-name">' + u.name + '</div></div>';
+  const flagBg = u.lgbtq ? '<div style="position:absolute;inset:0;border-radius:8px;background:linear-gradient(90deg,rgba(255,0,0,0.13),rgba(255,128,0,0.13),rgba(255,255,0,0.13),rgba(0,180,0,0.13),rgba(0,80,255,0.13),rgba(150,0,255,0.13));pointer-events:none;z-index:0;"></div>' : '';
+  badge.innerHTML = flagBg
+    + '<img src="' + u.img() + '" style="position:relative;z-index:1;width:32px;height:32px;object-fit:cover;object-position:' + (u.imgPos || '50% 15%') + ';border-radius:50%;flex-shrink:0;" />'
+    + '<div class="ub-info" style="position:relative;z-index:1;"><div class="ub-name">' + u.name + '</div></div>';
 
   if (tiers > 0) {
     const tierEl = document.createElement('div');
@@ -2120,6 +2251,45 @@ window.addEventListener('load', () => {
 });
 
 // ============================================================
+
+// ===== LAYOUT TOGGLE =====
+let rowViewActive = false;
+function toggleLayout() {
+  rowViewActive = !rowViewActive;
+  const field = document.getElementById('upgrade-field');
+  const btn = document.getElementById('layout-toggle-btn');
+  if (rowViewActive) {
+    field.classList.add('row-view');
+    const badges = Array.from(field.querySelectorAll('.upgrade-badge'));
+    badges.sort((a,b) => {
+      const la = parseInt(a.className.match(/lvl-(\d+)/)?.[1]||0);
+      const lb = parseInt(b.className.match(/lvl-(\d+)/)?.[1]||0);
+      return la - lb;
+    });
+    badges.forEach(b => field.appendChild(b));
+    btn.textContent = '🎲';
+    btn.title = 'Разхвърляй';
+  } else {
+    field.classList.remove('row-view');
+    btn.textContent = '📋';
+    btn.title = 'Наредени редове';
+    const badges = Array.from(field.querySelectorAll('.upgrade-badge'));
+    const w = field.clientWidth, h = field.clientHeight;
+    const bw = 130, bh = 56;
+    const used = [];
+    badges.forEach(b => {
+      let px, py, ok, tries=0;
+      do {
+        ok=true; px=16+Math.random()*Math.max(1,w-bw-32); py=50+Math.random()*Math.max(1,h-bh-60);
+        for(const p of used){ if(Math.abs(px-p.x)<bw+8&&Math.abs(py-p.y)<bh+8){ok=false;break;} }
+        tries++;
+      } while(!ok && tries<60);
+      used.push({x:px,y:py});
+      b.style.left=px+'px'; b.style.top=py+'px';
+    });
+  }
+}
+
 // SUPABASE INTEGRATION
 // ============================================================
 const SUPA_URL = 'https://huytzohiucdapurnztjk.supabase.co';

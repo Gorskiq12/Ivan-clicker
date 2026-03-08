@@ -585,12 +585,13 @@
   .upgrade-row {
     display: flex;
     flex-direction: row;
-    align-items: flex-start;
+    align-items: stretch;
     border-radius: 10px;
     background: #12121e;
     border: 1px solid rgba(255,255,255,0.07);
     overflow: hidden;
-    min-height: 70px;
+    height: 110px;
+    flex-shrink: 0;
   }
   .upgrade-row.lgbtq-row {
     background: linear-gradient(90deg,
@@ -605,7 +606,6 @@
     color: var(--dim);
     width: 52px;
     min-width: 52px;
-    padding: 10px 6px;
     border-right: 1px solid rgba(255,255,255,0.08);
     background: rgba(0,0,0,0.3);
     display: flex;
@@ -613,7 +613,7 @@
     justify-content: center;
     text-align: center;
     line-height: 1.6;
-    align-self: stretch;
+    flex-shrink: 0;
   }
   .upgrade-row-label.lgbtq-label {
     background: linear-gradient(90deg,#ff5555,#ffaa00,#ffff44,#44dd44,#4488ff,#cc44ff);
@@ -623,15 +623,11 @@
   }
   .upgrade-row-badges {
     flex: 1;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 6px;
-    padding: 8px 10px;
-    align-items: center;
+    position: relative;
+    overflow: hidden;
   }
   #upgrade-field.row-view .upgrade-badge {
-    position: static !important;
+    position: absolute !important;
     animation: none !important;
     width: auto !important;
     flex-shrink: 0;
@@ -2343,11 +2339,26 @@ function toggleLayout() {
       // Badges container
       const badgesWrap = document.createElement('div');
       badgesWrap.className = 'upgrade-row-badges';
-      // Shuffle badges randomly
+      // Place badges at random positions inside the row
       const shuffled = groups[id].slice().sort(() => Math.random() - 0.5);
+      const rowH = 110;
+      const bw = 110, bh = 50;
+      const usedPos = [];
       shuffled.forEach(b => {
-        b.style.left = '';
-        b.style.top = '';
+        let px, py, ok, tries = 0;
+        do {
+          ok = true;
+          // We don't know exact width yet, spread across a wide virtual canvas
+          px = 4 + Math.random() * Math.max(1, shuffled.length * (bw + 8));
+          py = 4 + Math.random() * Math.max(1, rowH - bh - 8);
+          for (const p of usedPos) {
+            if (Math.abs(px - p.x) < bw + 6 && Math.abs(py - p.y) < bh + 6) { ok = false; break; }
+          }
+          tries++;
+        } while (!ok && tries < 60);
+        usedPos.push({x: px, y: py});
+        b.style.left = px + 'px';
+        b.style.top = py + 'px';
         badgesWrap.appendChild(b);
       });
       row.appendChild(badgesWrap);

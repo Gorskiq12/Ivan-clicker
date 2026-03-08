@@ -590,8 +590,8 @@
     background: #12121e;
     border: 1px solid rgba(255,255,255,0.07);
     overflow: hidden;
-    height: 110px;
     flex-shrink: 0;
+    min-height: 120px;
   }
   .upgrade-row.lgbtq-row {
     background: linear-gradient(90deg,
@@ -2341,21 +2341,25 @@ function toggleLayout() {
       badgesWrap.className = 'upgrade-row-badges';
       // Place badges at random positions inside the row
       const shuffled = groups[id].slice().sort(() => Math.random() - 0.5);
-      const rowH = 110;
-      const bw = 110, bh = 50;
+      const count = shuffled.length;
+      // Calculate needed rows: fit ~12 badges per row of 110px
+      const cols = Math.ceil((badgesWrap.parentElement?.clientWidth || 900) / 120) || 12;
+      const rowsNeeded = Math.ceil(count / cols);
+      const rowH = Math.max(120, rowsNeeded * 70 + 20);
+      row.style.height = rowH + 'px';
+      const bw = 112, bh = 50;
       const usedPos = [];
       shuffled.forEach(b => {
         let px, py, ok, tries = 0;
         do {
           ok = true;
-          // We don't know exact width yet, spread across a wide virtual canvas
-          px = 4 + Math.random() * Math.max(1, shuffled.length * (bw + 8));
-          py = 4 + Math.random() * Math.max(1, rowH - bh - 8);
+          px = 4 + Math.random() * Math.max(1, cols * (bw + 8) - bw);
+          py = 6 + Math.random() * Math.max(1, rowH - bh - 12);
           for (const p of usedPos) {
             if (Math.abs(px - p.x) < bw + 6 && Math.abs(py - p.y) < bh + 6) { ok = false; break; }
           }
           tries++;
-        } while (!ok && tries < 60);
+        } while (!ok && tries < 100);
         usedPos.push({x: px, y: py});
         b.style.left = px + 'px';
         b.style.top = py + 'px';

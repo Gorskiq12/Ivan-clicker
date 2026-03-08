@@ -208,6 +208,7 @@
     width: 100%;
     height: 100%;
     position: relative;
+    background: #0d0d14;
   }
 
   /* Floating upgrade badges */
@@ -588,7 +589,8 @@
     gap: 6px;
     padding: 4px 6px;
     border-radius: 8px;
-    background: rgba(255,255,255,0.03);
+    background: #0d0d18;
+    border: 1px solid rgba(255,255,255,0.06);
     min-height: 52px;
     flex-wrap: wrap;
   }
@@ -746,11 +748,11 @@
     background-clip: text;
   }
   .upgrade-badge.lgbtq-badge-field {
-    background: linear-gradient(135deg,
-      rgba(255,0,0,0.08), rgba(255,165,0,0.08),
-      rgba(255,255,0,0.08), rgba(0,128,0,0.08),
-      rgba(0,0,255,0.08), rgba(128,0,128,0.08));
-    border-color: #8b00ff;
+    background: rgba(30,10,50,0.95);
+    border: 2px solid transparent;
+    border-image: linear-gradient(135deg, #ff0000, #ff7700, #ffff00, #00aa00, #0000ff, #8b00ff) 1;
+    box-shadow: 0 0 10px rgba(180,80,255,0.4);
+    isolation: isolate;
   }
   .upgrade-badge.lgbtq-badge-field .ub-name {
     background: linear-gradient(90deg, #ff5555, #ffaa00, #ffff44, #44dd44, #4488ff, #cc44ff);
@@ -1940,7 +1942,7 @@ function spawnBadge(u) {
   const boostedClass = tiers > 0 ? ' xp-boosted' : '';
   if (boostedClass) badge.classList.add('xp-boosted');
 
-  const flagBg = u.lgbtq ? '<div style="position:absolute;inset:0;border-radius:8px;background:linear-gradient(90deg,rgba(255,0,0,0.13),rgba(255,128,0,0.13),rgba(255,255,0,0.13),rgba(0,180,0,0.13),rgba(0,80,255,0.13),rgba(150,0,255,0.13));pointer-events:none;z-index:0;"></div>' : '';
+  const flagBg = u.lgbtq ? '<div style="position:absolute;inset:0;border-radius:6px;overflow:hidden;background:linear-gradient(90deg,rgba(255,0,0,0.15),rgba(255,128,0,0.15),rgba(255,255,0,0.15),rgba(0,180,0,0.15),rgba(0,80,255,0.15),rgba(150,0,255,0.15));pointer-events:none;z-index:0;"></div>' : '';
   badge.innerHTML = flagBg
     + '<img src="' + u.img() + '" style="position:relative;z-index:1;width:32px;height:32px;object-fit:cover;object-position:' + (u.imgPos || '50% 15%') + ';border-radius:50%;flex-shrink:0;" />'
     + '<div class="ub-info" style="position:relative;z-index:1;"><div class="ub-name">' + u.name + '</div></div>';

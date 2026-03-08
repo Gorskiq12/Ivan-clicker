@@ -2813,14 +2813,27 @@ function buildSavePayload() {
 }
 
 function loadSaveData(d) {
-  if ((d.save_version||1) < SAVE_VERSION) { console.log('Old save, resetting'); return; }
+  // Always restore playtime regardless of version
+  totalPlaySeconds = d.play_time || 0;
+  const ptBtn = document.getElementById('playtime-btn');
+  if (ptBtn) ptBtn.textContent = '⏱️ ' + formatPlaytime(totalPlaySeconds);
+
+  if ((d.save_version||1) < SAVE_VERSION) {
+    console.log('Old save detected — wiping for new version');
+    // Delete old save from DB so fresh one gets created
+    if (currentUser) {
+      supa.from('saves').delete().eq('user_id', currentUser.id).then(() => {
+        supa.from('saves').upsert({ user_id: currentUser.id, username: d.username || 'Играч', save_version: SAVE_VERSION, play_time: totalPlaySeconds }, { onConflict: 'user_id' });
+      });
+    }
+    return;
+  }
   state.coins        = d.coins        || 0;
   state.totalCoins   = d.total_coins  || 0;
   state.totalClicks  = d.total_clicks || 0;
   state.level        = d.level        || 1;
   state.xp           = d.xp           || 0;
   state.levelPoints  = d.level_points || 0;
-  totalPlaySeconds   = d.play_time    || 0;
   if (d.owned)      Object.assign(owned, d.owned);
   if (d.prices)     Object.assign(prices, d.prices);
   if (d.xpu_owned)  Object.assign(xpuOwned, d.xpu_owned);
@@ -3111,6 +3124,7 @@ async function loadTopLB() {
     const { data, error } = await supa
       .from('saves')
       .select('username, level, total_coins')
+      .eq('save_version', SAVE_VERSION)
       .order('total_coins', { ascending: false })
       .limit(20);
     if (error) throw error;

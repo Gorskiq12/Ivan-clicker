@@ -2657,6 +2657,7 @@ function toggleLayout() {
 const SUPA_URL = 'https://huytzohiucdapurnztjk.supabase.co';
 const SUPA_KEY = 'sb_publishable_oNIrJJg_EAlb_aSjhvGuLw_DNETljSE';
 const SAVE_VERSION = 2; // bump to reset all saves
+const RESET_TIMESTAMP = '2026-03-08T22:00:00Z'; // leaderboard wipe date
 const supa = supabase.createClient(SUPA_URL, SUPA_KEY);
 
 let currentUser = null;
@@ -2803,6 +2804,7 @@ function buildSavePayload() {
     xp: state.xp,
     level_points: state.levelPoints,
     save_version: SAVE_VERSION,
+    reset_at: new Date().toISOString(),
     play_time: totalPlaySeconds,
     owned: owned,
     prices: prices,
@@ -2813,21 +2815,11 @@ function buildSavePayload() {
 }
 
 function loadSaveData(d) {
-  // Always restore playtime regardless of version
+  // Always restore playtime
   totalPlaySeconds = d.play_time || 0;
   const ptBtn = document.getElementById('playtime-btn');
   if (ptBtn) ptBtn.textContent = '⏱️ ' + formatPlaytime(totalPlaySeconds);
 
-  if ((d.save_version||1) < SAVE_VERSION) {
-    console.log('Old save detected — wiping for new version');
-    // Delete old save from DB so fresh one gets created
-    if (currentUser) {
-      supa.from('saves').delete().eq('user_id', currentUser.id).then(() => {
-        supa.from('saves').upsert({ user_id: currentUser.id, username: d.username || 'Играч', save_version: SAVE_VERSION, play_time: totalPlaySeconds }, { onConflict: 'user_id' });
-      });
-    }
-    return;
-  }
   state.coins        = d.coins        || 0;
   state.totalCoins   = d.total_coins  || 0;
   state.totalClicks  = d.total_clicks || 0;
@@ -3123,8 +3115,8 @@ async function loadTopLB() {
   try {
     const { data, error } = await supa
       .from('saves')
-      .select('username, level, total_coins')
-      .eq('save_version', SAVE_VERSION)
+      .select('username, level, total_coins, reset_at')
+      .gte('reset_at', RESET_TIMESTAMP)
       .order('total_coins', { ascending: false })
       .limit(20);
     if (error) throw error;

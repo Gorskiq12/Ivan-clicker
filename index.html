@@ -320,6 +320,7 @@
 
   /* Achievements list — green theme */
   #ach-list {
+    overflow-y: scroll !important;
     scrollbar-width: thin;
     scrollbar-color: #44dd44 #0a0a12;
   }
@@ -342,6 +343,9 @@
 
   /* XP upgrades list — purple theme */
   #xpu-list {
+    overflow-y: scroll !important;
+    display: flex;
+    flex-direction: column;
     scrollbar-width: thin;
     scrollbar-color: #b060ff #0a0a12;
   }
@@ -1567,8 +1571,8 @@ const IMG_EMIR = "data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BS
       </div>
     </div>
     <div id="shop-list"></div>
-    <div id="ach-list" style="display:none;overflow-y:auto;flex:1;padding:10px;"></div>
-    <div id="xpu-list" style="display:none;overflow-y:auto;flex:1;padding:10px;gap:6px;flex-direction:column;"></div>
+    <div id="ach-list" style="display:none;flex:1;padding:10px;"></div>
+    <div id="xpu-list" style="display:none;flex:1;padding:10px;gap:6px;flex-direction:column;"></div>
   </div>
 </div>
 
@@ -2047,7 +2051,13 @@ function buyUpgrade(id) {
   owned[id]++;
   prices[id] = Math.floor(prices[id] * 1.15);
   const newBadge = spawnBadge(u);
-  if (newBadge) document.getElementById('upgrade-field').appendChild(newBadge);
+  if (newBadge) {
+    if (rowViewActive) {
+      updateRowForUpgrade(u);
+    } else {
+      document.getElementById('upgrade-field').appendChild(newBadge);
+    }
+  }
   renderShop();
   renderXPUpgrades();
   updateUI();
@@ -2424,6 +2434,73 @@ window.addEventListener('load', () => {
 });
 
 // ============================================================
+
+
+// Live-update a single character row in row-view
+function updateRowForUpgrade(u) {
+  const field = document.getElementById('upgrade-field');
+  if (!rowViewActive) return;
+  // Find or create the row for this upgrade
+  let row = field.querySelector('.upgrade-row[data-upid="' + u.id + '"]');
+  if (!row) {
+    // Create new row inline
+    const charOrder = UPGRADES.map(x => x.id);
+    const charNames = {};
+    UPGRADES.forEach(x => charNames[x.id] = x.name);
+    row = document.createElement('div');
+    row.className = 'upgrade-row' + (u.lgbtq ? ' lgbtq-row' : '');
+    row.dataset.upid = u.id;
+    const label = document.createElement('div');
+    label.className = 'upgrade-row-label' + (u.lgbtq ? ' lgbtq-label' : '');
+    label.textContent = charNames[u.id] || u.id;
+    row.appendChild(label);
+    const badgesWrap = document.createElement('div');
+    badgesWrap.className = 'upgrade-row-badges';
+    row.appendChild(badgesWrap);
+    // Insert in correct order
+    const myIdx = charOrder.indexOf(u.id);
+    const rows = field.querySelectorAll('.upgrade-row');
+    let inserted = false;
+    for (const r of rows) {
+      const rIdx = charOrder.indexOf(r.dataset.upid);
+      if (rIdx > myIdx) { field.insertBefore(row, r); inserted = true; break; }
+    }
+    if (!inserted) field.appendChild(row);
+  }
+  // Get badgesWrap and all badges for this character
+  const badgesWrap = row.querySelector('.upgrade-row-badges');
+  // Collect all existing badges for this upgrade from field + new ones
+  const allBadges = Array.from(field.querySelectorAll('.upgrade-badge[data-upid="' + u.id + '"]'));
+  // Shuffle
+  allBadges.sort(() => Math.random() - 0.5);
+  const count = allBadges.length;
+  const bw = 115, bh = 52;
+  requestAnimationFrame(() => {
+    const availW = badgesWrap.clientWidth || (field.clientWidth - 70);
+    const cols = Math.max(1, Math.floor(availW / (bw + 8)));
+    const rows2 = Math.ceil(count / cols);
+    const rowH = Math.max(80, rows2 * (bh + 12) + 14);
+    row.style.height = rowH + 'px';
+    badgesWrap.style.height = rowH + 'px';
+    const usedPos = [];
+    allBadges.forEach(b => {
+      let px, py, ok, tries = 0;
+      do {
+        ok = true;
+        px = 4 + Math.random() * Math.max(1, availW - bw - 8);
+        py = 4 + Math.random() * Math.max(1, rowH - bh - 8);
+        for (const p of usedPos) {
+          if (Math.abs(px - p.x) < bw + 4 && Math.abs(py - p.y) < bh + 4) { ok = false; break; }
+        }
+        tries++;
+      } while (!ok && tries < 80);
+      usedPos.push({x: px, y: py});
+      b.style.left = px + 'px';
+      b.style.top = py + 'px';
+      badgesWrap.appendChild(b);
+    });
+  });
+}
 
 // ===== LAYOUT TOGGLE =====
 let rowViewActive = false;

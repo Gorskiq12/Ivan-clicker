@@ -768,46 +768,13 @@
   }
 
   /* ========== ЙОАН 67 ========== */
-  .upgrade-badge[data-upid="Ioan"] {
-    border-color: #22c55e !important;
-    animation: Ioan67glow 2s ease-in-out infinite !important;
-    overflow: visible !important;
-  }
-  .Ioan-67-tag {
-    font-family: 'Press Start 2P', monospace;
-    font-size: 11px;
-    font-weight: 900;
-    color: #22c55e;
-    text-shadow: 0 0 8px #22c55e, 0 0 16px #22c55e;
-    pointer-events: none;
-    white-space: nowrap;
-    letter-spacing: 1px;
-    line-height: 1;
-    flex-shrink: 0;
-  }
-  @keyframes Ioan67glow {
-    0%,100% { box-shadow: 0 0 6px rgba(34,197,94,0.5), 0 0 0 2px #22c55e; }
-    50%      { box-shadow: 0 0 28px rgba(34,197,94,1), 0 0 0 2px #22c55e, 0 0 50px rgba(34,197,94,0.3); }
-  }
 
-  .upgrade-badge[data-upid="Ioan"] .ub-name { color: #4ade80 !important; }
-  .shop-item[data-id="Ioan"] {
-    border-left: 3px solid #22c55e !important;
-    box-shadow: 0 0 10px rgba(34,197,94,0.2);
-  }
-  @keyframes float67 {
-    0%   { transform: translateY(0) scale(1); opacity: 1; }
-    100% { transform: translateY(-70px) scale(1.3); opacity: 0; }
-  }
-  .float67 {
-    position: absolute;
-    font-family: 'Press Start 2P', monospace;
-    color: #22c55e;
-    text-shadow: 0 0 12px #22c55e, 0 0 24px #22c55e;
-    pointer-events: none;
-    z-index: 9999;
-    animation: float67 1.4s ease-out forwards;
-  }
+
+
+
+
+
+
 
     /* ===== UNIQUE OUTLINES per upgrade level ===== */
   /* lvl-1 Сашко: grey-blue */
@@ -927,6 +894,42 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
+  /* ЙОАН 67 — blue animated border */
+  .upgrade-badge.Ioan67-badge {
+    background: rgba(10, 15, 35, 0.97);
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    animation: Ioan67border 2s linear infinite;
+    box-shadow: 0 0 12px rgba(59,130,246,0.6), 0 0 24px rgba(59,130,246,0.3);
+  }
+  @keyframes Ioan67border {
+    0%   { box-shadow: 0 0 10px #3b82f6, 0 0 20px #1d4ed8; border-color: #3b82f6; }
+    33%  { box-shadow: 0 0 10px #60a5fa, 0 0 20px #3b82f6; border-color: #60a5fa; }
+    66%  { box-shadow: 0 0 10px #1d4ed8, 0 0 20px #1e40af; border-color: #1d4ed8; }
+    100% { box-shadow: 0 0 10px #3b82f6, 0 0 20px #1d4ed8; border-color: #3b82f6; }
+  }
+  .upgrade-badge.Ioan67-badge .ub-name {
+    background: linear-gradient(90deg, #60a5fa, #93c5fd, #3b82f6, #60a5fa);
+    background-size: 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: Ioan67text 2s linear infinite;
+  }
+  @keyframes Ioan67text {
+    0%   { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+  }
+  .upgrade-badge.Ioan67-badge .ub-name::after {
+    content: ' 67';
+    background: linear-gradient(90deg, #93c5fd, #3b82f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .shop-item[data-id="Ioan"] { border-left: 3px solid #3b82f6 !important; box-shadow: 0 0 8px rgba(59,130,246,0.3); }
+  .upgrade-row[data-upid="Ioan"] { border-color: #3b82f6 !important; box-shadow: 0 0 8px rgba(59,130,246,0.2); }
+
   .upgrade-badge.lgbtq-badge-field {
     background: rgba(20,10,35,0.97);
     border: 2px solid #8b00ff;
@@ -2162,7 +2165,7 @@ function spawnBadge(u) {
   const h = field.clientHeight;
   const badge = document.createElement('div');
   const lvl = UPGRADES.indexOf(u) + 1;
-  badge.className = 'upgrade-badge lvl-' + lvl + (u.lgbtq ? ' lgbtq-badge-field' : '');
+  badge.className = 'upgrade-badge lvl-' + lvl + (u.lgbtq ? ' lgbtq-badge-field' : '') + (u.Ioan67 ? ' Ioan67-badge' : '');
   badge.dataset.upid = u.id;
   badge.style.position = 'absolute';
 
@@ -2170,10 +2173,9 @@ function spawnBadge(u) {
   const boostedClass = tiers > 0 ? ' xp-boosted' : '';
   if (boostedClass) badge.classList.add('xp-boosted');
 
-  const Ioan67extra = u.id === 'Ioan' ? '<div class="Ioan-67-tag">67</div>' : '';
   badge.innerHTML =
     '<img src="' + u.img() + '" style="width:32px;height:32px;object-fit:cover;object-position:' + (u.imgPos || '50% 15%') + ';border-radius:50%;flex-shrink:0;" />'
-    + '<div class="ub-info"><div class="ub-name">' + u.name + '</div>' + Ioan67extra + '</div>';
+    + '<div class="ub-info"><div class="ub-name">' + u.name + '</div></div>';
 
   if (tiers > 0) {
     const tierEl = document.createElement('div');
@@ -2606,42 +2608,6 @@ function updateRowForUpgrade(u) {
   if (!rowViewActive) return;
   rebuildRowView();
 }
-
-// ===== ЙОАН 67 FLOATING EFFECT =====
-function spawn67near(badge) {
-  const field = document.getElementById('upgrade-field');
-  if (!field) return;
-  const bRect = badge.getBoundingClientRect();
-  const fRect = field.getBoundingClientRect();
-  const el = document.createElement('div');
-  el.className = 'float67';
-  el.textContent = '67';
-  el.style.fontSize = (9 + Math.random() * 10) + 'px';
-  el.style.left = (bRect.left - fRect.left + 5 + Math.random() * 60) + 'px';
-  el.style.top  = (bRect.top  - fRect.top  - 5) + 'px';
-  field.appendChild(el);
-  setTimeout(() => el.remove(), 1500);
-}
-
-setInterval(() => {
-  const field = document.getElementById('upgrade-field');
-  if (!field) return;
-  const ioanBadges = Array.from(field.querySelectorAll('.upgrade-badge[data-upid="Ioan"]'));
-  if (ioanBadges.length === 0) return;
-  // Pick random Ioan badge and float a 67
-  const b = ioanBadges[Math.floor(Math.random() * ioanBadges.length)];
-  spawn67near(b);
-  // Occasionally spawn more
-  if (Math.random() < 0.3 && ioanBadges.length > 1) {
-    setTimeout(() => spawn67near(ioanBadges[Math.floor(Math.random() * ioanBadges.length)]), 300);
-  }
-}, 1800);
-
-// Also spawn 67 on every Ioan badge click
-document.addEventListener('click', e => {
-  const badge = e.target.closest('.upgrade-badge[data-upid="Ioan"]');
-  if (badge) { spawn67near(badge); spawn67near(badge); }
-});
 
 // ===== SAVE ON EXIT =====
 // Save when tab becomes hidden (switch tab, minimize, refresh)

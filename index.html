@@ -2546,30 +2546,14 @@ function updateRowForUpgrade(u) {
 }
 
 // ===== SAVE ON EXIT =====
-// Save when user closes/refreshes tab
-window.addEventListener('beforeunload', () => {
-  if (currentUser && !guestMode) {
-    // Use sendBeacon for reliable save on page unload
-    const payload = buildSavePayload();
-    const url = 'https://huytzohiucdapurnztjk.supabase.co/rest/v1/saves';
-    const body = JSON.stringify(payload);
-    navigator.sendBeacon && navigator.sendBeacon(
-      url + '?on_conflict=user_id',
-      new Blob([body], { type: 'application/json' })
-    );
-    // Also try sync save as fallback
-    saveGame();
-  }
-});
-
-// Save when tab becomes hidden (switching tabs, minimizing)
+// Save when tab becomes hidden (switch tab, minimize, refresh)
 document.addEventListener('visibilitychange', () => {
   if (document.hidden && currentUser && !guestMode) {
     saveGame();
   }
 });
 
-// Save on click of Ivan button periodically (every 50 clicks)
+// Save every 50 clicks
 let clicksSinceLastSave = 0;
 function saveEvery50Clicks() {
   clicksSinceLastSave++;
@@ -2822,12 +2806,9 @@ async function onLogin(user) {
   }
   renderShop(); renderAchievements(); renderXPUpgrades(); updateUI(); updateXPBar();
 
-  // Auto-save every 30s
+  // Auto-save every 15s
   if (saveTimer) clearInterval(saveTimer);
-  saveTimer = setInterval(saveGame, 30000);
-  // Save every 10s instead of 30s for safety
-  clearInterval(saveTimer);
-  saveTimer = setInterval(saveGame, 10000);
+  saveTimer = setInterval(saveGame, 15000);
 }
 
 // ---- SAVE / LOAD ----
@@ -2840,8 +2821,6 @@ function buildSavePayload() {
     level: state.level,
     xp: state.xp,
     level_points: state.levelPoints,
-    save_version: SAVE_VERSION,
-    reset_at: new Date().toISOString(),
     play_time: totalPlaySeconds,
     owned: owned,
     prices: prices,
@@ -3152,8 +3131,7 @@ async function loadTopLB() {
   try {
     const { data, error } = await supa
       .from('saves')
-      .select('username, level, total_coins, reset_at')
-      .gte('reset_at', RESET_TIMESTAMP)
+      .select('username, level, total_coins')
       .order('total_coins', { ascending: false })
       .limit(20);
     if (error) throw error;

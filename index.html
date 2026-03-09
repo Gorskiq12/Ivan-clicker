@@ -889,13 +889,17 @@
     text-shadow: 0 0 8px #3b82f6, 0 0 16px #3b82f6;
     margin-left: 4px;
   }
-  .shop-item.Ioan67-item {
+  .shop-item.Ioan67-item,
+  .shop-item.Ioan67-item.affordable,
+  .shop-item.Ioan67-item.unaffordable {
     border: 2px solid #3b82f6 !important;
+    border-color: #3b82f6 !important;
     background: rgba(10,15,40,0.6);
-    box-shadow: 0 0 0 1px #1d4ed8, 0 0 14px rgba(59,130,246,0.5);
+    box-shadow: 0 0 14px rgba(59,130,246,0.5) !important;
   }
-  .shop-item.Ioan67-item.affordable {
-    box-shadow: 0 0 0 1px #60a5fa, 0 0 20px rgba(59,130,246,0.7);
+  .shop-item.Ioan67-item.affordable:hover {
+    border-color: #93c5fd !important;
+    box-shadow: 0 0 22px rgba(59,130,246,0.8) !important;
   }
   .shop-item.Ioan67-item .si-name {
     background: linear-gradient(90deg, #60a5fa, #93c5fd, #3b82f6);
@@ -2232,7 +2236,7 @@ function spawnBadge(u) {
     + '</div>'
     + '<div class="ub-info"><div class="ub-name">' + u.name + '</div></div>';
 
-  if (tiers > 0) {
+  if (tiers > 0 && !u.Ioan67) {
     const tierEl = document.createElement('div');
     tierEl.className = 'xp-tier';
     tierEl.style.cssText = 'position:absolute;top:-6px;right:-6px;background:#7b2ff7;color:#fff;font-size:8px;font-weight:700;border-radius:50%;width:16px;height:16px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 6px rgba(123,47,247,0.8);';

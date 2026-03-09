@@ -2043,16 +2043,19 @@ function renderXPUpgrades() {
 
   // Group by target upgrade
   const targets = ['sashko','tisho','ioan','stan','ege','qsi','mert','yavor','viki','emir','stefan','bubu','petar'];
-  const targetNames = {sashko:'Сашко',tisho:'Тишо',Ioan:'Йоан',stan:'Станислав',ege:'Еге',qsi:'Яси',mert:'Мерт',yavor:'Явор',viki:'Вики',emir:'Емир',stefan:'Стефан',bubu:'Бубу',petar:'Петър'};
+  const targetNames = {sashko:'Сашко',tisho:'Тишо',ioan:'Йоан',stan:'Станислав',ege:'Еге',qsi:'Яси',mert:'Мерт',yavor:'Явор',viki:'Вики',emir:'Емир',stefan:'Стефан',bubu:'Бубу',petar:'Петър'};
 
   targets.forEach(tgt => {
     const upgrades = XP_UPGRADES.filter(xu => xu.target === tgt);
     if (upgrades.length === 0) return;
 
-    // Show XP upgrades when character is unlocked (totalHelpers >= unlockAt)
+    // Show XP upgrades if character is owned OR previous character is owned (next one visible)
     const baseU = UPGRADES.find(u => u.id === tgt);
     if (!baseU) return;
-    if (totalHelpers() < (baseU.unlockAt || 0)) return;
+    const tgtIdx = UPGRADES.indexOf(baseU);
+    const selfOwned = (owned[tgt] || 0) >= 1;
+    const prevCharOwned = tgtIdx === 0 || (owned[UPGRADES[tgtIdx - 1].id] >= 1);
+    if (!selfOwned && !prevCharOwned) return;
 
     const header = document.createElement('div');
     header.style.cssText = 'font-size:11px;color:var(--dim);letter-spacing:2px;text-transform:uppercase;padding:6px 2px 3px;border-bottom:1px solid var(--border);margin-bottom:4px;margin-top:8px;';

@@ -774,19 +774,16 @@
     overflow: visible !important;
   }
   .Ioan-67-tag {
-    position: absolute;
-    top: -22px;
-    left: 50%;
-    transform: translateX(-50%);
     font-family: 'Press Start 2P', monospace;
-    font-size: 13px;
+    font-size: 11px;
     font-weight: 900;
     color: #22c55e;
-    text-shadow: 0 0 10px #22c55e, 0 0 25px #22c55e, 0 0 40px #22c55e;
+    text-shadow: 0 0 8px #22c55e, 0 0 16px #22c55e;
     pointer-events: none;
-    z-index: 100;
     white-space: nowrap;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
+    line-height: 1;
+    flex-shrink: 0;
   }
   @keyframes Ioan67glow {
     0%,100% { box-shadow: 0 0 6px rgba(34,197,94,0.5), 0 0 0 2px #22c55e; }
@@ -2173,9 +2170,10 @@ function spawnBadge(u) {
   const boostedClass = tiers > 0 ? ' xp-boosted' : '';
   if (boostedClass) badge.classList.add('xp-boosted');
 
+  const Ioan67extra = u.id === 'Ioan' ? '<div class="Ioan-67-tag">67</div>' : '';
   badge.innerHTML =
     '<img src="' + u.img() + '" style="width:32px;height:32px;object-fit:cover;object-position:' + (u.imgPos || '50% 15%') + ';border-radius:50%;flex-shrink:0;" />'
-    + '<div class="ub-info"><div class="ub-name">' + u.name + '</div></div>';
+    + '<div class="ub-info"><div class="ub-name">' + u.name + '</div>' + Ioan67extra + '</div>';
 
   if (tiers > 0) {
     const tierEl = document.createElement('div');
@@ -2185,14 +2183,7 @@ function spawnBadge(u) {
     badge.appendChild(tierEl);
   }
 
-  // Ioan 67 tag
-  if (u.id === 'Ioan') {
-    const tag67 = document.createElement('div');
-    tag67.className = 'Ioan-67-tag';
-    tag67.textContent = '67';
-    badge.appendChild(tag67);
-    badge.style.overflow = 'visible';
-  }
+
 
   const bw = 130, bh = 56;
   let px, py, ok, tries = 0;

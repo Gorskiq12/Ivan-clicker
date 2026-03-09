@@ -2042,16 +2042,17 @@ function renderXPUpgrades() {
   list.innerHTML = '';
 
   // Group by target upgrade
-  const targets = ['sashko','tisho','Ioan','stan','ege','qsi','mert','yavor','viki','emir','stefan','bubu','petar'];
+  const targets = ['sashko','tisho','ioan','stan','ege','qsi','mert','yavor','viki','emir','stefan','bubu','petar'];
   const targetNames = {sashko:'Сашко',tisho:'Тишо',Ioan:'Йоан',stan:'Станислав',ege:'Еге',qsi:'Яси',mert:'Мерт',yavor:'Явор',viki:'Вики',emir:'Емир',stefan:'Стефан',bubu:'Бубу',petar:'Петър'};
 
   targets.forEach(tgt => {
     const upgrades = XP_UPGRADES.filter(xu => xu.target === tgt);
     if (upgrades.length === 0) return;
 
-    // Check if the base upgrade is even visible (owned at least once)
-    const baseOwned = owned[tgt] >= 1;
-    if (!baseOwned) return; // Don't show XP upgrades for upgrades not yet bought
+    // Show XP upgrades when character is unlocked (totalHelpers >= unlockAt)
+    const baseU = UPGRADES.find(u => u.id === tgt);
+    if (!baseU) return;
+    if (totalHelpers() < (baseU.unlockAt || 0)) return;
 
     const header = document.createElement('div');
     header.style.cssText = 'font-size:11px;color:var(--dim);letter-spacing:2px;text-transform:uppercase;padding:6px 2px 3px;border-bottom:1px solid var(--border);margin-bottom:4px;margin-top:8px;';
@@ -3218,7 +3219,7 @@ async function loadTopLB() {
       .order('total_coins', { ascending: false })
       .limit(100);
     // Only show players with new-version saves (have new characters in owned)
-    const newChars = ['tisho','Ioan','stan','ege','mert','yavor','petar'];
+    const newChars = ['tisho','ioan','stan','ege','mert','yavor','petar'];
     const data = (rawData||[]).filter(row => {
       if (!row.owned || Object.keys(row.owned).length === 0) return true;
       return newChars.some(c => c in (row.owned||{}));

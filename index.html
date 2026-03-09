@@ -72,6 +72,34 @@
     overflow-y: auto;
   }
 
+  #minigame-btn {
+    width: 100%;
+    padding: 14px 10px;
+    background: linear-gradient(135deg, #1a0a2e, #2d1050);
+    border: 2px solid #8b2fc9;
+    border-radius: 10px;
+    color: #c97fff;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    text-align: center;
+    box-shadow: 0 0 14px rgba(139, 47, 201, 0.4), inset 0 0 20px rgba(139,47,201,0.1);
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  #minigame-btn:hover {
+    background: linear-gradient(135deg, #2d1050, #4a1a80);
+    box-shadow: 0 0 24px rgba(139, 47, 201, 0.7), inset 0 0 30px rgba(139,47,201,0.2);
+    color: #e0b0ff;
+    transform: translateY(-1px);
+  }
+  #minigame-btn:active { transform: translateY(1px); }
+  #minigame-btn .mg-icon { font-size: 22px; display: block; margin-bottom: 7px; }
+  #minigame-btn .mg-label { display: block; }
+  #minigame-btn .mg-sub { display: block; font-size: 7px; color: #8866aa; margin-top: 5px; letter-spacing: 0px; }
+
   #currency-display {
     text-align: center;
     width: 100%;
@@ -1661,6 +1689,12 @@ const IMG_PETAR     = "data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUN
       <div class="stat-row"><span class="sk">На сек</span><span class="sv" id="stat-per-sec">0</span></div>
       <div class="stat-row"><span class="sk">Помощници</span><span class="sv" id="stat-helpers">0</span></div>
     </div>
+
+    <button id="minigame-btn" onclick="openMinigames()">
+      <span class="mg-icon">🎮</span>
+      <span class="mg-label">МИНИГЕЙМИ</span>
+      <span class="mg-sub">СКОРО...</span>
+    </button>
   </div>
 
   <!-- MIDDLE -->
@@ -2843,7 +2877,10 @@ async function doLogout() {
   document.getElementById('btn-login-top').style.display = '';
   document.getElementById('user-name-display').textContent = '';
   // Reset state
-  Object.assign(state, { coins:0, totalCoins:0, totalClicks:0, perClick:1, xp:0, level:1, levelPoints:0 });
+  Object.assign(state, { coins:0, totalCoins:0, totalClicks:0, perClick:1, xp:0, level:1, levelPoints:0, frenzyCount:0 });
+  totalPlaySeconds = 0;
+  const ptBtn = document.getElementById('playtime-btn');
+  if (ptBtn) ptBtn.textContent = '⏱️ 0:00:00';
   UPGRADES.forEach(u => { owned[u.id]=0; prices[u.id]=u.basePrice; });
   XP_UPGRADES.forEach(u => xpuOwned[u.id]=false);
   Object.keys(achEarned).forEach(k => { achEarned[k]=false; achClaimed[k]=false; });
@@ -3264,7 +3301,10 @@ async function loadTopLB() {
 async function confirmResetProgress() {
   if (!confirm('Сигурен ли си? Целият прогрес ще бъде изтрит!')) return;
   // Reset state
-  Object.assign(state, { coins:0, totalCoins:0, totalClicks:0, perClick:1, xp:0, level:1, levelPoints:0 });
+  Object.assign(state, { coins:0, totalCoins:0, totalClicks:0, perClick:1, xp:0, level:1, levelPoints:0, frenzyCount:0 });
+  totalPlaySeconds = 0;
+  const ptBtn = document.getElementById('playtime-btn');
+  if (ptBtn) ptBtn.textContent = '⏱️ 0:00:00';
   UPGRADES.forEach(u => { owned[u.id]=0; prices[u.id]=u.basePrice; });
   XP_UPGRADES.forEach(u => xpuOwned[u.id]=false);
   Object.keys(achEarned).forEach(k => { achEarned[k]=false; achClaimed[k]=false; });
@@ -3297,6 +3337,10 @@ function initImages() {
   const savedSkin = parseInt(localStorage.getItem('ivan_skin') || '0');
   applySkin(savedSkin);
 }
+function openMinigames() {
+  showToast('🎮 Минигейми идват скоро! Следи за обновления.', 3000);
+}
+
 initImages();
 renderShop();
 renderAchievements();

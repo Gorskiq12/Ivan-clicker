@@ -876,6 +876,12 @@
     margin-left: 3px;
     vertical-align: middle;
   }
+  .Ioan67-spam-shop {
+    inset: -10px !important;
+  }
+  .Ioan67-spam-shop span {
+    font-size: 6px !important;
+  }
   .Ioan67-tag-shop {
     font-family: 'Press Start 2P', monospace;
     font-size: 10px;
@@ -918,6 +924,34 @@
     background-clip: text;
   }
   /* ЙОАН 67 — blue animated border */
+  .Ioan67-spam {
+    position: absolute;
+    inset: -14px;
+    pointer-events: none;
+    z-index: 5;
+  }
+  .Ioan67-spam span {
+    position: absolute;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    font-weight: 900;
+    color: #60a5fa;
+    text-shadow: 0 0 6px #3b82f6;
+    animation: Ioan67spin 3s linear infinite;
+  }
+  .Ioan67-spam span:nth-child(1) { top: 0%;   left: 50%; transform: translateX(-50%); animation-delay: 0s; }
+  .Ioan67-spam span:nth-child(2) { top: 14%;  right: 0%; animation-delay: -0.37s; }
+  .Ioan67-spam span:nth-child(3) { top: 50%;  right: -6px; transform: translateY(-50%); animation-delay: -0.75s; }
+  .Ioan67-spam span:nth-child(4) { bottom: 14%; right: 0%; animation-delay: -1.12s; }
+  .Ioan67-spam span:nth-child(5) { bottom: 0%; left: 50%; transform: translateX(-50%); animation-delay: -1.5s; }
+  .Ioan67-spam span:nth-child(6) { bottom: 14%; left: 0%; animation-delay: -1.87s; }
+  .Ioan67-spam span:nth-child(7) { top: 50%;  left: -6px; transform: translateY(-50%); animation-delay: -2.25s; }
+  .Ioan67-spam span:nth-child(8) { top: 14%;  left: 0%; animation-delay: -2.62s; }
+  @keyframes Ioan67spin {
+    0%, 100% { opacity: 1; text-shadow: 0 0 8px #3b82f6, 0 0 16px #3b82f6; }
+    50%       { opacity: 0.4; text-shadow: 0 0 4px #1d4ed8; }
+  }
+
   .upgrade-badge.Ioan67-badge {
     background: rgba(10, 15, 35, 0.97);
     border: 2px solid transparent;
@@ -943,13 +977,7 @@
     0%   { background-position: 0% 50%; }
     100% { background-position: 200% 50%; }
   }
-  .upgrade-badge.Ioan67-badge .ub-name::after {
-    content: ' 67';
-    background: linear-gradient(90deg, #93c5fd, #3b82f6);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
+
   .shop-item[data-id="Ioan"] { border-left: 3px solid #3b82f6 !important; box-shadow: 0 0 8px rgba(59,130,246,0.3); }
   .upgrade-row[data-upid="Ioan"] { border-color: #3b82f6 !important; box-shadow: 0 0 8px rgba(59,130,246,0.2); }
 
@@ -2196,8 +2224,13 @@ function spawnBadge(u) {
   const boostedClass = tiers > 0 ? ' xp-boosted' : '';
   if (boostedClass) badge.classList.add('xp-boosted');
 
+  const Ioan67html = u.Ioan67 ? 
+    '<div class="Ioan67-spam"><span>6</span><span>7</span><span>67</span><span>6</span><span>7</span><span>67</span><span>6</span><span>7</span></div>' : '';
   badge.innerHTML =
-    '<img src="' + u.img() + '" style="width:32px;height:32px;object-fit:cover;object-position:' + (u.imgPos || '50% 15%') + ';border-radius:50%;flex-shrink:0;" />'
+    '<div style="position:relative;flex-shrink:0;">'
+    + Ioan67html
+    + '<img src="' + u.img() + '" style="width:32px;height:32px;object-fit:cover;object-position:' + (u.imgPos || '50% 15%') + ';border-radius:50%;" />'
+    + '</div>'
     + '<div class="ub-info"><div class="ub-name">' + u.name + '</div></div>';
 
   if (tiers > 0) {
@@ -2257,7 +2290,7 @@ function renderShop() {
       const nameHtml = isLGBTQ ? u.name + ' <span class="rainbow-flag"></span>' : isIoan67 ? u.name + ' <span class="Ioan67-tag-shop">67</span>' : u.name;
       const imgBorder = isLGBTQ ? 'border:2px solid #8b00ff;box-shadow:0 0 6px rgba(139,0,255,0.5);' : isIoan67 ? 'border:2px solid #3b82f6;box-shadow:0 0 8px rgba(59,130,246,0.7);' : 'border:2px solid #2a2a3a;';
       div.innerHTML =
-        '<div class="si-icon"><img src="' + u.img() + '" style="width:36px;height:36px;object-fit:cover;object-position:' + (u.imgPos || '50% 15%') + ';border-radius:50%;' + imgBorder + '" /></div>'
+        '<div class="si-icon" style="position:relative">' + (isIoan67 ? '<div class="Ioan67-spam Ioan67-spam-shop"><span>6</span><span>7</span><span>67</span><span>6</span><span>7</span><span>67</span><span>6</span><span>7</span></div>' : '') + '<img src="' + u.img() + '" style="width:36px;height:36px;object-fit:cover;object-position:' + (u.imgPos || '50% 15%') + ';border-radius:50%;' + imgBorder + '" /></div>'
         + '<div class="si-body"><div class="si-name">' + nameHtml + '</div>'
         + '<div class="si-desc">' + u.desc + ' · +' + cpsDisplay + '</div></div>'
         + '<div class="si-right"><div class="si-price">' + formatPrice(price) + ' NC</div>'

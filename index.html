@@ -717,6 +717,7 @@
     box-shadow: 0 0 14px rgba(160,96,255,0.9);
   }
   .upgrade-row {
+    overflow: visible !important;
     display: flex;
     flex-direction: row;
     align-items: stretch;
@@ -757,11 +758,10 @@
   .upgrade-row-badges {
     position: relative;
     flex: 1;
-    overflow: hidden;
+    overflow: visible;
   }
   #upgrade-field.row-view .upgrade-badge {
     position: absolute !important;
-    animation: none !important;
     width: auto !important;
     flex-shrink: 0;
     box-sizing: border-box;
@@ -2576,7 +2576,7 @@ function rebuildRowView() {
     const count = groups[id].length;
     const cols = Math.max(1, Math.floor(availW / (bw + 10)));
     const rowCount = Math.ceil(count / cols);
-    const rowH = Math.max(80, rowCount * (bh + 14) + 14);
+    const rowH = Math.max(80, rowCount * (bh + 14) + 24);
 
     row.style.height = rowH + 'px';
     badgesWrap.style.height = rowH + 'px';
@@ -2586,7 +2586,7 @@ function rebuildRowView() {
       const col = i % cols;
       const r   = Math.floor(i / cols);
       const px  = col * (bw + 10) + 6;
-      const py  = r   * (bh + 14) + 6;
+      const py  = r   * (bh + 14) + 18; // extra top padding for "67" label
       b.style.left = px + 'px';
       b.style.top  = py + 'px';
       b.style.visibility = '';

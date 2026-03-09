@@ -2095,10 +2095,11 @@ function buyUpgrade(id) {
   prices[id] = Math.floor(prices[id] * 1.15);
   const newBadge = spawnBadge(u);
   if (newBadge) {
-    // Always add to field first so rebuildRowView can find it
-    document.getElementById('upgrade-field').appendChild(newBadge);
+    const field = document.getElementById('upgrade-field');
+    field.appendChild(newBadge);
     if (rowViewActive) {
-      rebuildRowView();
+      // Small delay to ensure DOM is settled before rebuild
+      setTimeout(rebuildRowView, 10);
     }
   }
   renderShop();
@@ -2484,16 +2485,26 @@ function rebuildRowView() {
   const field = document.getElementById('upgrade-field');
   if (!rowViewActive) return;
 
-  // Collect ALL badges currently anywhere in the field (inside or outside rows)
+  // Collect ALL badges (may be inside rows or loose in field)
   const allBadges = Array.from(field.querySelectorAll('.upgrade-badge'));
 
-  // Move all badges to field root, destroy old rows
-  allBadges.forEach(b => field.appendChild(b));
+  // Pull badges out to a temporary off-screen holder so we can destroy rows safely
+  const tmp = document.createDocumentFragment();
+  allBadges.forEach(b => tmp.appendChild(b));
+
+  // Destroy all rows
   field.querySelectorAll('.upgrade-row').forEach(r => r.remove());
+
+  // Re-add badges to field root (so they are in DOM for measurements)
+  allBadges.forEach(b => {
+    b.style.position = 'absolute';
+    b.style.visibility = 'hidden'; // hide while repositioning
+    field.appendChild(b);
+  });
 
   const charOrder = UPGRADES.map(u => u.id);
   const charNames = {}; UPGRADES.forEach(u => charNames[u.id] = u.name);
-  const isLgbtq = {};  UPGRADES.forEach(u => isLgbtq[u.id] = !!u.lgbtq);
+  const isLgbtq  = {}; UPGRADES.forEach(u => isLgbtq[u.id]  = !!u.lgbtq);
 
   // Group badges by upid
   const groups = {};
@@ -2501,11 +2512,13 @@ function rebuildRowView() {
   allBadges.forEach(b => { const id = b.dataset.upid; if (groups[id]) groups[id].push(b); });
 
   const bw = 115, bh = 52;
-  const fieldW = field.clientWidth;
+  const fieldW = field.clientWidth || 900;
+  const availW = Math.max(200, fieldW - 62);
 
   charOrder.forEach(id => {
     if (!groups[id] || groups[id].length === 0) return;
     const lgbtq = isLgbtq[id];
+
     const row = document.createElement('div');
     row.className = 'upgrade-row' + (lgbtq ? ' lgbtq-row' : '');
     row.dataset.upid = id;
@@ -2518,31 +2531,23 @@ function rebuildRowView() {
     const badgesWrap = document.createElement('div');
     badgesWrap.className = 'upgrade-row-badges';
 
-    const shuffled = groups[id].slice().sort(() => Math.random() - 0.5);
-    const count = shuffled.length;
-    const availW = fieldW - 62;
-    const cols = Math.max(1, Math.floor(availW / (bw + 8)));
+    const count = groups[id].length;
+    const cols = Math.max(1, Math.floor(availW / (bw + 10)));
     const rowCount = Math.ceil(count / cols);
-    const rowH = Math.max(80, rowCount * (bh + 12) + 14);
+    const rowH = Math.max(80, rowCount * (bh + 14) + 14);
 
     row.style.height = rowH + 'px';
     badgesWrap.style.height = rowH + 'px';
 
-    const usedPos = [];
-    shuffled.forEach(b => {
-      let px, py, ok, tries = 0;
-      do {
-        ok = true;
-        px = 4 + Math.random() * Math.max(1, availW - bw - 8);
-        py = 4 + Math.random() * Math.max(1, rowH - bh - 8);
-        for (const p of usedPos) {
-          if (Math.abs(px - p.x) < bw + 4 && Math.abs(py - p.y) < bh + 4) { ok = false; break; }
-        }
-        tries++;
-      } while (!ok && tries < 80);
-      usedPos.push({x: px, y: py});
+    // Place badges in a grid (no random — stable and visible)
+    groups[id].forEach((b, i) => {
+      const col = i % cols;
+      const r   = Math.floor(i / cols);
+      const px  = col * (bw + 10) + 6;
+      const py  = r   * (bh + 14) + 6;
       b.style.left = px + 'px';
-      b.style.top = py + 'px';
+      b.style.top  = py + 'px';
+      b.style.visibility = '';
       badgesWrap.appendChild(b);
     });
 

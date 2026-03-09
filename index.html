@@ -891,7 +891,8 @@
   }
   .shop-item.Ioan67-item,
   .shop-item.Ioan67-item.affordable,
-  .shop-item.Ioan67-item.unaffordable {
+  .shop-item.Ioan67-item.unaffordable,
+  #shop-list .shop-item.Ioan67-item {
     border: 2px solid #3b82f6 !important;
     border-color: #3b82f6 !important;
     background: rgba(10,15,40,0.6);
@@ -1769,16 +1770,17 @@ function xpForLevel(lvl) {
 // ============ UPGRADES ============
 const UPGRADES = [
   { id: 'sashko',    name: 'Сашко',    img: () => IMG_SASHKO,    basePrice: 15,        cps: 0.1,   desc: 'Помага малко ама пак е нещо',  unlockAt: 0 },
-  { id: 'tisho',     name: 'Тишо',     img: () => IMG_TISHO,     basePrice: 80,        cps: 0.6,   desc: 'Малко по-добър от Сашко',      unlockAt: 1 },
+  { id: 'tisho',     name: 'Тишо',     img: () => IMG_TISHO,     basePrice: 100,       cps: 0.5,   desc: 'Малко по-добър от Сашко',      unlockAt: 1 },
   { id: 'ioan',      name: 'Йоан',     img: () => IMG_Ioan,      basePrice: 600,       cps: 3,     desc: 'Носи сериозен принос',          unlockAt: 8, Ioan67: true },
-  { id: 'ege',       name: 'Еге',      img: () => IMG_EGE,       basePrice: 4000,      cps: 14,    desc: 'Мощен генератор',               unlockAt: 60 },
-  { id: 'qsi',       name: 'Яси',      img: () => IMG_YASI,      basePrice: 18000,     cps: 55,    desc: 'По-ефективен от всички',        unlockAt: 400,  lgbtq: true, imgPos: '50% 60%' },
-  { id: 'yavor',     name: 'Явор',     img: () => IMG_YAVOR,     basePrice: 90000,     cps: 220,   desc: 'Леко легендарен',               unlockAt: 2000 },
-  { id: 'viki',      name: 'Вики',     img: () => IMG_VIKI,      basePrice: 400000,    cps: 900,   desc: 'Неудържим тип',                 unlockAt: 8000,  imgPos: '50% 35%' },
-  { id: 'emir',      name: 'Емир',     img: () => IMG_EMIR,      basePrice: 2000000,   cps: 3500,  desc: 'Абсолютен бог на NC',           unlockAt: 40000 },
-  { id: 'stefan',    name: 'Стефан',   img: () => IMG_STEFAN,    basePrice: 10000000,  cps: 14000, desc: 'Доминира продукцията',          unlockAt: 150000 },
-  { id: 'bubu',      name: 'Бубу',     img: () => IMG_BUBU,      basePrice: 50000000,  cps: 55000, desc: 'Легендарен генератор',          unlockAt: 600000 },
-  { id: 'petar',     name: 'Петър',    img: () => IMG_PETAR,     basePrice: 300000000, cps: 200000,desc: 'Непобедимата машина',           unlockAt: 2500000 },
+  { id: 'stan',     name: 'Станислав',img: () => IMG_STANISLAV,  basePrice: 1800,      cps: 6,     desc: 'Стабилен като скала',           unlockAt: 25 },
+  { id: 'ege',       name: 'Еге',      img: () => IMG_EGE,       basePrice: 8000,      cps: 22,    desc: 'Мощен генератор',               unlockAt: 150 },
+  { id: 'qsi',       name: 'Яси',      img: () => IMG_YASI,      basePrice: 25000,     cps: 60,    desc: 'По-ефективен от всички',        unlockAt: 600,  lgbtq: true, imgPos: '50% 60%' },
+  { id: 'yavor',     name: 'Явор',     img: () => IMG_YAVOR,     basePrice: 100000,    cps: 250,   desc: 'Леко легендарен',               unlockAt: 2000 },
+  { id: 'viki',      name: 'Вики',     img: () => IMG_VIKI,      basePrice: 500000,    cps: 1000,   desc: 'Неудържим тип',                 unlockAt: 8000,  imgPos: '50% 35%' },
+  { id: 'emir',      name: 'Емир',     img: () => IMG_EMIR,      basePrice: 2500000,   cps: 4000,  desc: 'Абсолютен бог на NC',           unlockAt: 40000 },
+  { id: 'stefan',    name: 'Стефан',   img: () => IMG_STEFAN,    basePrice: 12000000,  cps: 16000, desc: 'Доминира продукцията',          unlockAt: 150000 },
+  { id: 'bubu',      name: 'Бубу',     img: () => IMG_BUBU,      basePrice: 60000000,  cps: 65000, desc: 'Легендарен генератор',          unlockAt: 600000 },
+  { id: 'petar',     name: 'Петър',    img: () => IMG_PETAR,     basePrice: 400000000, cps: 250000,desc: 'Непобедимата машина',           unlockAt: 2500000 },
 ];
 
 const owned = {};
@@ -2022,8 +2024,8 @@ function renderXPUpgrades() {
   list.innerHTML = '';
 
   // Group by target upgrade
-  const targets = ['sashko','tisho','Ioan','ege','qsi','yavor','viki','emir','stefan','bubu','petar'];
-  const targetNames = {sashko:'Сашко',tisho:'Тишо',Ioan:'Йоан',ege:'Еге',qsi:'Яси',yavor:'Явор',viki:'Вики',emir:'Емир',stefan:'Стефан',bubu:'Бубу',petar:'Петър'};
+  const targets = ['sashko','tisho','Ioan','stan','ege','qsi','yavor','viki','emir','stefan','bubu','petar'];
+  const targetNames = {sashko:'Сашко',tisho:'Тишо',Ioan:'Йоан',stan:'Станислав',ege:'Еге',qsi:'Яси',yavor:'Явор',viki:'Вики',emir:'Емир',stefan:'Стефан',bubu:'Бубу',petar:'Петър'};
 
   targets.forEach(tgt => {
     const upgrades = XP_UPGRADES.filter(xu => xu.target === tgt);
@@ -2729,8 +2731,8 @@ function toggleLayout() {
 // ============================================================
 const SUPA_URL = 'https://huytzohiucdapurnztjk.supabase.co';
 const SUPA_KEY = 'sb_publishable_oNIrJJg_EAlb_aSjhvGuLw_DNETljSE';
-const SAVE_VERSION = 2; // bump to reset all saves
-const RESET_TIMESTAMP = '2026-03-08T22:00:00Z'; // leaderboard wipe date
+const SAVE_VERSION = 3; // bump to reset all saves
+const RESET_TIMESTAMP = '2026-03-09T20:00:00Z'; // leaderboard wipe date
 const supa = supabase.createClient(SUPA_URL, SUPA_KEY);
 
 let currentUser = null;
@@ -3197,7 +3199,7 @@ async function loadTopLB() {
       .order('total_coins', { ascending: false })
       .limit(100);
     // Only show players with new-version saves (have new characters in owned)
-    const newChars = ['tisho','Ioan','ege','yavor','petar'];
+    const newChars = ['tisho','Ioan','stan','ege','yavor','petar'];
     const data = (rawData||[]).filter(row => {
       if (!row.owned || Object.keys(row.owned).length === 0) return true;
       return newChars.some(c => c in (row.owned||{}));

@@ -2479,54 +2479,57 @@ window.addEventListener('load', () => {
 // ============================================================
 
 
-// Live-update a single character row in row-view
-function updateRowForUpgrade(u) {
+// Re-render the entire row view from scratch
+function rebuildRowView() {
   const field = document.getElementById('upgrade-field');
   if (!rowViewActive) return;
-  // Find or create the row for this upgrade
-  let row = field.querySelector('.upgrade-row[data-upid="' + u.id + '"]');
-  if (!row) {
-    // Create new row inline
-    const charOrder = UPGRADES.map(x => x.id);
-    const charNames = {};
-    UPGRADES.forEach(x => charNames[x.id] = x.name);
-    row = document.createElement('div');
-    row.className = 'upgrade-row' + (u.lgbtq ? ' lgbtq-row' : '');
-    row.dataset.upid = u.id;
+
+  // Collect ALL badges currently anywhere in the field (inside or outside rows)
+  const allBadges = Array.from(field.querySelectorAll('.upgrade-badge'));
+
+  // Move all badges to field root, destroy old rows
+  allBadges.forEach(b => field.appendChild(b));
+  field.querySelectorAll('.upgrade-row').forEach(r => r.remove());
+
+  const charOrder = UPGRADES.map(u => u.id);
+  const charNames = {}; UPGRADES.forEach(u => charNames[u.id] = u.name);
+  const isLgbtq = {};  UPGRADES.forEach(u => isLgbtq[u.id] = !!u.lgbtq);
+
+  // Group badges by upid
+  const groups = {};
+  charOrder.forEach(id => groups[id] = []);
+  allBadges.forEach(b => { const id = b.dataset.upid; if (groups[id]) groups[id].push(b); });
+
+  const bw = 115, bh = 52;
+  const fieldW = field.clientWidth;
+
+  charOrder.forEach(id => {
+    if (!groups[id] || groups[id].length === 0) return;
+    const lgbtq = isLgbtq[id];
+    const row = document.createElement('div');
+    row.className = 'upgrade-row' + (lgbtq ? ' lgbtq-row' : '');
+    row.dataset.upid = id;
+
     const label = document.createElement('div');
-    label.className = 'upgrade-row-label' + (u.lgbtq ? ' lgbtq-label' : '');
-    label.textContent = charNames[u.id] || u.id;
+    label.className = 'upgrade-row-label' + (lgbtq ? ' lgbtq-label' : '');
+    label.textContent = charNames[id] || id;
     row.appendChild(label);
+
     const badgesWrap = document.createElement('div');
     badgesWrap.className = 'upgrade-row-badges';
-    row.appendChild(badgesWrap);
-    // Insert in correct order
-    const myIdx = charOrder.indexOf(u.id);
-    const rows = field.querySelectorAll('.upgrade-row');
-    let inserted = false;
-    for (const r of rows) {
-      const rIdx = charOrder.indexOf(r.dataset.upid);
-      if (rIdx > myIdx) { field.insertBefore(row, r); inserted = true; break; }
-    }
-    if (!inserted) field.appendChild(row);
-  }
-  // Get badgesWrap and all badges for this character
-  const badgesWrap = row.querySelector('.upgrade-row-badges');
-  // Collect all existing badges for this upgrade from field + new ones
-  const allBadges = Array.from(field.querySelectorAll('.upgrade-badge[data-upid="' + u.id + '"]'));
-  // Shuffle
-  allBadges.sort(() => Math.random() - 0.5);
-  const count = allBadges.length;
-  const bw = 115, bh = 52;
-  requestAnimationFrame(() => {
-    const availW = badgesWrap.clientWidth || (field.clientWidth - 70);
+
+    const shuffled = groups[id].slice().sort(() => Math.random() - 0.5);
+    const count = shuffled.length;
+    const availW = fieldW - 62;
     const cols = Math.max(1, Math.floor(availW / (bw + 8)));
-    const rows2 = Math.ceil(count / cols);
-    const rowH = Math.max(80, rows2 * (bh + 12) + 14);
+    const rowCount = Math.ceil(count / cols);
+    const rowH = Math.max(80, rowCount * (bh + 12) + 14);
+
     row.style.height = rowH + 'px';
     badgesWrap.style.height = rowH + 'px';
+
     const usedPos = [];
-    allBadges.forEach(b => {
+    shuffled.forEach(b => {
       let px, py, ok, tries = 0;
       do {
         ok = true;
@@ -2542,7 +2545,16 @@ function updateRowForUpgrade(u) {
       b.style.top = py + 'px';
       badgesWrap.appendChild(b);
     });
+
+    row.appendChild(badgesWrap);
+    field.appendChild(row);
   });
+}
+
+// Called when a new badge is bought in row-view
+function updateRowForUpgrade(u) {
+  if (!rowViewActive) return;
+  rebuildRowView();
 }
 
 // ===== SAVE ON EXIT =====
@@ -2571,76 +2583,7 @@ function toggleLayout() {
   const btn = document.getElementById('layout-toggle-btn');
   if (rowViewActive) {
     field.classList.add('row-view');
-    // Get all badges and group by upid (character)
-    const badges = Array.from(field.querySelectorAll('.upgrade-badge'));
-    // Remove existing row wrappers if any
-    field.querySelectorAll('.upgrade-row').forEach(r => {
-      // move badges back to field before removing
-      r.querySelectorAll('.upgrade-badge').forEach(b => field.appendChild(b));
-      r.remove();
-    });
-    // Order characters by level
-    const charOrder = UPGRADES.map(u => u.id);
-    const charNames = {};
-    UPGRADES.forEach(u => charNames[u.id] = u.name);
-    const isLgbtq = {};
-    UPGRADES.forEach(u => isLgbtq[u.id] = !!u.lgbtq);
-    // Group badges per character
-    const groups = {};
-    charOrder.forEach(id => groups[id] = []);
-    badges.forEach(b => {
-      const id = b.dataset.upid;
-      if (groups[id]) groups[id].push(b);
-    });
-    // Build rows
-    charOrder.forEach(id => {
-      if (groups[id].length === 0) return;
-      const row = document.createElement('div');
-      const lgbtq = isLgbtq[id];
-      row.className = 'upgrade-row' + (lgbtq ? ' lgbtq-row' : '');
-      // Label
-      const label = document.createElement('div');
-      label.className = 'upgrade-row-label' + (lgbtq ? ' lgbtq-label' : '');
-      label.textContent = charNames[id] || id;
-      row.appendChild(label);
-      // Badges container
-      const badgesWrap = document.createElement('div');
-      badgesWrap.className = 'upgrade-row-badges';
-      // Place badges at random positions inside the row
-      const shuffled = groups[id].slice().sort(() => Math.random() - 0.5);
-      const count = shuffled.length;
-      const bw = 115, bh = 52;
-      // Append first to measure width
-      shuffled.forEach(b => badgesWrap.appendChild(b));
-      // Use requestAnimationFrame to measure after layout
-      requestAnimationFrame(() => {
-        const availW = badgesWrap.clientWidth || (field.clientWidth - 70);
-        const cols = Math.max(1, Math.floor(availW / (bw + 8)));
-        const rows = Math.ceil(count / cols);
-        const rowH = Math.max(80, rows * (bh + 12) + 14);
-        row.style.height = rowH + 'px';
-        badgesWrap.style.height = rowH + 'px';
-        // Scatter randomly within the row bounds
-        const usedPos = [];
-        shuffled.forEach(b => {
-          let px, py, ok, tries = 0;
-          do {
-            ok = true;
-            px = 4 + Math.random() * Math.max(1, availW - bw - 8);
-            py = 4 + Math.random() * Math.max(1, rowH - bh - 8);
-            for (const p of usedPos) {
-              if (Math.abs(px - p.x) < bw + 4 && Math.abs(py - p.y) < bh + 4) { ok = false; break; }
-            }
-            tries++;
-          } while (!ok && tries < 80);
-          usedPos.push({x: px, y: py});
-          b.style.left = px + 'px';
-          b.style.top = py + 'px';
-        });
-      });
-      row.appendChild(badgesWrap);
-      field.appendChild(row);
-    });
+    rebuildRowView();
     btn.textContent = '🎲';
     btn.title = 'Разхвърляй';
   } else {
@@ -2869,13 +2812,20 @@ async function saveGame() {
   const ind = document.getElementById('save-indicator');
   ind.textContent = '●'; ind.className = 'saving';
   try {
+    const payload = buildSavePayload();
     const { error } = await supa.from('saves')
-      .upsert(buildSavePayload(), { onConflict: 'user_id' });
-    if (error) throw error;
+      .upsert(payload, { onConflict: 'user_id' });
+    if (error) {
+      ind.textContent = '!'; ind.style.color = '#ff4444';
+      showToast('❌ SAVE ГРЕШКА: ' + error.message, 8000);
+      console.error('Save error:', error);
+      return;
+    }
     ind.className = 'saved';
     setTimeout(() => { ind.textContent = '●'; ind.className = ''; }, 2000);
   } catch(e) {
     ind.textContent = '!'; ind.style.color = '#ff4444';
+    showToast('❌ SAVE ГРЕШКА: ' + e.message, 8000);
     console.error('Save error:', e);
   }
 }

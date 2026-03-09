@@ -2562,6 +2562,42 @@ function updateRowForUpgrade(u) {
   rebuildRowView();
 }
 
+// ===== ЙОАН 67 FLOATING EFFECT =====
+function spawn67near(badge) {
+  const field = document.getElementById('upgrade-field');
+  if (!field) return;
+  const bRect = badge.getBoundingClientRect();
+  const fRect = field.getBoundingClientRect();
+  const el = document.createElement('div');
+  el.className = 'float67';
+  el.textContent = '67';
+  el.style.fontSize = (9 + Math.random() * 10) + 'px';
+  el.style.left = (bRect.left - fRect.left + 5 + Math.random() * 60) + 'px';
+  el.style.top  = (bRect.top  - fRect.top  - 5) + 'px';
+  field.appendChild(el);
+  setTimeout(() => el.remove(), 1500);
+}
+
+setInterval(() => {
+  const field = document.getElementById('upgrade-field');
+  if (!field) return;
+  const ioanBadges = Array.from(field.querySelectorAll('.upgrade-badge[data-upid="Ioan"]'));
+  if (ioanBadges.length === 0) return;
+  // Pick random Ioan badge and float a 67
+  const b = ioanBadges[Math.floor(Math.random() * ioanBadges.length)];
+  spawn67near(b);
+  // Occasionally spawn more
+  if (Math.random() < 0.3 && ioanBadges.length > 1) {
+    setTimeout(() => spawn67near(ioanBadges[Math.floor(Math.random() * ioanBadges.length)]), 300);
+  }
+}, 1800);
+
+// Also spawn 67 on every Ioan badge click
+document.addEventListener('click', e => {
+  const badge = e.target.closest('.upgrade-badge[data-upid="Ioan"]');
+  if (badge) { spawn67near(badge); spawn67near(badge); }
+});
+
 // ===== SAVE ON EXIT =====
 // Save when tab becomes hidden (switch tab, minimize, refresh)
 document.addEventListener('visibilitychange', () => {

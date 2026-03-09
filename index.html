@@ -2095,10 +2095,10 @@ function buyUpgrade(id) {
   prices[id] = Math.floor(prices[id] * 1.15);
   const newBadge = spawnBadge(u);
   if (newBadge) {
+    // Always add to field first so rebuildRowView can find it
+    document.getElementById('upgrade-field').appendChild(newBadge);
     if (rowViewActive) {
-      updateRowForUpgrade(u);
-    } else {
-      document.getElementById('upgrade-field').appendChild(newBadge);
+      rebuildRowView();
     }
   }
   renderShop();
@@ -3079,11 +3079,17 @@ async function loadTopLB() {
   if (!dd) return;
   dd.innerHTML = '<div style="text-align:center;color:#555;padding:16px;font-size:12px">Зареждане...</div>';
   try {
-    const { data, error } = await supa
+    const { data: rawData, error } = await supa
       .from('saves')
-      .select('username, level, total_coins')
+      .select('username, level, total_coins, owned')
       .order('total_coins', { ascending: false })
-      .limit(20);
+      .limit(100);
+    // Only show players with new-version saves (have new characters in owned)
+    const newChars = ['tisho','Ioan','ege','yavor','petar'];
+    const data = (rawData||[]).filter(row => {
+      if (!row.owned || Object.keys(row.owned).length === 0) return true;
+      return newChars.some(c => c in (row.owned||{}));
+    }).slice(0, 20);
     if (error) throw error;
     const myName = document.getElementById('user-name-display').textContent.replace('👤 ', '');
     const rankIcon = i => i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '#' + (i + 1);

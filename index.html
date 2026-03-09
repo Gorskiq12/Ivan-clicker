@@ -2285,6 +2285,7 @@ function renderShop() {
       const isLGBTQ = !!u.lgbtq;
       const isIoan67 = !!u.Ioan67;
       div.className = 'shop-item ' + (can ? 'affordable' : 'unaffordable') + (isLGBTQ ? ' lgbtq-item' : '') + (isIoan67 ? ' Ioan67-item' : '');
+      if (isIoan67) div.style.cssText = 'border: 2px solid #3b82f6 !important; box-shadow: 0 0 12px rgba(59,130,246,0.45);';
       div.dataset.id = u.id;
       const mult = getXPMult(u.id);
       const cpsDisplay = mult > 1 ? (u.cps * mult).toFixed(1) + ' NC/сек (×' + mult + ')' : u.cps + ' NC/сек';

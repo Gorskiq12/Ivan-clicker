@@ -1830,8 +1830,8 @@ const XP_UPGRADES = [
   { id: 'xpu_em1', target: 'emir',   tier: 1, name: 'Емир+',    levelCost: 5,  mult: 2,   desc: 'Емир удвоява мощта си' },
   { id: 'xpu_em2', target: 'emir',   tier: 2, name: 'Емир++',   levelCost: 8,  mult: 3,   desc: 'Емир е бог на боговете' },
   // Станислав boosts
-  { id: 'xpu_st1', target: 'stan',  tier: 1, name: 'Стан+',    levelCost: 3,  mult: 2,   desc: 'Станислав удвоява силата' },
-  { id: 'xpu_st2', target: 'stan',  tier: 2, name: 'Стан++',   levelCost: 5,  mult: 3,   desc: 'Станислав е непоколебим' },
+  { id: 'xpu_st1', target: 'stan',  tier: 1, name: 'Станислав+',    levelCost: 3,  mult: 2,   desc: 'Станислав удвоява силата' },
+  { id: 'xpu_st2', target: 'stan',  tier: 2, name: 'Станислав++',   levelCost: 5,  mult: 3,   desc: 'Станислав е непоколебим' },
   // Мерт boosts
   { id: 'xpu_mr1', target: 'mert',  tier: 1, name: 'Мерт+',    levelCost: 3,  mult: 2,   desc: 'Мерт удвоява ефективността' },
   { id: 'xpu_mr2', target: 'mert',  tier: 2, name: 'Мерт++',   levelCost: 5,  mult: 3,   desc: 'Мерт е неудържим' },
@@ -2931,6 +2931,10 @@ function loadSaveData(d) {
   // Parse owned values as ints (Supabase returns them as numbers but be safe)
   UPGRADES.forEach(u => { owned[u.id] = parseInt(owned[u.id]) || 0; });
 
+  // Restore extra state fields
+  state.perClick    = d.perclick      || 1;
+  state.frenzyCount = d.frenzy_count  || 0;
+
   // Re-spawn badges
   allBadgePositions.length = 0;
   const field = document.getElementById('upgrade-field');
@@ -2942,6 +2946,13 @@ function loadSaveData(d) {
       if (badge) field.appendChild(badge);
     }
   });
+
+  // Re-render all panels after load
+  renderShop();
+  renderAchievements();
+  renderXPUpgrades();
+  updateUI();
+  updateXPBar();
 }
 
 async function saveGame() {

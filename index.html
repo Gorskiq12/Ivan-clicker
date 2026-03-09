@@ -2545,6 +2545,40 @@ function updateRowForUpgrade(u) {
   });
 }
 
+// ===== SAVE ON EXIT =====
+// Save when user closes/refreshes tab
+window.addEventListener('beforeunload', () => {
+  if (currentUser && !guestMode) {
+    // Use sendBeacon for reliable save on page unload
+    const payload = buildSavePayload();
+    const url = 'https://huytzohiucdapurnztjk.supabase.co/rest/v1/saves';
+    const body = JSON.stringify(payload);
+    navigator.sendBeacon && navigator.sendBeacon(
+      url + '?on_conflict=user_id',
+      new Blob([body], { type: 'application/json' })
+    );
+    // Also try sync save as fallback
+    saveGame();
+  }
+});
+
+// Save when tab becomes hidden (switching tabs, minimizing)
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden && currentUser && !guestMode) {
+    saveGame();
+  }
+});
+
+// Save on click of Ivan button periodically (every 50 clicks)
+let clicksSinceLastSave = 0;
+function saveEvery50Clicks() {
+  clicksSinceLastSave++;
+  if (clicksSinceLastSave >= 50) {
+    clicksSinceLastSave = 0;
+    if (currentUser && !guestMode) saveGame();
+  }
+}
+
 // ===== LAYOUT TOGGLE =====
 let rowViewActive = false;
 function toggleLayout() {
@@ -2791,6 +2825,9 @@ async function onLogin(user) {
   // Auto-save every 30s
   if (saveTimer) clearInterval(saveTimer);
   saveTimer = setInterval(saveGame, 30000);
+  // Save every 10s instead of 30s for safety
+  clearInterval(saveTimer);
+  saveTimer = setInterval(saveGame, 10000);
 }
 
 // ---- SAVE / LOAD ----

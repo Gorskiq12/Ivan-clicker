@@ -432,11 +432,11 @@
     transition: transform 0.3s;
   }
   .shop-item:hover::before { transform: translateX(100%); }
-  .shop-item.affordable {
+  .shop-item.affordable:not(.Ioan67-item) {
     border-color: var(--accent);
     box-shadow: 0 0 10px rgba(240,192,64,0.15);
   }
-  .shop-item.affordable:hover {
+  .shop-item.affordable:not(.Ioan67-item):hover {
     background: #1e1a0a;
     transform: translateX(-2px);
     box-shadow: 0 0 20px rgba(240,192,64,0.25);

@@ -1777,13 +1777,14 @@ const UPGRADES = [
   { id: 'ioan',      name: 'Йоан',     img: () => IMG_Ioan,      basePrice: 600,       cps: 3,     desc: 'Носи сериозен принос',          unlockAt: 8, Ioan67: true },
   { id: 'stan',     name: 'Станислав',img: () => IMG_STANISLAV,  basePrice: 1800,      cps: 6,     desc: 'Стабилен като скала',           unlockAt: 25 },
   { id: 'ege',       name: 'Еге',      img: () => IMG_EGE,       basePrice: 8000,      cps: 22,    desc: 'Мощен генератор',               unlockAt: 150 },
-  { id: 'qsi',       name: 'Яси',      img: () => IMG_YASI,      basePrice: 25000,     cps: 60,    desc: 'По-ефективен от всички',        unlockAt: 600,  lgbtq: true, imgPos: '50% 60%' },
-  { id: 'yavor',     name: 'Явор',     img: () => IMG_YAVOR,     basePrice: 100000,    cps: 250,   desc: 'Леко легендарен',               unlockAt: 2000 },
-  { id: 'viki',      name: 'Вики',     img: () => IMG_VIKI,      basePrice: 500000,    cps: 1000,   desc: 'Неудържим тип',                 unlockAt: 8000,  imgPos: '50% 35%' },
-  { id: 'emir',      name: 'Емир',     img: () => IMG_EMIR,      basePrice: 2500000,   cps: 4000,  desc: 'Абсолютен бог на NC',           unlockAt: 40000 },
-  { id: 'stefan',    name: 'Стефан',   img: () => IMG_STEFAN,    basePrice: 12000000,  cps: 16000, desc: 'Доминира продукцията',          unlockAt: 150000 },
-  { id: 'bubu',      name: 'Бубу',     img: () => IMG_BUBU,      basePrice: 60000000,  cps: 65000, desc: 'Легендарен генератор',          unlockAt: 600000 },
-  { id: 'petar',     name: 'Петър',    img: () => IMG_PETAR,     basePrice: 400000000, cps: 250000,desc: 'Непобедимата машина',           unlockAt: 2500000 },
+  { id: 'qsi',       name: 'Яси',      img: () => IMG_YASI,      basePrice: 18000,     cps: 60,    desc: 'По-ефективен от всички',        unlockAt: 400,  lgbtq: true, imgPos: '50% 60%' },
+  { id: 'mert',      name: 'Мерт',     img: () => IMG_MERT,      basePrice: 55000,     cps: 150,   desc: 'Тих, но ефективен',             unlockAt: 1000 },
+  { id: 'yavor',     name: 'Явор',     img: () => IMG_YAVOR,     basePrice: 130000,    cps: 350,   desc: 'Леко легендарен',               unlockAt: 2500 },
+  { id: 'viki',      name: 'Вики',     img: () => IMG_VIKI,      basePrice: 350000,    cps: 1000,   desc: 'Неудържим тип',                 unlockAt: 6000,  imgPos: '50% 35%' },
+  { id: 'emir',      name: 'Емир',     img: () => IMG_EMIR,      basePrice: 1800000,   cps: 4000,  desc: 'Абсолютен бог на NC',           unlockAt: 40000 },
+  { id: 'stefan',    name: 'Стефан',   img: () => IMG_STEFAN,    basePrice: 9000000,   cps: 16000, desc: 'Доминира продукцията',          unlockAt: 150000 },
+  { id: 'bubu',      name: 'Бубу',     img: () => IMG_BUBU,      basePrice: 45000000,  cps: 65000, desc: 'Легендарен генератор',          unlockAt: 600000 },
+  { id: 'petar',     name: 'Петър',    img: () => IMG_PETAR,     basePrice: 280000000, cps: 250000,desc: 'Непобедимата машина',           unlockAt: 2500000 },
 ];
 
 const owned = {};
@@ -1828,6 +1829,12 @@ const XP_UPGRADES = [
   // Емир boosts
   { id: 'xpu_e1', target: 'emir',   tier: 1, name: 'Емир+',    levelCost: 5,  mult: 2,   desc: 'Емир удвоява мощта си' },
   { id: 'xpu_e2', target: 'emir',   tier: 2, name: 'Емир++',   levelCost: 8,  mult: 3,   desc: 'Емир е бог на боговете' },
+  // Станислав boosts
+  { id: 'xpu_st1', target: 'stan',  tier: 1, name: 'Стан+',    levelCost: 3,  mult: 2,   desc: 'Станислав удвоява силата' },
+  { id: 'xpu_st2', target: 'stan',  tier: 2, name: 'Стан++',   levelCost: 5,  mult: 3,   desc: 'Станислав е непоколебим' },
+  // Мерт boosts
+  { id: 'xpu_mr1', target: 'mert',  tier: 1, name: 'Мерт+',    levelCost: 3,  mult: 2,   desc: 'Мерт удвоява ефективността' },
+  { id: 'xpu_mr2', target: 'mert',  tier: 2, name: 'Мерт++',   levelCost: 5,  mult: 3,   desc: 'Мерт е неудържим' },
 ];
 
 const xpuOwned = {};
@@ -1888,8 +1895,14 @@ const ACHIEVEMENTS = [
   { id: 'petar5',    cat: 'helpers', label: '5x Петър',       desc: 'Купи 5 Петър',             xp: 2000, check: () => (owned.petar||0) >= 5,     progress: () => [owned.petar||0, 5] },
   { id: 'frenzy1',   cat: 'special', label: 'Първи Frenzy',   desc: 'Преживей Мишо Frenzy',     xp: 50,   check: () => (state.frenzyCount||0) >= 1,  progress: () => [state.frenzyCount||0, 1] },
   { id: 'frenzy10',  cat: 'special', label: '10x Frenzy',     desc: 'Преживей 10 Мишо Frenzy',  xp: 200,  check: () => (state.frenzyCount||0) >= 10, progress: () => [state.frenzyCount||0, 10] },
-  { id: 'pt1h',      cat: 'special', label: '1 час игра',     desc: 'Играй 1 час общо',         xp: 100,  check: () => totalPlaySeconds >= 3600,  progress: () => [totalPlaySeconds, 3600] },
-  { id: 'pt5h',      cat: 'special', label: '5 часа игра',    desc: 'Играй 5 часа общо',        xp: 400,  check: () => totalPlaySeconds >= 18000, progress: () => [totalPlaySeconds, 18000] },
+  { id: 'pt1min',    cat: 'special', label: '1 минута',       desc: 'Играй 1 минута',           xp: 5,    check: () => totalPlaySeconds >= 60,    progress: () => [Math.min(totalPlaySeconds,60), 60] },
+  { id: 'pt5min',    cat: 'special', label: '5 минути',       desc: 'Играй 5 минути',           xp: 15,   check: () => totalPlaySeconds >= 300,   progress: () => [Math.min(totalPlaySeconds,300), 300] },
+  { id: 'pt10min',   cat: 'special', label: '10 минути',      desc: 'Играй 10 минути',          xp: 30,   check: () => totalPlaySeconds >= 600,   progress: () => [Math.min(totalPlaySeconds,600), 600] },
+  { id: 'pt30min',   cat: 'special', label: '30 минути',      desc: 'Играй 30 минути',          xp: 60,   check: () => totalPlaySeconds >= 1800,  progress: () => [Math.min(totalPlaySeconds,1800), 1800] },
+  { id: 'pt1h',      cat: 'special', label: '1 час игра',     desc: 'Играй 1 час общо',         xp: 100,  check: () => totalPlaySeconds >= 3600,  progress: () => [Math.min(totalPlaySeconds,3600), 3600] },
+  { id: 'pt3h',      cat: 'special', label: '3 часа игра',    desc: 'Играй 3 часа общо',        xp: 250,  check: () => totalPlaySeconds >= 10800, progress: () => [Math.min(totalPlaySeconds,10800), 10800] },
+  { id: 'pt5h',      cat: 'special', label: '5 часа игра',    desc: 'Играй 5 часа общо',        xp: 400,  check: () => totalPlaySeconds >= 18000, progress: () => [Math.min(totalPlaySeconds,18000), 18000] },
+  { id: 'pt10h',     cat: 'special', label: '10 часа игра',   desc: 'Играй 10 часа общо',       xp: 800,  check: () => totalPlaySeconds >= 36000, progress: () => [Math.min(totalPlaySeconds,36000), 36000] },
 ];
 
 // Track: earned (condition met) but not yet claimed
@@ -2027,8 +2040,8 @@ function renderXPUpgrades() {
   list.innerHTML = '';
 
   // Group by target upgrade
-  const targets = ['sashko','tisho','Ioan','stan','ege','qsi','yavor','viki','emir','stefan','bubu','petar'];
-  const targetNames = {sashko:'Сашко',tisho:'Тишо',Ioan:'Йоан',stan:'Станислав',ege:'Еге',qsi:'Яси',yavor:'Явор',viki:'Вики',emir:'Емир',stefan:'Стефан',bubu:'Бубу',petar:'Петър'};
+  const targets = ['sashko','tisho','Ioan','stan','ege','qsi','mert','yavor','viki','emir','stefan','bubu','petar'];
+  const targetNames = {sashko:'Сашко',tisho:'Тишо',Ioan:'Йоан',stan:'Станислав',ege:'Еге',qsi:'Яси',mert:'Мерт',yavor:'Явор',viki:'Вики',emir:'Емир',stefan:'Стефан',bubu:'Бубу',petar:'Петър'};
 
   targets.forEach(tgt => {
     const upgrades = XP_UPGRADES.filter(xu => xu.target === tgt);
@@ -3203,7 +3216,7 @@ async function loadTopLB() {
       .order('total_coins', { ascending: false })
       .limit(100);
     // Only show players with new-version saves (have new characters in owned)
-    const newChars = ['tisho','Ioan','stan','ege','yavor','petar'];
+    const newChars = ['tisho','Ioan','stan','ege','mert','yavor','petar'];
     const data = (rawData||[]).filter(row => {
       if (!row.owned || Object.keys(row.owned).length === 0) return true;
       return newChars.some(c => c in (row.owned||{}));

@@ -2219,21 +2219,14 @@ function formatPrice(n) {
 // ============ UNLOCK LOGIC ============
 function getUpgradeState(idx) {
   const u = UPGRADES[idx];
-  // Already owned — always visible
   if (owned[u.id] >= 1) return 'visible';
-  // Find last owned index
-  let lastOwnedIdx = -1;
-  UPGRADES.forEach((x, i) => { if (owned[x.id] >= 1) lastOwnedIdx = i; });
-  if (lastOwnedIdx === -1) {
-    // Nothing bought yet — show first 2 visible, rest hidden
-    if (idx === 0) return 'visible';
-    if (idx === 1) return 'visible';
-    return 'hidden';
+  // Check each owned upgrade — if THIS idx is within 2 of ANY owned one
+  for (let i = 0; i < UPGRADES.length; i++) {
+    if (owned[UPGRADES[i].id] >= 1 && idx - i > 0 && idx - i <= 2) return 'visible';
   }
-  const dist = idx - lastOwnedIdx;
-  // Next 2 after last owned = visible
-  if (dist <= 2) return 'visible';
-  // Everything else hidden
+  // Nothing owned yet — show first 2
+  const anyOwned = UPGRADES.some(x => owned[x.id] >= 1);
+  if (!anyOwned && idx <= 1) return 'visible';
   return 'hidden';
 }
 
@@ -2441,9 +2434,9 @@ function gameLoop(now) {
   }
   updateUI();
   // Re-render shop if a new character has unlocked
-  let _lastOwned = -1; UPGRADES.forEach((u,i) => { if(owned[u.id]>=1) _lastOwned=i; }); const nowVisible = _lastOwned;
-  if (nowVisible !== (window._lastVisibleCount || 0)) {
-    window._lastVisibleCount = nowVisible;
+  let _lastOwned = -1; UPGRADES.forEach((u,i) => { if(owned[u.id]>=1) _lastOwned=i; });
+  if (_lastOwned !== window._lastOwnedIdx) {
+    window._lastOwnedIdx = _lastOwned;
     renderShop();
   }
   document.querySelectorAll('.shop-item[data-id]').forEach(el => {
@@ -2907,7 +2900,7 @@ async function doLogout() {
   Object.keys(achEarned).forEach(k => { achEarned[k]=false; achClaimed[k]=false; });
   allBadgePositions.length = 0;
   document.getElementById('upgrade-field').innerHTML = '';
-  renderShop(); renderAchievements(); renderXPUpgrades(); updateUI(); updateXPBar();
+  setTimeout(() => { renderShop(); renderAchievements(); renderXPUpgrades(); updateUI(); updateXPBar(); }, 50);
   showAuthModal();
 }
 
@@ -2942,7 +2935,7 @@ async function onLogin(user) {
     await supa.from('saves').upsert({ user_id: user.id, username: displayName }, { onConflict: 'user_id' });
     showToast('Добре дошъл, ' + displayName + '! Прогресът ще се запазва автоматично.');
   }
-  renderShop(); renderAchievements(); renderXPUpgrades(); updateUI(); updateXPBar();
+  setTimeout(() => { renderShop(); renderAchievements(); renderXPUpgrades(); updateUI(); updateXPBar(); }, 50);
 
   // Auto-save every 15s
   if (saveTimer) clearInterval(saveTimer);
@@ -3331,7 +3324,7 @@ async function confirmResetProgress() {
   Object.keys(achEarned).forEach(k => { achEarned[k]=false; achClaimed[k]=false; });
   allBadgePositions.length = 0;
   document.getElementById('upgrade-field').innerHTML = '';
-  renderShop(); renderAchievements(); renderXPUpgrades(); updateUI(); updateXPBar();
+  setTimeout(() => { renderShop(); renderAchievements(); renderXPUpgrades(); updateUI(); updateXPBar(); }, 50);
   if (currentUser && !guestMode) await saveGame();
   closeSettings();
   showToast('🔄 Прогресът е изтрит!');
@@ -3367,6 +3360,7 @@ renderShop();
 renderAchievements();
 renderXPUpgrades();
 updateUI();
+window._lastOwnedIdx = -2; // force first render
 requestAnimationFrame(gameLoop);
 
 </script>

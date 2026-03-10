@@ -2221,19 +2221,19 @@ function getUpgradeState(idx) {
   const u = UPGRADES[idx];
   // Already owned — always visible
   if (owned[u.id] >= 1) return 'visible';
-  // Use totalCoins to unlock: if totalCoins >= unlockAt, show as visible
-  if (state.totalCoins >= (u.unlockAt || 0)) return 'visible';
-  // Find last owned index for mystery/hidden
+  // Find last owned index
   let lastOwnedIdx = -1;
   UPGRADES.forEach((x, i) => { if (owned[x.id] >= 1) lastOwnedIdx = i; });
   if (lastOwnedIdx === -1) {
+    // Nothing bought yet — show first 2 visible, rest hidden
     if (idx === 0) return 'visible';
-    if (idx <= 2) return 'mystery';
+    if (idx === 1) return 'visible';
     return 'hidden';
   }
   const dist = idx - lastOwnedIdx;
-  if (dist <= 2) return 'mystery';
-  if (dist <= 5) return 'mystery';
+  // Next 2 after last owned = visible
+  if (dist <= 2) return 'visible';
+  // Everything else hidden
   return 'hidden';
 }
 
@@ -2440,6 +2440,12 @@ function gameLoop(now) {
     state.totalCoins += earned;
   }
   updateUI();
+  // Re-render shop if a new character has unlocked
+  let _lastOwned = -1; UPGRADES.forEach((u,i) => { if(owned[u.id]>=1) _lastOwned=i; }); const nowVisible = _lastOwned;
+  if (nowVisible !== (window._lastVisibleCount || 0)) {
+    window._lastVisibleCount = nowVisible;
+    renderShop();
+  }
   document.querySelectorAll('.shop-item[data-id]').forEach(el => {
     const id = el.dataset.id;
     if (!id) return;

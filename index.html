@@ -2337,6 +2337,12 @@ function spawnBadge(u) {
 function renderShop() {
   const list = document.getElementById('shop-list');
   list.innerHTML = '';
+  // Temp debug div
+  const dbg = document.createElement('div');
+  dbg.style = 'font-size:9px;color:#888;padding:4px 8px;word-break:break-all;';
+  const ownedKeys = UPGRADES.filter(u => (owned[u.id]||0) >= 1).map(u => u.id + ':' + owned[u.id]);
+  dbg.textContent = 'owned: ' + (ownedKeys.length ? ownedKeys.join(', ') : 'NONE');
+  list.appendChild(dbg);
   UPGRADES.forEach((u, idx) => {
     const st = getUpgradeState(idx);
     if (st === 'hidden') return;
@@ -2981,7 +2987,11 @@ function loadSaveData(d) {
   if (d.ach_claimed)Object.assign(achClaimed, d.ach_claimed);
 
   // Parse owned values as ints (Supabase returns them as numbers but be safe)
+  // Also handle legacy key names (old saves may have different casing)
+  const legacyMap = { 'Ioan': 'Ioan', 'stan': 'stan', 'qsi': 'qsi', 'mert': 'mert', 'yavor': 'yavor', 'viki': 'viki', 'emir': 'emir', 'stefan': 'stefan', 'bubu': 'bubu', 'petar': 'petar' };
   UPGRADES.forEach(u => { owned[u.id] = parseInt(owned[u.id]) || 0; });
+  // Debug: log owned state after load
+  console.log('[LoadSave] owned after parse:', JSON.stringify(owned));
 
   // Restore extra state fields
   state.perClick    = d.perclick      || 1;
@@ -3000,6 +3010,7 @@ function loadSaveData(d) {
   });
 
   // Re-render all panels after load
+  window._lastOwnedIdx = -2; // force gameLoop to re-render shop
   renderShop();
   renderAchievements();
   renderXPUpgrades();

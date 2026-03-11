@@ -856,12 +856,49 @@
   .lvl-6 .ub-name { color: #fbbf24; }
 
   /* Badge size grows with level */
-  .upgrade-badge.lvl-1 img { width: 28px !important; height: 28px !important; }
-  .upgrade-badge.lvl-2 img { width: 30px !important; height: 30px !important; }
-  .upgrade-badge.lvl-3 img { width: 34px !important; height: 34px !important; }
-  .upgrade-badge.lvl-4 img { width: 38px !important; height: 38px !important; }
-  .upgrade-badge.lvl-5 img { width: 44px !important; height: 44px !important; }
-  .upgrade-badge.lvl-6 img { width: 52px !important; height: 52px !important; }
+  /* Badge sizes - bigger = rarer/more expensive */
+  .upgrade-badge.lvl-1  img { width: 28px !important; height: 28px !important; }
+  .upgrade-badge.lvl-2  img { width: 32px !important; height: 32px !important; }
+  .upgrade-badge.lvl-3  img { width: 36px !important; height: 36px !important; }
+  .upgrade-badge.lvl-4  img { width: 40px !important; height: 40px !important; }
+  .upgrade-badge.lvl-5  img { width: 46px !important; height: 46px !important; }
+  .upgrade-badge.lvl-6  img { width: 52px !important; height: 52px !important; }
+  .upgrade-badge.lvl-7  img { width: 58px !important; height: 58px !important; }
+  .upgrade-badge.lvl-8  img { width: 66px !important; height: 66px !important; }
+  .upgrade-badge.lvl-9  img { width: 76px !important; height: 76px !important; }
+  .upgrade-badge.lvl-10 img { width: 88px !important; height: 88px !important; }
+  .upgrade-badge.lvl-11 img { width: 100px !important; height: 100px !important; }
+  .upgrade-badge.lvl-12 img { width: 114px !important; height: 114px !important; }
+  .upgrade-badge.lvl-13 img { width: 130px !important; height: 130px !important; }
+  /* Tier outlines - each level gets a distinct glow color */
+  .upgrade-badge.lvl-1  .badge-char-img { border: 2px solid #444 !important; box-shadow: 0 0 4px #333; }
+  .upgrade-badge.lvl-2  .badge-char-img { border: 2px solid #5588aa !important; box-shadow: 0 0 6px #5588aa88; }
+  .upgrade-badge.lvl-3  .badge-char-img { border: 2px solid #4488ff !important; box-shadow: 0 0 8px #4488ff88; }
+  .upgrade-badge.lvl-4  .badge-char-img { border: 2px solid #22cc77 !important; box-shadow: 0 0 10px #22cc7788; }
+  .upgrade-badge.lvl-5  .badge-char-img { border: 2px solid #00ddaa !important; box-shadow: 0 0 12px #00ddaa88; }
+  .upgrade-badge.lvl-6  .badge-char-img { border: 2px solid #ffcc00 !important; box-shadow: 0 0 14px #ffcc0088; }
+  .upgrade-badge.lvl-7  .badge-char-img { border: 2px solid #ff8800 !important; box-shadow: 0 0 16px #ff880099; }
+  .upgrade-badge.lvl-8  .badge-char-img { border: 2px solid #ff4400 !important; box-shadow: 0 0 18px #ff440099; }
+  .upgrade-badge.lvl-9  .badge-char-img { border: 3px solid #ff2266 !important; box-shadow: 0 0 20px #ff226699; }
+  .upgrade-badge.lvl-10 .badge-char-img { border: 3px solid #cc44ff !important; box-shadow: 0 0 24px #cc44ffaa; }
+  .upgrade-badge.lvl-11 .badge-char-img { border: 3px solid #ff44ff !important; box-shadow: 0 0 28px #ff44ffaa; }
+  .upgrade-badge.lvl-12 .badge-char-img { border: 3px solid #ffffff !important; box-shadow: 0 0 32px #ffffffaa; }
+  .upgrade-badge.lvl-13 .badge-char-img { border: 4px solid #ffd700 !important; box-shadow: 0 0 36px #ffd700cc, 0 0 60px #ffd70066; }
+  /* Badge outlines per rarity tier */
+  .upgrade-badge.lvl-1  { outline: 1px solid #333; }
+  .upgrade-badge.lvl-2  { outline: 1px solid #444; }
+  .upgrade-badge.lvl-3  { outline: 1px solid #2255aa; box-shadow: 0 0 4px rgba(34,85,170,0.3); }
+  .upgrade-badge.lvl-4  { outline: 1px solid #226622; box-shadow: 0 0 5px rgba(34,102,34,0.4); }
+  .upgrade-badge.lvl-5  { outline: 1px solid #336633; box-shadow: 0 0 7px rgba(50,150,50,0.5); }
+  .upgrade-badge.lvl-6  { outline: 2px solid #aa6600; box-shadow: 0 0 8px rgba(200,120,0,0.5); }
+  .upgrade-badge.lvl-7  { outline: 2px solid #cc7700; box-shadow: 0 0 10px rgba(220,140,0,0.6); }
+  .upgrade-badge.lvl-8  { outline: 2px solid #cc44cc; box-shadow: 0 0 12px rgba(200,50,200,0.6); }
+  .upgrade-badge.lvl-9  { outline: 2px solid #9922ee; box-shadow: 0 0 14px rgba(150,30,230,0.7); }
+  .upgrade-badge.lvl-10 { outline: 2px solid #cc2222; box-shadow: 0 0 16px rgba(220,30,30,0.7); }
+  .upgrade-badge.lvl-11 { outline: 2px solid #ff4400; box-shadow: 0 0 18px rgba(255,60,0,0.8); }
+  .upgrade-badge.lvl-12 { outline: 3px solid #ffaa00; box-shadow: 0 0 22px rgba(255,180,0,0.8); }
+  .upgrade-badge.lvl-13 { outline: 3px solid #fff; box-shadow: 0 0 28px rgba(255,255,255,0.6), 0 0 50px rgba(255,220,0,0.4); }
+  .upgrade-badge img.badge-char-img { width: 32px; height: 32px; }
   .upgrade-badge.lvl-1 .ub-name { font-size: 10px; }
   .upgrade-badge.lvl-2 .ub-name { font-size: 11px; }
   .upgrade-badge.lvl-3 .ub-name { font-size: 12px; }
@@ -1848,6 +1885,7 @@ const state = {
   frenzyCount: 0,
   coins: 0,
   totalCoins: 0,
+  cheatCPS: 0,
   totalClicks: 0,
   perClick: 1,
   xp: 0,
@@ -1893,39 +1931,39 @@ const XP_UPGRADES = [
   // Tier 1 — Сашко boosts
   { id: 'xpu_s1', target: 'sashko', tier: 1, name: 'Сашко+',   levelCost: 1,  mult: 2,   desc: 'Сашко прави двойно повече NC' },
   { id: 'xpu_s2', target: 'sashko', tier: 2, name: 'Сашко++',  levelCost: 2,  mult: 3,   desc: 'Сашко е истинска машина' },
-  { id: 'xpu_s3', target: 'sashko', tier: 3, name: 'Сашко★',   levelCost: 4,  mult: 5,   desc: 'Сашко надминава всички' },
+  { id: 'xpu_s3', target: 'sashko', tier: 3, name: 'Сашко★',   levelCost: 3,  mult: 5,   desc: 'Сашко надминава всички' },
   // Яси boosts
-  { id: 'xpu_t1',  target: 'tisho',   tier: 1, name: 'Тишо+',    levelCost: 1,  mult: 2,   desc: 'Тишо работи двойно' },
-  { id: 'xpu_t2',  target: 'tisho',   tier: 2, name: 'Тишо++',   levelCost: 2,  mult: 3,   desc: 'Тишо е машина' },
-  { id: 'xpu_i1',  target: 'ioan',    tier: 1, name: 'Йоан+',    levelCost: 2,  mult: 2,   desc: 'Йоан удвоява' },
-  { id: 'xpu_i2',  target: 'ioan',    tier: 2, name: 'Йоан++',   levelCost: 3,  mult: 3,   desc: 'Йоан е в зоната' },
-  { id: 'xpu_e1',  target: 'ege',     tier: 1, name: 'Еге+',     levelCost: 2,  mult: 2,   desc: 'Еге удвоява' },
-  { id: 'xpu_e2',  target: 'ege',     tier: 2, name: 'Еге++',    levelCost: 4,  mult: 3,   desc: 'Еге е неспирен' },
-  { id: 'xpu_q1', target: 'qsi',    tier: 1, name: 'Яси+',     levelCost: 2,  mult: 2,   desc: 'Яси работи двойно по-бързо' },
-  { id: 'xpu_q2', target: 'qsi',    tier: 2, name: 'Яси++',    levelCost: 4,  mult: 3,   desc: 'Яси е неспирен' },
-  { id: 'xpu_q3', target: 'qsi',    tier: 3, name: 'Яси★',     levelCost: 7,  mult: 5,   desc: 'Яси е легенда' },
-  { id: 'xpu_y1',  target: 'yavor',   tier: 1, name: 'Явор+',    levelCost: 3,  mult: 2,   desc: 'Явор удвоява' },
-  { id: 'xpu_y2',  target: 'yavor',   tier: 2, name: 'Явор++',   levelCost: 5,  mult: 3,   desc: 'Явор е легенда' },
-  { id: 'xpu_p1',  target: 'petar',   tier: 1, name: 'Петър+',   levelCost: 8,  mult: 2,   desc: 'Петър удвоява' },
-  { id: 'xpu_p2',  target: 'petar',   tier: 2, name: 'Петър++',  levelCost: 12, mult: 3,   desc: 'Петър е непобедим' },
+  { id: 'xpu_t1',  target: 'tisho',   tier: 1, name: 'Тишо+',    levelCost: 2,  mult: 2,   desc: 'Тишо работи двойно' },
+  { id: 'xpu_t2',  target: 'tisho',   tier: 2, name: 'Тишо++',   levelCost: 3,  mult: 3,   desc: 'Тишо е машина' },
+  { id: 'xpu_i1',  target: 'ioan',    tier: 1, name: 'Йоан+',    levelCost: 3,  mult: 2,   desc: 'Йоан удвоява' },
+  { id: 'xpu_i2',  target: 'ioan',    tier: 2, name: 'Йоан++',   levelCost: 4,  mult: 3,   desc: 'Йоан е в зоната' },
+  { id: 'xpu_e1',  target: 'ege',     tier: 1, name: 'Еге+',     levelCost: 5,  mult: 2,   desc: 'Еге удвоява' },
+  { id: 'xpu_e2',  target: 'ege',     tier: 2, name: 'Еге++',    levelCost: 6,  mult: 3,   desc: 'Еге е неспирен' },
+  { id: 'xpu_q1', target: 'qsi',    tier: 1, name: 'Яси+',     levelCost: 6,  mult: 2,   desc: 'Яси работи двойно по-бързо' },
+  { id: 'xpu_q2', target: 'qsi',    tier: 2, name: 'Яси++',    levelCost: 7,  mult: 3,   desc: 'Яси е неспирен' },
+  { id: 'xpu_q3', target: 'qsi',    tier: 3, name: 'Яси★',     levelCost: 8,  mult: 5,   desc: 'Яси е легенда' },
+  { id: 'xpu_y1',  target: 'yavor',   tier: 1, name: 'Явор+',    levelCost: 8,  mult: 2,   desc: 'Явор удвоява' },
+  { id: 'xpu_y2',  target: 'yavor',   tier: 2, name: 'Явор++',   levelCost: 9,  mult: 3,   desc: 'Явор е легенда' },
+  { id: 'xpu_p1',  target: 'petar',   tier: 1, name: 'Петър+',   levelCost: 13,  mult: 2,   desc: 'Петър удвоява' },
+  { id: 'xpu_p2',  target: 'petar',   tier: 2, name: 'Петър++',  levelCost: 14, mult: 3,   desc: 'Петър е непобедим' },
   // Вики boosts
-  { id: 'xpu_v1', target: 'viki',   tier: 1, name: 'Вики+',    levelCost: 2,  mult: 2,   desc: 'Вики удвоява продукцията' },
-  { id: 'xpu_v2', target: 'viki',   tier: 2, name: 'Вики++',   levelCost: 3,  mult: 3,   desc: 'Вики е неудържим' },
+  { id: 'xpu_v1', target: 'viki',   tier: 1, name: 'Вики+',    levelCost: 9,  mult: 2,   desc: 'Вики удвоява продукцията' },
+  { id: 'xpu_v2', target: 'viki',   tier: 2, name: 'Вики++',   levelCost: 10,  mult: 3,   desc: 'Вики е неудържим' },
   // Стефан boosts
-  { id: 'xpu_sf1', target: 'stefan', tier: 1, name: 'Стефан+',  levelCost: 3,  mult: 2,   desc: 'Стефан доминира двойно' },
-  { id: 'xpu_sf2', target: 'stefan', tier: 2, name: 'Стефан++', levelCost: 5,  mult: 3,   desc: 'Стефан е абсолютен господар' },
+  { id: 'xpu_sf1', target: 'stefan', tier: 1, name: 'Стефан+',  levelCost: 11,  mult: 2,   desc: 'Стефан доминира двойно' },
+  { id: 'xpu_sf2', target: 'stefan', tier: 2, name: 'Стефан++', levelCost: 12,  mult: 3,   desc: 'Стефан е абсолютен господар' },
   // Бубу boosts
-  { id: 'xpu_b1', target: 'bubu',   tier: 1, name: 'Бубу+',    levelCost: 4,  mult: 2,   desc: 'Бубу генерира двойно NC' },
-  { id: 'xpu_b2', target: 'bubu',   tier: 2, name: 'Бубу++',   levelCost: 6,  mult: 3,   desc: 'Бубу е митичен' },
+  { id: 'xpu_b1', target: 'bubu',   tier: 1, name: 'Бубу+',    levelCost: 12,  mult: 2,   desc: 'Бубу генерира двойно NC' },
+  { id: 'xpu_b2', target: 'bubu',   tier: 2, name: 'Бубу++',   levelCost: 13,  mult: 3,   desc: 'Бубу е митичен' },
   // Емир boosts
-  { id: 'xpu_em1', target: 'emir',   tier: 1, name: 'Емир+',    levelCost: 5,  mult: 2,   desc: 'Емир удвоява мощта си' },
-  { id: 'xpu_em2', target: 'emir',   tier: 2, name: 'Емир++',   levelCost: 8,  mult: 3,   desc: 'Емир е бог на боговете' },
+  { id: 'xpu_em1', target: 'emir',   tier: 1, name: 'Емир+',    levelCost: 10,  mult: 2,   desc: 'Емир удвоява мощта си' },
+  { id: 'xpu_em2', target: 'emir',   tier: 2, name: 'Емир++',   levelCost: 11,  mult: 3,   desc: 'Емир е бог на боговете' },
   // Станислав boosts
-  { id: 'xpu_st1', target: 'stan',  tier: 1, name: 'Станислав+',    levelCost: 3,  mult: 2,   desc: 'Станислав удвоява силата' },
+  { id: 'xpu_st1', target: 'stan',  tier: 1, name: 'Станислав+',    levelCost: 4,  mult: 2,   desc: 'Станислав удвоява силата' },
   { id: 'xpu_st2', target: 'stan',  tier: 2, name: 'Станислав++',   levelCost: 5,  mult: 3,   desc: 'Станислав е непоколебим' },
   // Мерт boosts
-  { id: 'xpu_mr1', target: 'mert',  tier: 1, name: 'Мерт+',    levelCost: 3,  mult: 2,   desc: 'Мерт удвоява ефективността' },
-  { id: 'xpu_mr2', target: 'mert',  tier: 2, name: 'Мерт++',   levelCost: 5,  mult: 3,   desc: 'Мерт е неудържим' },
+  { id: 'xpu_mr1', target: 'mert',  tier: 1, name: 'Мерт+',    levelCost: 7,  mult: 2,   desc: 'Мерт удвоява ефективността' },
+  { id: 'xpu_mr2', target: 'mert',  tier: 2, name: 'Мерт++',   levelCost: 8,  mult: 3,   desc: 'Мерт е неудържим' },
 ];
 
 const xpuOwned = {};
@@ -2266,7 +2304,7 @@ function formatPrice(n) {
 // ============ UNLOCK LOGIC ============
 function getUpgradeState(idx) {
   const u = UPGRADES[idx];
-  // Already owned
+  // Already owned — always visible
   if ((owned[u.id] || 0) >= 1) return 'visible';
   // Find highest index that is owned
   let maxOwnedIdx = -1;
@@ -2275,6 +2313,8 @@ function getUpgradeState(idx) {
   }
   // Nothing owned yet — show first 2
   if (maxOwnedIdx === -1) return idx <= 1 ? 'visible' : 'hidden';
+  // Show ALL unowned up to maxOwnedIdx (skipped ones like Мерт)
+  if (idx < maxOwnedIdx) return 'visible';
   // Show next 2 after the highest owned
   const dist = idx - maxOwnedIdx;
   return (dist >= 1 && dist <= 2) ? 'visible' : 'hidden';
@@ -2348,7 +2388,7 @@ function spawnBadge(u) {
   badge.innerHTML =
     '<div style="position:relative;flex-shrink:0;">'
     + Ioan67html
-    + '<img src="' + u.img() + '" style="width:32px;height:32px;object-fit:cover;object-position:' + (u.imgPos || '50% 15%') + ';border-radius:50%;" />'
+    + '<img src="' + u.img() + '" class="badge-char-img" style="object-fit:cover;object-position:' + (u.imgPos || '50% 15%') + ';border-radius:50%;" />'
     + '</div>'
     + '<div class="ub-info"><div class="ub-name">' + u.name + '</div></div>';
 
@@ -2445,7 +2485,7 @@ function updateUI() {
   document.getElementById('total-coins').textContent = formatNum(state.totalCoins);
   document.getElementById('total-clicks').textContent = formatNum(state.totalClicks);
   document.getElementById('stat-per-click').textContent = '+' + state.perClick;
-  document.getElementById('stat-per-sec').textContent = cps.toFixed(1);
+  document.getElementById('stat-per-sec').textContent = (cps + (state.cheatCPS||0)).toFixed(1);
   document.getElementById('stat-helpers').textContent = totalHelpers();
   checkAchievements();
   updateXPBar();
@@ -3429,10 +3469,8 @@ function cheatCoins(amount) {
   showToast('💰 +' + formatNum(amount) + ' NC добавени!');
 }
 function cheatCPS(amount) {
-  // Add ghost Сашко copies to boost CPS (they have 0.1 cps each)
-  // Easier: just add to coins continuously via a cheat multiplier
   state.cheatCPS = (state.cheatCPS || 0) + amount;
-  showToast('⚡ +' + formatNum(amount) + ' NC/сек добавени!');
+  showToast('⚡ +' + formatNum(amount) + ' NC/сек добавени! (total: +' + formatNum(state.cheatCPS) + ')');
 }
 function cheatPerClick(amount) {
   state.perClick += amount;

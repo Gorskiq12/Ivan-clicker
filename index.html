@@ -3101,6 +3101,10 @@ function loadSaveData(d) {
   renderXPUpgrades();
   updateUI();
   updateXPBar();
+  // Extra delayed renders to catch async/timing issues
+  setTimeout(() => { window._lastOwnedIdx = -2; renderShop(); }, 200);
+  setTimeout(() => { window._lastOwnedIdx = -2; renderShop(); }, 800);
+  setTimeout(() => { window._lastOwnedIdx = -2; renderShop(); }, 2000);
 }
 
 async function saveGame() {

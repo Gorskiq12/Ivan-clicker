@@ -6,66 +6,6 @@
 <title>Ivan Clicker</title>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Oswald:wght@300;400;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
-// ============ CHEAT MENU ============
-function cheatClick() {
-  const menu = document.getElementById('cheat-menu');
-  menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
-}
-function cheatCoins(amount) {
-  state.coins += amount;
-  state.totalCoins += amount;
-  updateUI();
-  showToast('💰 +' + formatNum(amount) + ' NC добавени!');
-}
-function cheatCPS(amount) {
-  // Add ghost Сашко copies to boost CPS (they have 0.1 cps each)
-  // Easier: just add to coins continuously via a cheat multiplier
-  state.cheatCPS = (state.cheatCPS || 0) + amount;
-  showToast('⚡ +' + formatNum(amount) + ' NC/сек добавени!');
-}
-function cheatPerClick(amount) {
-  state.perClick += amount;
-  updateUI();
-  showToast('👆 +' + amount + ' NC на клик!');
-}
-function cheatMaxAll() {
-  UPGRADES.forEach(u => {
-    if ((owned[u.id] || 0) < 1) {
-      owned[u.id] = 1;
-      prices[u.id] = u.basePrice * 1.15;
-      const badge = spawnBadge(u);
-      if (badge) document.getElementById('upgrade-field').appendChild(badge);
-    }
-  });
-  window._lastOwnedIdx = -2;
-  renderShop(); renderXPUpgrades(); updateUI();
-  showToast('👥 Всички персонажи отключени!');
-}
-function cheatXP(amount) {
-  state.levelPoints += amount;
-  updateXPBar();
-  renderXPUpgrades();
-  showToast('⭐ +' + amount + ' Level Points добавени!');
-}
-function cheatLevel(amount) {
-  state.level += amount;
-  state.xp = 0;
-  updateXPBar();
-  showToast('🆙 +' + amount + ' нива добавени!');
-}
-function cheatSpawnMisho() {
-  spawnMisho();
-  showToast('🔥 Мишо се появи!');
-}
-function cheatAllFrenzy() {
-  frenzyType = Math.floor(Math.random() * 3);
-  frenzyActive = true;
-  frenzyEndTime = performance.now() + 30000;
-  document.getElementById('ivan-btn').classList.add('on-fire');
-  activateFrenzyEffect();
-  playSound('frenzy');
-  showToast('⚡ FRENZY АКТИВИРАН!');
-}
 
 </script>
 <style>
@@ -3475,4 +3415,66 @@ updateUI();
 window._lastOwnedIdx = -2; // force first render
 requestAnimationFrame(gameLoop);
 
+
+
+// ============ CHEAT MENU ============
+function cheatClick() {
+  const menu = document.getElementById('cheat-menu');
+  menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+}
+function cheatCoins(amount) {
+  state.coins += amount;
+  state.totalCoins += amount;
+  updateUI();
+  showToast('💰 +' + formatNum(amount) + ' NC добавени!');
+}
+function cheatCPS(amount) {
+  // Add ghost Сашко copies to boost CPS (they have 0.1 cps each)
+  // Easier: just add to coins continuously via a cheat multiplier
+  state.cheatCPS = (state.cheatCPS || 0) + amount;
+  showToast('⚡ +' + formatNum(amount) + ' NC/сек добавени!');
+}
+function cheatPerClick(amount) {
+  state.perClick += amount;
+  updateUI();
+  showToast('👆 +' + amount + ' NC на клик!');
+}
+function cheatMaxAll() {
+  UPGRADES.forEach(u => {
+    if ((owned[u.id] || 0) < 1) {
+      owned[u.id] = 1;
+      prices[u.id] = u.basePrice * 1.15;
+      const badge = spawnBadge(u);
+      if (badge) document.getElementById('upgrade-field').appendChild(badge);
+    }
+  });
+  window._lastOwnedIdx = -2;
+  renderShop(); renderXPUpgrades(); updateUI();
+  showToast('👥 Всички персонажи отключени!');
+}
+function cheatXP(amount) {
+  state.levelPoints += amount;
+  updateXPBar();
+  renderXPUpgrades();
+  showToast('⭐ +' + amount + ' Level Points добавени!');
+}
+function cheatLevel(amount) {
+  state.level += amount;
+  state.xp = 0;
+  updateXPBar();
+  showToast('🆙 +' + amount + ' нива добавени!');
+}
+function cheatSpawnMisho() {
+  spawnMisho();
+  showToast('🔥 Мишо се появи!');
+}
+function cheatAllFrenzy() {
+  frenzyType = Math.floor(Math.random() * 3);
+  frenzyActive = true;
+  frenzyEndTime = performance.now() + 30000;
+  document.getElementById('ivan-btn').classList.add('on-fire');
+  activateFrenzyEffect();
+  playSound('frenzy');
+  showToast('⚡ FRENZY АКТИВИРАН!');
+}
 </script>

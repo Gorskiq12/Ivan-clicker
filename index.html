@@ -338,26 +338,31 @@
 
   /* ===== GLOBAL CUSTOM SCROLLBARS ===== */
 
-  /* Shop list — gold theme */
+  /* Shop list — custom wider scrollbar */
   #shop-list {
     scrollbar-width: thin;
     scrollbar-color: #f0c040 #0a0a12;
+    padding-right: 6px;
   }
-  #shop-list::-webkit-scrollbar { width: 8px; }
+  #shop-list::-webkit-scrollbar { width: 10px; }
   #shop-list::-webkit-scrollbar-track {
-    background: #0a0a14;
-    border-radius: 8px;
-    border: 1px solid rgba(240,192,64,0.1);
+    background: #08080f;
+    border-radius: 10px;
+    border: 1px solid rgba(240,192,64,0.08);
+    margin: 4px 0;
   }
   #shop-list::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #f0c040, #c07010);
-    border-radius: 8px;
-    border: 2px solid #0a0a14;
-    box-shadow: 0 0 6px rgba(240,192,64,0.5);
+    background: linear-gradient(180deg, #f0c040 0%, #c07010 50%, #f0c040 100%);
+    border-radius: 10px;
+    border: 2px solid #08080f;
+    box-shadow: 0 0 8px rgba(240,192,64,0.6), inset 0 1px 0 rgba(255,255,200,0.3);
   }
   #shop-list::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, #ffd060, #e09020);
-    box-shadow: 0 0 12px rgba(240,192,64,0.8);
+    background: linear-gradient(180deg, #ffd060 0%, #e09020 50%, #ffd060 100%);
+    box-shadow: 0 0 16px rgba(240,192,64,0.9);
+  }
+  #shop-list::-webkit-scrollbar-button {
+    display: none;
   }
 
   /* Achievements list — green theme */
@@ -452,53 +457,67 @@
   ::-webkit-scrollbar-corner { background: #0a0a14; }
 
 
+  /* ===== SHOP ITEMS - Cookie Clicker style ===== */
   .shop-item {
-    background: var(--upgrade-bg);
+    background: linear-gradient(135deg, #0f0f1a 0%, #13131f 100%);
     border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 10px 12px;
+    border-radius: 10px;
+    padding: 14px 16px;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 10px;
-    transition: border-color 0.15s, background 0.15s, transform 0.1s;
+    gap: 14px;
+    transition: border-color 0.2s, background 0.2s, transform 0.1s, box-shadow 0.2s;
     position: relative;
     overflow: hidden;
+    min-height: 72px;
   }
   .shop-item::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
     transform: translateX(-100%);
-    transition: transform 0.3s;
+    transition: transform 0.4s;
   }
   .shop-item:hover::before { transform: translateX(100%); }
   .shop-item.affordable {
-    border-color: var(--accent);
-    box-shadow: 0 0 10px rgba(240,192,64,0.15);
+    border-color: rgba(240,192,64,0.5);
+    box-shadow: 0 0 12px rgba(240,192,64,0.12), inset 0 0 20px rgba(240,192,64,0.03);
   }
   .shop-item.affordable:hover {
-    background: #1e1a0a;
-    transform: translateX(-2px);
-    box-shadow: 0 0 20px rgba(240,192,64,0.25);
+    background: linear-gradient(135deg, #1a160a 0%, #1e1b0c 100%);
+    transform: translateX(-3px);
+    box-shadow: 0 0 24px rgba(240,192,64,0.3), inset 0 0 20px rgba(240,192,64,0.05);
+    border-color: var(--accent);
   }
   .shop-item.unaffordable {
-    opacity: 0.5;
+    opacity: 0.45;
     cursor: not-allowed;
   }
-  .shop-item .si-icon { font-size: 26px; flex-shrink: 0; }
-  .shop-item .si-body { flex: 1; }
+  .shop-item .si-icon {
+    flex-shrink: 0;
+    position: relative;
+  }
+  .shop-item .si-icon img {
+    width: 54px !important;
+    height: 54px !important;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  .shop-item .si-body { flex: 1; min-width: 0; }
   .shop-item .si-name {
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 700;
     color: var(--text);
+    letter-spacing: 0.3px;
   }
   .shop-item .si-desc {
     font-size: 11px;
     color: var(--dim);
     font-weight: 300;
-    margin-top: 1px;
+    margin-top: 3px;
+    line-height: 1.4;
   }
   .shop-item .si-right {
     text-align: right;
@@ -506,16 +525,68 @@
   }
   .shop-item .si-price {
     font-family: 'Press Start 2P', monospace;
-    font-size: 8px;
+    font-size: 9px;
     color: var(--accent);
   }
   .shop-item .si-count {
-    font-size: 11px;
-    color: var(--dim);
-    font-weight: 300;
+    font-size: 22px;
+    font-weight: 900;
+    color: rgba(255,255,255,0.15);
+    font-family: 'Press Start 2P', monospace;
     margin-top: 2px;
+    line-height: 1;
   }
   .shop-item.unaffordable .si-price { color: var(--dim); }
+
+  /* ===== COOKIE CLICKER STYLE TOOLTIP ===== */
+  #shop-tooltip {
+    position: fixed;
+    z-index: 9999;
+    background: linear-gradient(160deg, #0e0e1c, #1a1a2e);
+    border: 1px solid rgba(240,192,64,0.4);
+    border-radius: 10px;
+    padding: 14px 16px;
+    min-width: 220px;
+    max-width: 280px;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.15s, transform 0.15s;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.6), 0 0 16px rgba(240,192,64,0.1);
+  }
+  #shop-tooltip.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  #shop-tooltip .tt-name {
+    font-size: 14px;
+    font-weight: 800;
+    color: #f0c040;
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+  }
+  #shop-tooltip .tt-desc {
+    font-size: 11px;
+    color: #aaa;
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+  #shop-tooltip .tt-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    color: #888;
+    padding: 3px 0;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  #shop-tooltip .tt-row:first-of-type { border-top: none; margin-top: 4px; }
+  #shop-tooltip .tt-row span:last-child {
+    color: #e0e0e0;
+    font-weight: 600;
+  }
+  #shop-tooltip .tt-row span:last-child.gold { color: #f0c040; }
+  #shop-tooltip .tt-row span:last-child.green { color: #4ade80; }
 
   /* buy flash */
   @keyframes buyFlash {
@@ -825,90 +896,47 @@
 
 
 
-    /* ===== UNIQUE OUTLINES per upgrade level ===== */
-  /* lvl-1 Сашко: grey-blue */
-  .lvl-1 {
-    border: 2px solid #4a7aa0;
-    box-shadow: 0 0 6px rgba(74,122,160,0.3);
-  }
-  .lvl-1 .ub-name { color: #7bbcde; }
-  /* lvl-2 Яси: rainbow (already lgbtq-badge-field, but also as fallback) */
-  /* lvl-3 Вики: green neon */
-  .lvl-3 {
-    border: 2px solid #22c55e;
-    box-shadow: 0 0 8px rgba(34,197,94,0.35);
-  }
-  .lvl-3 .ub-name { color: #4ade80; }
-  /* lvl-4 Стефан: red/orange fire */
-  .lvl-4 {
-    border: 2px solid #f97316;
-    box-shadow: 0 0 10px rgba(249,115,22,0.4);
-  }
-  .lvl-4 .ub-name { color: #fb923c; }
-  .lvl-4 img { box-shadow: none !important; outline: none !important; }
-  /* lvl-5 Бубу: purple/gold */
-  .lvl-5 {
-    border: 2px solid #a855f7;
-    box-shadow: 0 0 12px rgba(168,85,247,0.45);
-  }
-  .lvl-5 .ub-name { color: #c084fc; }
-  /* lvl-6 Емір: gold divine */
-  .lvl-6 {
-    border: 2px solid #f59e0b;
-    box-shadow: 0 0 14px rgba(245,158,11,0.55), 0 0 30px rgba(245,158,11,0.2);
-  }
-  .lvl-6 .ub-name { color: #fbbf24; }
-
-  /* Badge size grows with level */
-  /* Badge sizes - bigger = rarer/more expensive */
-  .upgrade-badge.lvl-1  img { width: 24px !important; height: 24px !important; }
-  .upgrade-badge.lvl-2  img { width: 24px !important; height: 24px !important; }
-  .upgrade-badge.lvl-3  img { width: 26px !important; height: 26px !important; }
-  .upgrade-badge.lvl-4  img { width: 26px !important; height: 26px !important; }
-  .upgrade-badge.lvl-5  img { width: 28px !important; height: 28px !important; }
-  .upgrade-badge.lvl-6  img { width: 28px !important; height: 28px !important; }
-  .upgrade-badge.lvl-7  img { width: 30px !important; height: 30px !important; }
-  .upgrade-badge.lvl-8  img { width: 30px !important; height: 30px !important; }
-  .upgrade-badge.lvl-9  img { width: 32px !important; height: 32px !important; }
-  .upgrade-badge.lvl-10 img { width: 34px !important; height: 34px !important; }
-  .upgrade-badge.lvl-11 img { width: 36px !important; height: 36px !important; }
-  .upgrade-badge.lvl-12 img { width: 38px !important; height: 38px !important; }
-  .upgrade-badge.lvl-13 img { width: 40px !important; height: 40px !important; }
-  /* Tier outlines - each level gets a distinct glow color */
-  .upgrade-badge.lvl-1  .badge-char-img { border: 2px solid #444 !important; box-shadow: 0 0 4px #333; }
-  .upgrade-badge.lvl-2  .badge-char-img { border: 2px solid #5588aa !important; box-shadow: 0 0 6px #5588aa88; }
-  .upgrade-badge.lvl-3  .badge-char-img { border: 2px solid #4488ff !important; box-shadow: 0 0 8px #4488ff88; }
-  .upgrade-badge.lvl-4  .badge-char-img { border: 2px solid #22cc77 !important; box-shadow: 0 0 10px #22cc7788; }
-  .upgrade-badge.lvl-5  .badge-char-img { border: 2px solid #00ddaa !important; box-shadow: 0 0 12px #00ddaa88; }
-  .upgrade-badge.lvl-6  .badge-char-img { border: 2px solid #ffcc00 !important; box-shadow: 0 0 14px #ffcc0088; }
-  .upgrade-badge.lvl-7  .badge-char-img { border: 2px solid #ff8800 !important; box-shadow: 0 0 16px #ff880099; }
-  .upgrade-badge.lvl-8  .badge-char-img { border: 2px solid #ff4400 !important; box-shadow: 0 0 18px #ff440099; }
-  .upgrade-badge.lvl-9  .badge-char-img { border: 3px solid #ff2266 !important; box-shadow: 0 0 20px #ff226699; }
-  .upgrade-badge.lvl-10 .badge-char-img { border: 3px solid #cc44ff !important; box-shadow: 0 0 24px #cc44ffaa; }
-  .upgrade-badge.lvl-11 .badge-char-img { border: 3px solid #ff44ff !important; box-shadow: 0 0 28px #ff44ffaa; }
-  .upgrade-badge.lvl-12 .badge-char-img { border: 3px solid #ffffff !important; box-shadow: 0 0 32px #ffffffaa; }
-  .upgrade-badge.lvl-13 .badge-char-img { border: 4px solid #ffd700 !important; box-shadow: 0 0 36px #ffd700cc, 0 0 60px #ffd70066; }
-  /* Badge outlines per rarity tier */
-  .upgrade-badge.lvl-1  { outline: 1px solid #333; }
-  .upgrade-badge.lvl-2  { outline: 1px solid #444; }
-  .upgrade-badge.lvl-3  { outline: 1px solid #2255aa; box-shadow: 0 0 4px rgba(34,85,170,0.3); }
-  .upgrade-badge.lvl-4  { outline: 1px solid #226622; box-shadow: 0 0 5px rgba(34,102,34,0.4); }
-  .upgrade-badge.lvl-5  { outline: 1px solid #336633; box-shadow: 0 0 7px rgba(50,150,50,0.5); }
-  .upgrade-badge.lvl-6  { outline: 2px solid #aa6600; box-shadow: 0 0 8px rgba(200,120,0,0.5); }
-  .upgrade-badge.lvl-7  { outline: 2px solid #cc7700; box-shadow: 0 0 10px rgba(220,140,0,0.6); }
-  .upgrade-badge.lvl-8  { outline: 2px solid #cc44cc; box-shadow: 0 0 12px rgba(200,50,200,0.6); }
-  .upgrade-badge.lvl-9  { outline: 2px solid #9922ee; box-shadow: 0 0 14px rgba(150,30,230,0.7); }
-  .upgrade-badge.lvl-10 { outline: 2px solid #cc2222; box-shadow: 0 0 16px rgba(220,30,30,0.7); }
-  .upgrade-badge.lvl-11 { outline: 2px solid #ff4400; box-shadow: 0 0 18px rgba(255,60,0,0.8); }
-  .upgrade-badge.lvl-12 { outline: 3px solid #ffaa00; box-shadow: 0 0 22px rgba(255,180,0,0.8); }
-  .upgrade-badge.lvl-13 { outline: 3px solid #fff; box-shadow: 0 0 28px rgba(255,255,255,0.6), 0 0 50px rgba(255,220,0,0.4); }
-
-  .upgrade-badge.lvl-1 .ub-name { font-size: 10px; }
-  .upgrade-badge.lvl-2 .ub-name { font-size: 11px; }
-  .upgrade-badge.lvl-3 .ub-name { font-size: 12px; }
-  .upgrade-badge.lvl-4 .ub-name { font-size: 13px; }
-  .upgrade-badge.lvl-5 .ub-name { font-size: 14px; }
-  .upgrade-badge.lvl-6 .ub-name { font-size: 15px; }
+    
+  /* ===== UNIFIED BADGE COLORS per level ===== */
+  .upgrade-badge.lvl-1 {border:2px solid #5588aa;box-shadow:0 0 4px rgba(85,136,170,0.3),0 0 8px rgba(85,136,170,0.12);}
+  .upgrade-badge.lvl-1 .badge-char-img {border:2px solid #5588aa!important;box-shadow:0 0 4px rgba(85,136,170,0.3),0 0 8px rgba(85,136,170,0.12)!important;}
+  .upgrade-badge.lvl-1 .ub-name{color:#5588aa;}
+  .upgrade-badge.lvl-2 {border:2px solid #4a90d9;box-shadow:0 0 6px rgba(74,144,217,0.35),0 0 12px rgba(74,144,217,0.14);}
+  .upgrade-badge.lvl-2 .badge-char-img {border:2px solid #4a90d9!important;box-shadow:0 0 6px rgba(74,144,217,0.35),0 0 12px rgba(74,144,217,0.14)!important;}
+  .upgrade-badge.lvl-2 .ub-name{color:#4a90d9;}
+  .upgrade-badge.lvl-3 {border:2px solid #3b82f6;box-shadow:0 0 8px rgba(59,130,246,0.4),0 0 16px rgba(59,130,246,0.16);}
+  .upgrade-badge.lvl-3 .badge-char-img {border:2px solid #3b82f6!important;box-shadow:0 0 8px rgba(59,130,246,0.4),0 0 16px rgba(59,130,246,0.16)!important;}
+  .upgrade-badge.lvl-3 .ub-name{color:#3b82f6;}
+  .upgrade-badge.lvl-4 {border:2px solid #22c55e;box-shadow:0 0 10px rgba(34,197,94,0.45),0 0 20px rgba(34,197,94,0.18);}
+  .upgrade-badge.lvl-4 .badge-char-img {border:2px solid #22c55e!important;box-shadow:0 0 10px rgba(34,197,94,0.45),0 0 20px rgba(34,197,94,0.18)!important;}
+  .upgrade-badge.lvl-4 .ub-name{color:#22c55e;}
+  .upgrade-badge.lvl-5 {border:2px solid #00cc88;box-shadow:0 0 12px rgba(0,204,136,0.5),0 0 24px rgba(0,204,136,0.2);}
+  .upgrade-badge.lvl-5 .badge-char-img {border:2px solid #00cc88!important;box-shadow:0 0 12px rgba(0,204,136,0.5),0 0 24px rgba(0,204,136,0.2)!important;}
+  .upgrade-badge.lvl-5 .ub-name{color:#00cc88;}
+  .upgrade-badge.lvl-6 {border:2px solid #a855f7;box-shadow:0 0 14px rgba(168,85,247,0.55),0 0 28px rgba(168,85,247,0.22);}
+  .upgrade-badge.lvl-6 .badge-char-img {border:2px solid #a855f7!important;box-shadow:0 0 14px rgba(168,85,247,0.55),0 0 28px rgba(168,85,247,0.22)!important;}
+  .upgrade-badge.lvl-6 .ub-name{color:#a855f7;}
+  .upgrade-badge.lvl-7 {border:2px solid #f59e0b;box-shadow:0 0 16px rgba(245,158,11,0.6),0 0 32px rgba(245,158,11,0.24);}
+  .upgrade-badge.lvl-7 .badge-char-img {border:2px solid #f59e0b!important;box-shadow:0 0 16px rgba(245,158,11,0.6),0 0 32px rgba(245,158,11,0.24)!important;}
+  .upgrade-badge.lvl-7 .ub-name{color:#f59e0b;}
+  .upgrade-badge.lvl-8 {border:2px solid #f97316;box-shadow:0 0 18px rgba(249,115,22,0.65),0 0 36px rgba(249,115,22,0.26);}
+  .upgrade-badge.lvl-8 .badge-char-img {border:2px solid #f97316!important;box-shadow:0 0 18px rgba(249,115,22,0.65),0 0 36px rgba(249,115,22,0.26)!important;}
+  .upgrade-badge.lvl-8 .ub-name{color:#f97316;}
+  .upgrade-badge.lvl-9 {border:2px solid #ef4444;box-shadow:0 0 20px rgba(239,68,68,0.7),0 0 40px rgba(239,68,68,0.28);}
+  .upgrade-badge.lvl-9 .badge-char-img {border:2px solid #ef4444!important;box-shadow:0 0 20px rgba(239,68,68,0.7),0 0 40px rgba(239,68,68,0.28)!important;}
+  .upgrade-badge.lvl-9 .ub-name{color:#ef4444;}
+  .upgrade-badge.lvl-10 {border:3px solid #ec4899;box-shadow:0 0 24px rgba(236,72,153,0.75),0 0 48px rgba(236,72,153,0.3);}
+  .upgrade-badge.lvl-10 .badge-char-img {border:3px solid #ec4899!important;box-shadow:0 0 24px rgba(236,72,153,0.75),0 0 48px rgba(236,72,153,0.3)!important;}
+  .upgrade-badge.lvl-10 .ub-name{color:#ec4899;}
+  .upgrade-badge.lvl-11 {border:3px solid #ff2266;box-shadow:0 0 28px rgba(255,34,102,0.8),0 0 56px rgba(255,34,102,0.32);}
+  .upgrade-badge.lvl-11 .badge-char-img {border:3px solid #ff2266!important;box-shadow:0 0 28px rgba(255,34,102,0.8),0 0 56px rgba(255,34,102,0.32)!important;}
+  .upgrade-badge.lvl-11 .ub-name{color:#ff2266;}
+  .upgrade-badge.lvl-12 {border:3px solid #cc44ff;box-shadow:0 0 32px rgba(204,68,255,0.85),0 0 64px rgba(204,68,255,0.34);}
+  .upgrade-badge.lvl-12 .badge-char-img {border:3px solid #cc44ff!important;box-shadow:0 0 32px rgba(204,68,255,0.85),0 0 64px rgba(204,68,255,0.34)!important;}
+  .upgrade-badge.lvl-12 .ub-name{color:#cc44ff;}
+  .upgrade-badge.lvl-13 {border:4px solid #ffd700;box-shadow:0 0 40px rgba(255,215,0,0.9),0 0 80px rgba(255,215,0,0.36);}
+  .upgrade-badge.lvl-13 .badge-char-img {border:4px solid #ffd700!important;box-shadow:0 0 40px rgba(255,215,0,0.9),0 0 80px rgba(255,215,0,0.36)!important;}
+  .upgrade-badge.lvl-13 .ub-name{color:#ffd700;}
 
   /* ===== THEMATIC DECORATIONS per level ===== */
 
@@ -1602,6 +1630,7 @@ const IMG_MERT = "data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BS
 </script>
 </head>
 <body>
+<div id="shop-tooltip"><div class="tt-name"></div><div class="tt-desc"></div></div>
 
 
 <!-- SETTINGS MODAL -->
@@ -1851,6 +1880,7 @@ const IMG_MERT = "data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BS
 
 <script>
 // ============ GAME STATE ============
+const upgradeEarned = {}; // tracks NC earned per upgrade id
 const state = {
   frenzyCount: 0,
   coins: 0,
@@ -2392,9 +2422,6 @@ function spawnBadge(u) {
 function renderShop() {
   const list = document.getElementById('shop-list');
   list.innerHTML = '';
-  // DEBUG
-  let maxO = -1; UPGRADES.forEach((u,i) => { if((owned[u.id]||0)>=1) maxO=i; });
-  console.log('[Shop] maxOwnedIdx='+maxO+' owned='+JSON.stringify(owned));
 
   UPGRADES.forEach((u, idx) => {
     const st = getUpgradeState(idx);
@@ -2405,7 +2432,7 @@ function renderShop() {
     if (st === 'mystery') {
       div.className = 'shop-item mystery';
       div.innerHTML =
-        '<div class="si-icon" style="font-size:26px">🔒</div>'
+        '<div class="si-icon" style="font-size:36px;padding:8px">🔒</div>'
         + '<div class="si-body">'
         + '<div class="si-name" style="color:#666;letter-spacing:3px">? ? ?</div>'
         + '<div class="si-desc" style="color:#555">Нужни: ' + formatPrice(u.unlockAt) + ' NC общо</div>'
@@ -2418,19 +2445,74 @@ function renderShop() {
       if (isIoan67) { div.style.outline = '2px solid #3b82f6'; div.style.outlineOffset = '-2px'; div.style.boxShadow = '0 0 12px rgba(59,130,246,0.45)'; }
       div.dataset.id = u.id;
       const mult = getXPMult(u.id);
-      const cpsDisplay = mult > 1 ? (u.cps * mult).toFixed(1) + ' NC/сек (×' + mult + ')' : u.cps + ' NC/сек';
+      const cpsEach = u.cps * mult;
+      const cpsTotal = cpsEach * (owned[u.id] || 0);
+      const cpsDisplay = mult > 1 ? cpsEach.toFixed(1) + ' NC/сек (×' + mult + ')' : u.cps + ' NC/сек';
       const nameHtml = isLGBTQ ? u.name + ' <span class="rainbow-flag"></span>' : isIoan67 ? u.name + ' <span class="Ioan67-tag-shop">67</span>' : u.name;
-      const imgBorder = isLGBTQ ? 'border:2px solid #8b00ff;box-shadow:0 0 6px rgba(139,0,255,0.5);' : isIoan67 ? 'border:2px solid #3b82f6;box-shadow:0 0 8px rgba(59,130,246,0.7);' : 'border:2px solid #2a2a3a;';
+      const imgBorder = isLGBTQ ? 'border:3px solid #8b00ff;box-shadow:0 0 8px rgba(139,0,255,0.6);' : isIoan67 ? 'border:3px solid #3b82f6;box-shadow:0 0 10px rgba(59,130,246,0.8);' : 'border:2px solid #2a2a3a;';
       div.innerHTML =
-        '<div class="si-icon" style="position:relative">' + (isIoan67 ? '<div class="Ioan67-spam Ioan67-spam-shop"><span>6</span><span>7</span><span>67</span><span>6</span><span>7</span><span>67</span><span>6</span><span>7</span></div>' : '') + '<img src="' + u.img() + '" style="width:36px;height:36px;object-fit:cover;object-position:' + (u.imgPos || '50% 15%') + ';border-radius:50%;' + imgBorder + '" /></div>'
-        + '<div class="si-body"><div class="si-name">' + nameHtml + '</div>'
-        + '<div class="si-desc">' + u.desc + ' · +' + cpsDisplay + '</div></div>'
-        + '<div class="si-right"><div class="si-price">' + formatPrice(price) + ' NC</div>'
-        + '<div class="si-count">x' + owned[u.id] + '</div></div>';
+        '<div class="si-icon" style="position:relative">'
+        + (isIoan67 ? '<div class="Ioan67-spam Ioan67-spam-shop"><span>6</span><span>7</span><span>67</span><span>6</span><span>7</span><span>67</span><span>6</span><span>7</span></div>' : '')
+        + '<img src="' + u.img() + '" style="width:54px;height:54px;object-fit:cover;object-position:' + (u.imgPos || '50% 15%') + ';border-radius:50%;' + imgBorder + '" /></div>'
+        + '<div class="si-body">'
+        + '<div class="si-name">' + nameHtml + '</div>'
+        + '<div class="si-desc">' + u.desc + '</div>'
+        + '</div>'
+        + '<div class="si-right">'
+        + '<div class="si-price">' + formatPrice(price) + ' NC</div>'
+        + '<div class="si-count">' + (owned[u.id] || 0) + '</div>'
+        + '</div>';
       if (can) div.onclick = () => buyUpgrade(u.id);
+
+      // Tooltip
+      div.addEventListener('mouseenter', (e) => showShopTooltip(e, u, price, cpsEach, cpsTotal, mult));
+      div.addEventListener('mousemove', moveShopTooltip);
+      div.addEventListener('mouseleave', hideShopTooltip);
     }
     list.appendChild(div);
   });
+}
+
+// ===== SHOP TOOLTIP =====
+function showShopTooltip(e, u, price, cpsEach, cpsTotal, mult) {
+  const tt = document.getElementById('shop-tooltip');
+  if (!tt) return;
+  const ownedCount = owned[u.id] || 0;
+  const earned = upgradeEarned[u.id] || 0;
+  const nextPrice = Math.floor(prices[u.id]);
+  const canAfford = state.coins >= nextPrice;
+
+  let rows = '';
+  rows += '<div class="tt-row"><span>Имаш</span><span class="gold">' + ownedCount + ' бр.</span></div>';
+  rows += '<div class="tt-row"><span>Всеки прави</span><span class="green">+' + cpsEach.toFixed(1) + ' NC/сек</span></div>';
+  if (ownedCount > 0) {
+    rows += '<div class="tt-row"><span>Общо правят</span><span class="green">+' + formatNum(cpsTotal) + ' NC/сек</span></div>';
+    rows += '<div class="tt-row"><span>Спечелили са</span><span class="gold">' + formatNum(earned) + ' NC</span></div>';
+  }
+  rows += '<div class="tt-row"><span>Следваща цена</span><span ' + (canAfford ? 'class="green"' : '') + '>' + formatPrice(nextPrice) + ' NC</span></div>';
+  if (mult > 1) {
+    rows += '<div class="tt-row"><span>XP бонус</span><span class="gold">×' + mult + '</span></div>';
+  }
+
+  tt.querySelector('.tt-name').textContent = u.name;
+  tt.querySelector('.tt-desc').textContent = u.desc;
+  tt.innerHTML = '<div class="tt-name">' + u.name + '</div><div class="tt-desc">' + u.desc + '</div>' + rows;
+  tt.classList.add('visible');
+  moveShopTooltip(e);
+}
+function moveShopTooltip(e) {
+  const tt = document.getElementById('shop-tooltip');
+  if (!tt) return;
+  const x = e.clientX + 18;
+  const y = e.clientY - 10;
+  const maxX = window.innerWidth - tt.offsetWidth - 10;
+  const maxY = window.innerHeight - tt.offsetHeight - 10;
+  tt.style.left = Math.min(x, maxX) + 'px';
+  tt.style.top = Math.max(10, Math.min(y, maxY)) + 'px';
+}
+function hideShopTooltip() {
+  const tt = document.getElementById('shop-tooltip');
+  if (tt) tt.classList.remove('visible');
 }
 
 // ============ TAB SWITCHING ============
@@ -2494,6 +2576,13 @@ function gameLoop(now) {
     const earned = cps * dt;
     state.coins += earned;
     state.totalCoins += earned;
+    // Track per-upgrade earnings
+    UPGRADES.forEach(u => {
+      if ((owned[u.id]||0) > 0) {
+        if (!upgradeEarned[u.id]) upgradeEarned[u.id] = 0;
+        upgradeEarned[u.id] += owned[u.id] * u.cps * getXPMult(u.id) * dt * frenzyMult;
+      }
+    });
   }
   updateUI();
   // Re-render shop if a new character has unlocked

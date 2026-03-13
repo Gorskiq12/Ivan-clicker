@@ -2332,10 +2332,12 @@ function getUpgradeState(idx) {
 // ============ CLICK ============
 function clickIvan(e) {
   playSound('click');
-  state.coins += state.perClick;
-  state.totalCoins += state.perClick;
+  const clickMult = (frenzyActive && frenzyType === 0) ? 7 : 1;
+  const earned = state.perClick * clickMult;
+  state.coins += earned;
+  state.totalCoins += earned;
   state.totalClicks++;
-  spawnParticle(e.clientX, e.clientY, '+' + state.perClick);
+  spawnParticle(e.clientX, e.clientY, '+' + earned);
   updateUI();
 }
 
@@ -2581,7 +2583,7 @@ function gameLoop(now) {
   trySpawnMisho(dt);
 
   const baseCPS = calcCPS() + (state.cheatCPS || 0);
-  const frenzyMult = (frenzyActive && frenzyType === 0) ? 6 : 1;
+  const frenzyMult = (frenzyActive && frenzyType === 1) ? 7 : 1;
   const cps = baseCPS * frenzyMult;
   if (cps > 0) {
     const earned = cps * dt;
@@ -2752,9 +2754,9 @@ function activateFrenzyEffect() {
   const banner = document.getElementById('frenzy-banner');
   let msg = '';
   if (frenzyType === 0) {
-    msg = '🔥 МИШО FRENZY: +5x клика/сек за 30 сек!';
+    msg = '🔥 МИШО FRENZY: 7x КЛИК за 30 сек!';
   } else if (frenzyType === 1) {
-    msg = '🔥 МИШО FRENZY: 7x ъпгрейд буст за 30 сек!';
+    msg = '🔥 МИШО FRENZY: 7x NC/СЕК за 30 сек!';
   } else {
     const bonus = Math.floor(state.totalCoins / 3);
     state.coins += bonus;
@@ -2784,8 +2786,8 @@ function endFrenzy() {
 
 function getFrenzyMultiplier() {
   if (!frenzyActive) return 1;
-  if (frenzyType === 0) return 6; // +5x = 6x total cps
-  if (frenzyType === 1) return 7; // 7x upgrades
+  if (frenzyType === 0) return 7; // 7x click
+  if (frenzyType === 1) return 7; // 7x CPS
   return 1;
 }
 

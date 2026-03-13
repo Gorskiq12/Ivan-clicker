@@ -4332,3 +4332,97 @@ function cheatAllFrenzy() {
   showToast('⚡ FRENZY АКТИВИРАН!');
 }
 </script>
+<!-- ===== MINIGAMES OVERLAY ===== -->
+<div id="mg-overlay" onclick="mgOverlayClick(event)">
+  <div id="mg-hub">
+    <button class="mg-close" onclick="closeMG()">✕</button>
+
+    <!-- SELECTION SCREEN -->
+    <div id="mg-select">
+      <h2>🎮 МИНИГЕЙМИ</h2>
+      <div class="mg-grid">
+        <div class="mg-card" onclick="openMGGame('trivia')">
+          <span class="mc-icon">🧠</span>
+          <span class="mc-title">TRIVIA</span>
+          <span class="mc-desc">Познай правилния отговор на 5 въпроса!</span>
+          <span class="mc-reward">🏆 до 50K NC награда</span>
+        </div>
+        <div class="mg-card" onclick="openMGGame('yasen')">
+          <span class="mc-icon">🔍</span>
+          <span class="mc-title">ТАЙНАТА НА ЯСЕН</span>
+          <span class="mc-desc">Разкрий скритата снимка с кликове!</span>
+          <span class="mc-reward">🏆 до 30K NC награда</span>
+        </div>
+        <div class="mg-card" onclick="openMGGame('mari')">
+          <span class="mc-icon">💥</span>
+          <span class="mc-title">УБИЙ МАРИ</span>
+          <span class="mc-desc">Кликай върху Мари преди да избяга!</span>
+          <span class="mc-reward">🏆 до 40K NC награда</span>
+        </div>
+        <div class="mg-card" onclick="openMGGame('boris')">
+          <span class="mc-icon">🏃</span>
+          <span class="mc-title">ESCAPE FROM BORIS</span>
+          <span class="mc-desc">Избягай от Борис! WASD / стрелки.</span>
+          <span class="mc-reward">🏆 до 100K NC награда</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- GAME SCREEN -->
+    <div id="mg-game">
+      <button class="mg-back" onclick="backToMGSelect()">← НАЗАД</button>
+
+      <!-- TRIVIA -->
+      <div id="mg-trivia" style="display:none;flex-direction:column;gap:12px;">
+        <div class="tq-score" id="tq-score">ВЪПРОС 1/5 · ТОЧКИ: 0</div>
+        <div class="tq-question" id="tq-question">Зареждане...</div>
+        <div class="tq-answers" id="tq-answers"></div>
+        <div class="tq-result" id="tq-result">
+          <p id="tq-result-msg"></p>
+          <div class="tq-prize" id="tq-prize"></div>
+          <button class="mg-result-btn" onclick="restartMGGame()">🔄 ИГРАЙ ОТА</button>
+        </div>
+      </div>
+
+      <!-- YASEN -->
+      <div id="mg-yasen" style="display:none;flex-direction:column;gap:12px;">
+        <div class="yg-progress" id="yg-progress">Разкрий тайната...</div>
+        <div class="yg-img-wrap" id="yg-wrap">
+          <img id="yg-img" src="" />
+        </div>
+        <div class="yg-result" id="yg-result">
+          <div class="mg-result-title">🎉 РАЗКРИ!</div>
+          <div class="yg-secret" id="yg-secret"></div>
+          <div class="mg-result-reward" id="yg-reward"></div>
+          <button class="mg-result-btn" onclick="restartMGGame()">🔄 ИГРАЙ ОТА</button>
+        </div>
+      </div>
+
+      <!-- MARI -->
+      <div id="mg-mari" style="display:none;flex-direction:column;gap:10px;">
+        <div class="mm-hud"><span id="mm-score">УДАРИ: 0</span><span id="mm-timer">ВРЕМЕ: 20</span></div>
+        <div class="mm-arena" id="mm-arena"></div>
+        <div class="mm-result" id="mm-result">
+          <div class="mg-result-title" id="mm-result-title"></div>
+          <div class="mg-result-reward" id="mm-reward"></div>
+          <button class="mg-result-btn" onclick="restartMGGame()">🔄 ИГРАЙ ОТА</button>
+        </div>
+      </div>
+
+      <!-- BORIS -->
+      <div id="mg-boris" style="display:none;flex-direction:column;gap:10px;">
+        <div class="eb-hud"><span id="eb-score">ТОЧКИ: 0</span><span id="eb-lives">❤️❤️❤️</span><span id="eb-timer">ОЦЕЛЯ: 0s</span></div>
+        <div class="eb-arena"><canvas id="eb-canvas" width="560" height="280"></canvas></div>
+        <div class="eb-controls">WASD / Стрелки за движение</div>
+        <div class="eb-result" id="eb-result">
+          <div class="mg-result-title" id="eb-result-title"></div>
+          <div class="mg-result-reward" id="eb-reward"></div>
+          <button class="mg-result-btn" onclick="restartMGGame()">🔄 ИГРАЙ ОТА</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</body>
+</html>

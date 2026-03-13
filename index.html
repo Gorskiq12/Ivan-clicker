@@ -3108,6 +3108,10 @@ async function onLogin(user) {
 
 // ---- SAVE / LOAD ----
 function buildSavePayload() {
+  // Embed upgradeEarned inside prices with special key (no new DB column needed)
+  const pricesWithEarned = Object.assign({}, prices, { '__earned__': upgradeEarned });
+  // Also backup to localStorage
+  try { localStorage.setItem('ivan_ue', JSON.stringify(upgradeEarned)); } catch(e) {}
   return {
     user_id: currentUser.id,
     coins: state.coins,
@@ -3118,11 +3122,10 @@ function buildSavePayload() {
     level_points: state.levelPoints,
     play_time: totalPlaySeconds,
     owned: owned,
-    prices: prices,
+    prices: pricesWithEarned,
     xpu_owned: xpuOwned,
     ach_earned: achEarned,
     ach_claimed: achClaimed,
-    upgrade_earned: upgradeEarned,
   };
 }
 
@@ -3139,7 +3142,22 @@ function loadSaveData(d) {
   state.xp           = d.xp           || 0;
   state.levelPoints  = d.level_points || 0;
   if (d.owned)          Object.assign(owned, d.owned);
-  if (d.prices)         Object.assign(prices, d.prices);
+  if (d.prices) {
+    // Extract embedded upgradeEarned before assigning prices
+    if (d.prices['__earned__']) {
+      Object.assign(upgradeEarned, d.prices['__earned__']);
+      const cleanPrices = Object.assign({}, d.prices);
+      delete cleanPrices['__earned__'];
+      Object.assign(prices, cleanPrices);
+    } else {
+      Object.assign(prices, d.prices);
+      // Fallback: try localStorage
+      try {
+        const ls = localStorage.getItem('ivan_ue');
+        if (ls) Object.assign(upgradeEarned, JSON.parse(ls));
+      } catch(e) {}
+    }
+  }
   if (d.xpu_owned)      Object.assign(xpuOwned, d.xpu_owned);
   if (d.ach_earned)     Object.assign(achEarned, d.ach_earned);
   if (d.ach_claimed)    Object.assign(achClaimed, d.ach_claimed);

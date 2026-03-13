@@ -2602,13 +2602,7 @@ function gameLoop(now) {
     window._lastOwnedIdx = _lastOwned;
     renderShop();
   }
-  // Force re-render every 3s to catch any missed state
-  if (!window._shopRenderTimer) window._shopRenderTimer = 0;
-  window._shopRenderTimer += dt;
-  if (window._shopRenderTimer > 3) {
-    window._shopRenderTimer = 0;
-    renderShop();
-  }
+
   document.querySelectorAll('.shop-item[data-id]').forEach(el => {
     const id = el.dataset.id;
     if (!id) return;

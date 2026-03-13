@@ -3122,6 +3122,7 @@ function buildSavePayload() {
     xpu_owned: xpuOwned,
     ach_earned: achEarned,
     ach_claimed: achClaimed,
+    upgrade_earned: upgradeEarned,
   };
 }
 
@@ -3137,11 +3138,12 @@ function loadSaveData(d) {
   state.level        = d.level        || 1;
   state.xp           = d.xp           || 0;
   state.levelPoints  = d.level_points || 0;
-  if (d.owned)      Object.assign(owned, d.owned);
-  if (d.prices)     Object.assign(prices, d.prices);
-  if (d.xpu_owned)  Object.assign(xpuOwned, d.xpu_owned);
-  if (d.ach_earned) Object.assign(achEarned, d.ach_earned);
-  if (d.ach_claimed)Object.assign(achClaimed, d.ach_claimed);
+  if (d.owned)          Object.assign(owned, d.owned);
+  if (d.prices)         Object.assign(prices, d.prices);
+  if (d.xpu_owned)      Object.assign(xpuOwned, d.xpu_owned);
+  if (d.ach_earned)     Object.assign(achEarned, d.ach_earned);
+  if (d.ach_claimed)    Object.assign(achClaimed, d.ach_claimed);
+  if (d.upgrade_earned) Object.assign(upgradeEarned, d.upgrade_earned);
 
   // Parse owned values as ints (Supabase returns them as numbers but be safe)
 

@@ -897,6 +897,17 @@
 
 
     
+  
+  /* ===== BADGE SIZES in chaos field (per level) ===== */
+  .upgrade-badge.lvl-1  .badge-char-img, .upgrade-badge.lvl-2  .badge-char-img { width:24px!important;height:24px!important; }
+  .upgrade-badge.lvl-3  .badge-char-img, .upgrade-badge.lvl-4  .badge-char-img { width:26px!important;height:26px!important; }
+  .upgrade-badge.lvl-5  .badge-char-img, .upgrade-badge.lvl-6  .badge-char-img { width:28px!important;height:28px!important; }
+  .upgrade-badge.lvl-7  .badge-char-img, .upgrade-badge.lvl-8  .badge-char-img { width:30px!important;height:30px!important; }
+  .upgrade-badge.lvl-9  .badge-char-img, .upgrade-badge.lvl-10 .badge-char-img { width:32px!important;height:32px!important; }
+  .upgrade-badge.lvl-11 .badge-char-img { width:34px!important;height:34px!important; }
+  .upgrade-badge.lvl-12 .badge-char-img { width:36px!important;height:36px!important; }
+  .upgrade-badge.lvl-13 .badge-char-img { width:40px!important;height:40px!important; }
+
   /* ===== UNIFIED BADGE COLORS per level ===== */
   .upgrade-badge.lvl-1 {border:2px solid #5588aa;box-shadow:0 0 4px rgba(85,136,170,0.3),0 0 8px rgba(85,136,170,0.12);}
   .upgrade-badge.lvl-1 .badge-char-img {border:2px solid #5588aa!important;box-shadow:0 0 4px rgba(85,136,170,0.3),0 0 8px rgba(85,136,170,0.12)!important;}
@@ -2453,7 +2464,7 @@ function renderShop() {
       div.innerHTML =
         '<div class="si-icon" style="position:relative">'
         + (isIoan67 ? '<div class="Ioan67-spam Ioan67-spam-shop"><span>6</span><span>7</span><span>67</span><span>6</span><span>7</span><span>67</span><span>6</span><span>7</span></div>' : '')
-        + '<img src="' + u.img() + '" style="width:54px;height:54px;object-fit:cover;object-position:' + (u.imgPos || '50% 15%') + ';border-radius:50%;' + imgBorder + '" /></div>'
+        + '<img src="' + u.img() + '" style="object-fit:cover;object-position:' + (u.imgPos || '50% 15%') + ';border-radius:50%;' + imgBorder + '" /></div>'
         + '<div class="si-body">'
         + '<div class="si-name">' + nameHtml + '</div>'
         + '<div class="si-desc">' + u.desc + '</div>'

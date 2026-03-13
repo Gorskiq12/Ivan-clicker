@@ -1751,7 +1751,7 @@ const IMG_MERT = "data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BS
       <span class="mg-icon">🎮</span>
       <span class="mg-text">
         <span class="mg-label">МИНИГЕЙМИ</span>
-        <span class="mg-sub">СКОРО...</span>
+        <span class="mg-sub">4 ИГРИ</span>
       </span>
     </button>
   </div>
@@ -1887,6 +1887,331 @@ const IMG_MERT = "data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BS
 .cheat-btn:hover { filter:brightness(1.3);transform:scale(1.03); }
 #cheat-menu::-webkit-scrollbar { width:4px; }
 #cheat-menu::-webkit-scrollbar-thumb { background:#ff4444;border-radius:4px; }
+
+  /* ===== MINIGAMES OVERLAY ===== */
+  #mg-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.88);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(6px);
+  }
+  #mg-overlay.open { display: flex; }
+
+  #mg-hub {
+    background: linear-gradient(160deg, #0d0d1a, #1a0a2e);
+    border: 2px solid #8b2fc9;
+    border-radius: 18px;
+    padding: 28px;
+    width: min(96vw, 700px);
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 0 60px rgba(139,47,201,0.5);
+    position: relative;
+  }
+  #mg-hub h2 {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 13px;
+    color: #c97fff;
+    text-align: center;
+    margin: 0 0 24px;
+    letter-spacing: 2px;
+    text-shadow: 0 0 20px rgba(201,127,255,0.6);
+  }
+  .mg-close {
+    position: absolute;
+    top: 14px; right: 14px;
+    background: none;
+    border: 1px solid #8b2fc9;
+    color: #c97fff;
+    font-size: 14px;
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+  }
+  .mg-close:hover { background: #8b2fc9; color: #fff; }
+
+  /* Game selection grid */
+  .mg-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .mg-card {
+    background: linear-gradient(135deg, #0f0f1e, #1a1030);
+    border: 2px solid #3d1a6e;
+    border-radius: 14px;
+    padding: 18px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+  }
+  .mg-card:hover {
+    border-color: #8b2fc9;
+    box-shadow: 0 0 24px rgba(139,47,201,0.5);
+    transform: translateY(-2px);
+  }
+  .mg-card .mc-icon { font-size: 32px; }
+  .mg-card .mc-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    color: #d4a0ff;
+    letter-spacing: 1px;
+  }
+  .mg-card .mc-desc {
+    font-size: 11px;
+    color: #7a6a9a;
+    line-height: 1.4;
+  }
+  .mg-card .mc-reward {
+    font-size: 10px;
+    color: #f0c040;
+    margin-top: 4px;
+  }
+
+  /* ──────── GAME SCREEN ──────── */
+  #mg-game {
+    display: none;
+    flex-direction: column;
+    gap: 16px;
+  }
+  #mg-game.active { display: flex; }
+  .mg-back {
+    background: none;
+    border: 1px solid #3d1a6e;
+    color: #8866aa;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    align-self: flex-start;
+    transition: all 0.15s;
+  }
+  .mg-back:hover { border-color: #8b2fc9; color: #c97fff; }
+
+  /* ──── TRIVIA ──── */
+  #mg-trivia .tq-question {
+    font-size: 13px;
+    color: #e0e0ff;
+    line-height: 1.6;
+    text-align: center;
+    padding: 16px;
+    background: rgba(139,47,201,0.1);
+    border-radius: 10px;
+    border: 1px solid #3d1a6e;
+    min-height: 60px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  #mg-trivia .tq-answers {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  #mg-trivia .tq-ans {
+    background: #0f0f1e;
+    border: 2px solid #3d1a6e;
+    border-radius: 10px;
+    padding: 12px;
+    color: #c0c0e0;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: center;
+  }
+  #mg-trivia .tq-ans:hover { border-color: #8b2fc9; background: #1a0a2e; }
+  #mg-trivia .tq-ans.correct { border-color: #22c55e !important; background: #052e16 !important; color: #4ade80 !important; }
+  #mg-trivia .tq-ans.wrong   { border-color: #ef4444 !important; background: #2e0505 !important; color: #f87171 !important; }
+  #mg-trivia .tq-score {
+    text-align: center;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    color: #f0c040;
+    letter-spacing: 1px;
+  }
+  #mg-trivia .tq-result {
+    text-align: center;
+    padding: 16px;
+    background: rgba(240,192,64,0.08);
+    border: 1px solid #f0c040;
+    border-radius: 10px;
+    display: none;
+  }
+  #mg-trivia .tq-result.show { display: block; }
+  #mg-trivia .tq-result p { color: #e0c060; font-size: 13px; margin: 8px 0; }
+  #mg-trivia .tq-result .tq-prize {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    color: #f0c040;
+  }
+
+  /* ──── РАЗКРИЙ ТАЙНАТА НА ЯСЕН ──── */
+  #mg-yasen .yg-img-wrap {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: crosshair;
+    user-select: none;
+  }
+  #mg-yasen .yg-img-wrap img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: 50% 20%;
+    display: block;
+    filter: blur(22px) brightness(0.4);
+    transition: filter 0.4s;
+    pointer-events: none;
+  }
+  #mg-yasen .yg-tile {
+    position: absolute;
+    background: #0a0a14;
+    border: 1px solid #1a1a2e;
+    transition: opacity 0.35s;
+    cursor: pointer;
+  }
+  #mg-yasen .yg-tile:hover { background: rgba(139,47,201,0.2); }
+  #mg-yasen .yg-tile.revealed { opacity: 0; pointer-events: none; }
+  #mg-yasen .yg-progress {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    color: #a855f7;
+    text-align: center;
+  }
+  #mg-yasen .yg-result { display: none; text-align: center; }
+  #mg-yasen .yg-result.show { display: block; }
+  #mg-yasen .yg-secret {
+    font-size: 18px;
+    color: #f0c040;
+    padding: 14px;
+    background: rgba(240,192,64,0.08);
+    border: 1px solid #f0c040;
+    border-radius: 10px;
+    margin-top: 10px;
+  }
+
+  /* ──── УБИЙ МАРИ ──── */
+  #mg-mari {
+    user-select: none;
+  }
+  #mg-mari .mm-arena {
+    position: relative;
+    width: 100%;
+    height: 260px;
+    background: radial-gradient(ellipse at center, #1a0505 0%, #0a0005 100%);
+    border: 2px solid #3d1a6e;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: crosshair;
+  }
+  .mm-mari {
+    position: absolute;
+    width: 52px; height: 52px;
+    cursor: crosshair;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px;
+    transition: transform 0.05s;
+    user-select: none;
+    animation: mariFloat 0.3s ease-in-out infinite alternate;
+  }
+  @keyframes mariFloat {
+    from { transform: scale(1); }
+    to   { transform: scale(1.08); }
+  }
+  .mm-hit {
+    position: absolute;
+    font-size: 22px;
+    pointer-events: none;
+    animation: mmHitAnim 0.6s ease-out forwards;
+  }
+  @keyframes mmHitAnim {
+    0%   { opacity: 1; transform: translateY(0) scale(1.2); }
+    100% { opacity: 0; transform: translateY(-40px) scale(0.6); }
+  }
+  #mg-mari .mm-hud {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    color: #f0c040;
+    padding: 4px 0;
+  }
+  #mg-mari .mm-result { display: none; text-align: center; margin-top: 10px; }
+  #mg-mari .mm-result.show { display: block; }
+
+  /* ──── ESCAPE FROM BORIS ──── */
+  #mg-boris {
+    user-select: none;
+  }
+  #mg-boris .eb-arena {
+    position: relative;
+    background: #050510;
+    border: 2px solid #3d1a6e;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #mg-boris canvas {
+    display: block;
+    image-rendering: pixelated;
+  }
+  #mg-boris .eb-hud {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    color: #f0c040;
+    padding: 4px 0;
+  }
+  #mg-boris .eb-controls {
+    text-align: center;
+    font-size: 10px;
+    color: #5a4a7a;
+  }
+  #mg-boris .eb-result { display: none; text-align: center; margin-top: 8px; }
+  #mg-boris .eb-result.show { display: block; }
+
+  /* Shared result style */
+  .mg-result-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 11px;
+    color: #f0c040;
+    margin-bottom: 8px;
+  }
+  .mg-result-reward {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    color: #4ade80;
+    margin: 6px 0;
+  }
+  .mg-result-btn {
+    margin-top: 12px;
+    background: linear-gradient(135deg, #1a0a2e, #2d1050);
+    border: 2px solid #8b2fc9;
+    color: #c97fff;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .mg-result-btn:hover { background: #4a1a80; box-shadow: 0 0 16px rgba(139,47,201,0.5); }
+
 </style>
 
 <script>
@@ -3542,9 +3867,401 @@ function initImages() {
   const savedSkin = parseInt(localStorage.getItem('ivan_skin') || '0');
   applySkin(savedSkin);
 }
+
+// ============================================================
+// MINIGAMES
+// ============================================================
+let currentMG = null;
+let mgGameInterval = null;
+let mgGameTimeout = null;
+
 function openMinigames() {
-  showToast('🎮 Минигейми идват скоро! Следи за обновления.', 3000);
+  document.getElementById('mg-overlay').classList.add('open');
+  backToMGSelect();
 }
+function closeMG() {
+  stopMGGame();
+  document.getElementById('mg-overlay').classList.remove('open');
+}
+function mgOverlayClick(e) {
+  if (e.target === document.getElementById('mg-overlay')) closeMG();
+}
+function backToMGSelect() {
+  stopMGGame();
+  document.getElementById('mg-select').style.display = 'block';
+  document.getElementById('mg-game').classList.remove('active');
+  currentMG = null;
+}
+function openMGGame(game) {
+  document.getElementById('mg-select').style.display = 'none';
+  document.getElementById('mg-game').classList.add('active');
+  ['trivia','yasen','mari','boris'].forEach(g => {
+    document.getElementById('mg-'+g).style.display = 'none';
+  });
+  const el = document.getElementById('mg-'+game);
+  el.style.display = 'flex';
+  currentMG = game;
+  if (game === 'trivia') startTrivia();
+  else if (game === 'yasen') startYasen();
+  else if (game === 'mari') startMari();
+  else if (game === 'boris') startBoris();
+}
+function restartMGGame() { if (currentMG) openMGGame(currentMG); }
+function stopMGGame() {
+  if (mgGameInterval) { clearInterval(mgGameInterval); mgGameInterval = null; }
+  if (mgGameTimeout)  { clearTimeout(mgGameTimeout);  mgGameTimeout = null; }
+  stopBoris();
+}
+
+// ──────────────────────────────────────────────────────────
+// 1. TRIVIA
+// ──────────────────────────────────────────────────────────
+const TRIVIA_Q = [
+  { q: 'Кой е първият upgr. в магазина?', a: ['Сашко','Тишо','Йоан','Мерт'], c: 0 },
+  { q: 'Колко NC/сек прави 1 Бубу?', a: ['65000','150','60','500'], c: 0 },
+  { q: 'Какво активира Мишо Frenzy?', a: ['Кликаш Мишо','Купуваш Яси','Достигаш 1M','Random'], c: 0 },
+  { q: 'Кой upgrade е lgbtq тематичен?', a: ['Яси','Вики','Емир','Стефан'], c: 0 },
+  { q: 'С колко се множи NC/сек при Frenzy тип 2?', a: ['7','6','5','3'], c: 0 },
+  { q: 'Какви са монетите в играта?', a: ['NegaCoins','BitCoins','StarCoins','DarkCoins'], c: 0 },
+  { q: 'Кой е най-скъпият upgrade?', a: ['Петър','Бубу','Стефан','Явор'], c: 0 },
+  { q: 'Колко минигейми има?', a: ['4','3','5','2'], c: 0 },
+  { q: 'Какво дава Ioan67?', a: ['Тихо, но ефективен','Спам 67','Легендарен генератор','Помага малко'], c: 1 },
+  { q: 'Колко секунди трае Мишо Frenzy?', a: ['30','60','20','45'], c: 0 },
+];
+let tqCurrent = 0, tqScore = 0, tqAnswered = false;
+let tqQuestions = [];
+
+function startTrivia() {
+  tqScore = 0; tqCurrent = 0; tqAnswered = false;
+  // Shuffle and pick 5
+  tqQuestions = [...TRIVIA_Q].sort(() => Math.random()-0.5).slice(0,5);
+  document.getElementById('tq-result').classList.remove('show');
+  showTriviaQ();
+}
+function showTriviaQ() {
+  const q = tqQuestions[tqCurrent];
+  document.getElementById('tq-score').textContent = 'ВЪПРОС ' + (tqCurrent+1) + '/5  ·  ТОЧКИ: ' + tqScore;
+  document.getElementById('tq-question').textContent = q.q;
+  const aa = document.getElementById('tq-answers');
+  aa.innerHTML = '';
+  // Shuffle answers but track correct
+  const idxs = [0,1,2,3].sort(() => Math.random()-0.5);
+  tqAnswered = false;
+  idxs.forEach(i => {
+    const btn = document.createElement('button');
+    btn.className = 'tq-ans';
+    btn.textContent = q.a[i];
+    btn.onclick = () => {
+      if (tqAnswered) return;
+      tqAnswered = true;
+      if (i === q.c) { btn.classList.add('correct'); tqScore++; }
+      else {
+        btn.classList.add('wrong');
+        aa.querySelectorAll('.tq-ans').forEach(b => {
+          if (b.textContent === q.a[q.c]) b.classList.add('correct');
+        });
+      }
+      aa.querySelectorAll('.tq-ans').forEach(b => b.onclick = null);
+      mgGameTimeout = setTimeout(() => {
+        tqCurrent++;
+        if (tqCurrent >= 5) endTrivia();
+        else showTriviaQ();
+      }, 1200);
+    };
+    aa.appendChild(btn);
+  });
+}
+function endTrivia() {
+  const prize = [0, 2000, 8000, 18000, 32000, 50000][tqScore];
+  const msgs = ['Нула... може би следващия път 😬','Не е зле!','Добре! 👍','Браво! 💪','Почти перфектно! 🔥','ПЕРФЕКТНО! 🏆🏆🏆'];
+  state.coins += prize;
+  state.totalCoins += prize;
+  document.getElementById('tq-result-msg').textContent = msgs[tqScore] + ' (' + tqScore + '/5)';
+  document.getElementById('tq-prize').textContent = prize > 0 ? '+' + formatNum(prize) + ' NC спечелени!' : 'Без награда.';
+  document.getElementById('tq-result').classList.add('show');
+  document.getElementById('tq-answers').innerHTML = '';
+  document.getElementById('tq-score').textContent = 'КРАЙ · ТОЧКИ: ' + tqScore + '/5';
+  if (prize > 0) showToast('🧠 Trivia: +' + formatNum(prize) + ' NC!');
+}
+
+// ──────────────────────────────────────────────────────────
+// 2. ТАЙНАТА НА ЯСЕН
+// ──────────────────────────────────────────────────────────
+const YASEN_SECRETS = [
+  'Ясен е тайно влюбен в математиката 🔢',
+  'Ясен всъщност е роден с 6 пръста 👋',
+  'Ясен пие кафе с 4 захарчета ☕',
+  'Ясен е тренирал карате 3 години 🥋',
+  'Ясен знае наизуст Pi до 50 знака 🥧',
+];
+let ygRevealed = 0, ygTotal = 0, ygTiles = [];
+
+function startYasen() {
+  document.getElementById('yg-result').classList.remove('show');
+  document.getElementById('yg-img').src = typeof IMG_YASI !== 'undefined' ? IMG_YASI : '';
+  document.getElementById('yg-img').style.filter = 'blur(22px) brightness(0.4)';
+  ygRevealed = 0;
+  const wrap = document.getElementById('yg-wrap');
+  // Remove old tiles
+  wrap.querySelectorAll('.yg-tile').forEach(t => t.remove());
+  const cols = 6, rows = 4;
+  ygTotal = cols * rows;
+  ygTiles = [];
+  const W = wrap.clientWidth || 400;
+  const H = 220;
+  const tw = Math.floor(W / cols);
+  const th = Math.floor(H / rows);
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const t = document.createElement('div');
+      t.className = 'yg-tile';
+      t.style.cssText = `left:${c*tw}px;top:${r*th}px;width:${tw}px;height:${th}px;`;
+      t.onclick = () => revealYgTile(t);
+      wrap.appendChild(t);
+      ygTiles.push(t);
+    }
+  }
+  updateYgProgress();
+}
+function revealYgTile(t) {
+  if (t.classList.contains('revealed')) return;
+  t.classList.add('revealed');
+  ygRevealed++;
+  updateYgProgress();
+  const pct = ygRevealed / ygTotal;
+  const blur = Math.max(0, 22 - pct * 22);
+  const bright = 0.4 + pct * 0.6;
+  document.getElementById('yg-img').style.filter = `blur(${blur}px) brightness(${bright})`;
+  if (ygRevealed >= ygTotal) endYasen();
+}
+function updateYgProgress() {
+  document.getElementById('yg-progress').textContent = `Разкрити: ${ygRevealed}/${ygTotal} плочки`;
+}
+function endYasen() {
+  const remaining = ygTotal - ygRevealed;
+  const prize = Math.max(5000, 30000 - remaining * 1200);
+  const secret = YASEN_SECRETS[Math.floor(Math.random() * YASEN_SECRETS.length)];
+  state.coins += prize;
+  state.totalCoins += prize;
+  document.getElementById('yg-secret').textContent = '🤫 ' + secret;
+  document.getElementById('yg-reward').textContent = '+' + formatNum(prize) + ' NC спечелени!';
+  document.getElementById('yg-result').classList.add('show');
+  showToast('🔍 Тайната разкрита! +' + formatNum(prize) + ' NC!');
+}
+
+// ──────────────────────────────────────────────────────────
+// 3. УБИЙ МАРИ
+// ──────────────────────────────────────────────────────────
+let mmScore = 0, mmTimeLeft = 20, mmMariInterval = null, mmTimerInterval = null;
+
+function startMari() {
+  mmScore = 0; mmTimeLeft = 20;
+  document.getElementById('mm-result').classList.remove('show');
+  document.getElementById('mm-score').textContent = 'УДАРИ: 0';
+  document.getElementById('mm-timer').textContent = 'ВРЕМЕ: 20';
+  const arena = document.getElementById('mm-arena');
+  arena.innerHTML = '';
+  spawnMariTarget();
+  mmTimerInterval = setInterval(() => {
+    mmTimeLeft--;
+    document.getElementById('mm-timer').textContent = 'ВРЕМЕ: ' + mmTimeLeft;
+    if (mmTimeLeft <= 0) endMari();
+  }, 1000);
+  mgGameInterval = mmTimerInterval;
+}
+function spawnMariTarget() {
+  const arena = document.getElementById('mm-arena');
+  if (!arena || mmTimeLeft <= 0) return;
+  arena.querySelectorAll('.mm-mari').forEach(m => m.remove());
+  const m = document.createElement('div');
+  m.className = 'mm-mari';
+  m.textContent = '😈';
+  const maxX = (arena.clientWidth||500) - 60;
+  const maxY = (arena.clientHeight||260) - 60;
+  m.style.left = (10 + Math.random() * maxX) + 'px';
+  m.style.top  = (10 + Math.random() * maxY) + 'px';
+  m.onclick = (e) => {
+    mmScore++;
+    document.getElementById('mm-score').textContent = 'УДАРИ: ' + mmScore;
+    const hit = document.createElement('div');
+    hit.className = 'mm-hit';
+    hit.textContent = '💀';
+    hit.style.left = m.style.left;
+    hit.style.top  = m.style.top;
+    arena.appendChild(hit);
+    setTimeout(() => hit.remove(), 600);
+    m.remove();
+    // Respawn faster as score increases
+    const delay = Math.max(300, 900 - mmScore * 40);
+    mgGameTimeout = setTimeout(spawnMariTarget, delay);
+  };
+  arena.appendChild(m);
+  // Auto-move after delay
+  mgGameTimeout = setTimeout(() => {
+    if (m.parentNode) { m.remove(); spawnMariTarget(); }
+  }, Math.max(600, 1800 - mmScore * 60));
+}
+function endMari() {
+  clearInterval(mmTimerInterval);
+  if (mgGameTimeout) clearTimeout(mgGameTimeout);
+  document.getElementById('mm-arena').querySelectorAll('.mm-mari').forEach(m => m.remove());
+  const prize = mmScore * 1500;
+  state.coins += prize;
+  state.totalCoins += prize;
+  const title = mmScore >= 20 ? '🔥 УБИЕЦ!' : mmScore >= 10 ? '💪 Добре!' : '😅 Следващия път...';
+  document.getElementById('mm-result-title').textContent = title + ' · ' + mmScore + ' удара';
+  document.getElementById('mm-reward').textContent = '+' + formatNum(prize) + ' NC спечелени!';
+  document.getElementById('mm-result').classList.add('show');
+  if (prize > 0) showToast('💥 Мари убита! +' + formatNum(prize) + ' NC!');
+}
+
+// ──────────────────────────────────────────────────────────
+// 4. ESCAPE FROM BORIS
+// ──────────────────────────────────────────────────────────
+let ebGame = null;
+function startBoris() {
+  document.getElementById('eb-result').classList.remove('show');
+  stopBoris();
+  const canvas = document.getElementById('eb-canvas');
+  const ctx = canvas.getContext('2d');
+  const W = 560, H = 280;
+  const CELL = 20;
+  const keys = {};
+  document.addEventListener('keydown', ebKey);
+  document.addEventListener('keyup', ebKeyUp);
+
+  let player = { x: W/2, y: H/2, r: 12, speed: 3.2 };
+  let boris = [];
+  let score = 0, lives = 3, survived = 0, lastTime = null;
+  let gameOver = false;
+
+  function spawnBoris() {
+    const side = Math.floor(Math.random()*4);
+    let bx, by;
+    if (side===0) { bx=Math.random()*W; by=-20; }
+    else if (side===1) { bx=W+20; by=Math.random()*H; }
+    else if (side===2) { bx=Math.random()*W; by=H+20; }
+    else { bx=-20; by=Math.random()*H; }
+    const spd = 1.2 + Math.min(score*0.04, 2.5);
+    boris.push({x:bx, y:by, r:14, speed:spd});
+  }
+
+  function ebKey(e) { keys[e.key] = true; if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key)) e.preventDefault(); }
+  function ebKeyUp(e) { keys[e.key] = false; }
+
+  function update(dt) {
+    if (gameOver) return;
+    // Move player
+    if (keys['ArrowLeft']||keys['a']||keys['A']) player.x -= player.speed;
+    if (keys['ArrowRight']||keys['d']||keys['D']) player.x += player.speed;
+    if (keys['ArrowUp']||keys['w']||keys['W']) player.y -= player.speed;
+    if (keys['ArrowDown']||keys['s']||keys['S']) player.y += player.speed;
+    player.x = Math.max(player.r, Math.min(W-player.r, player.x));
+    player.y = Math.max(player.r, Math.min(H-player.r, player.y));
+
+    survived += dt / 1000;
+    score = Math.floor(survived * 5);
+    document.getElementById('eb-score').textContent = 'ТОЧКИ: ' + score;
+    document.getElementById('eb-timer').textContent = 'ОЦЕЛЯ: ' + Math.floor(survived) + 's';
+
+    // Spawn Boris periodically
+    if (!ebGame._lastSpawn) ebGame._lastSpawn = 0;
+    ebGame._lastSpawn += dt;
+    const spawnInterval = Math.max(600, 2000 - Math.floor(survived/5)*200);
+    if (ebGame._lastSpawn > spawnInterval) { ebGame._lastSpawn = 0; spawnBoris(); }
+
+    // Move boris toward player
+    boris = boris.filter(b => {
+      const dx = player.x - b.x, dy = player.y - b.y;
+      const dist = Math.sqrt(dx*dx+dy*dy);
+      b.x += (dx/dist) * b.speed;
+      b.y += (dy/dist) * b.speed;
+      // Collision
+      if (dist < player.r + b.r) {
+        lives--;
+        const livesEl = document.getElementById('eb-lives');
+        livesEl.textContent = '❤️'.repeat(Math.max(0,lives));
+        if (lives <= 0) { gameOver = true; endBoris(score, survived); }
+        return false; // remove this boris
+      }
+      return true;
+    });
+  }
+
+  function draw() {
+    ctx.fillStyle = '#050510';
+    ctx.fillRect(0,0,W,H);
+    // Grid
+    ctx.strokeStyle = 'rgba(60,20,100,0.3)';
+    ctx.lineWidth = 0.5;
+    for (let x=0;x<W;x+=CELL) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+    for (let y=0;y<H;y+=CELL) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+    // Player (Ivan as circle with face)
+    ctx.save();
+    ctx.beginPath(); ctx.arc(player.x, player.y, player.r, 0, Math.PI*2);
+    ctx.fillStyle = '#f0c040';
+    ctx.fill();
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.fillStyle = '#000';
+    ctx.font = '14px Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('😎', player.x, player.y);
+    ctx.restore();
+    // Boris (red scary)
+    boris.forEach(b => {
+      ctx.save();
+      ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, Math.PI*2);
+      ctx.fillStyle = '#2a0000';
+      ctx.fill();
+      ctx.strokeStyle = '#ef4444';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.font = '16px Arial';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('😡', b.x, b.y);
+      ctx.restore();
+    });
+  }
+
+  function loop(ts) {
+    if (!lastTime) lastTime = ts;
+    const dt = ts - lastTime;
+    lastTime = ts;
+    if (!gameOver) {
+      update(dt);
+      draw();
+      ebGame._raf = requestAnimationFrame(loop);
+    }
+  }
+
+  ebGame = { _raf: null, _lastSpawn: 0 };
+  ebGame._raf = requestAnimationFrame(loop);
+  // Initial Boris spawn
+  spawnBoris();
+}
+
+function endBoris(score, survived) {
+  stopBoris();
+  const prize = Math.min(100000, score * 200);
+  state.coins += prize;
+  state.totalCoins += prize;
+  const t = survived >= 30 ? '🏆 ЛЕГЕНДА!' : survived >= 15 ? '🔥 Добър escape!' : '😵 Хванаха те!';
+  document.getElementById('eb-result-title').textContent = t + ' · ' + Math.floor(survived) + ' секунди';
+  document.getElementById('eb-reward').textContent = '+' + formatNum(prize) + ' NC спечелени!';
+  document.getElementById('eb-result').classList.add('show');
+  if (prize > 0) showToast('🏃 Boris escaped! +' + formatNum(prize) + ' NC!');
+}
+function stopBoris() {
+  if (ebGame && ebGame._raf) { cancelAnimationFrame(ebGame._raf); ebGame._raf = null; }
+  document.removeEventListener('keydown', ebKey);
+  document.removeEventListener('keyup', ebKeyUp);
+}
+function ebKey() {} function ebKeyUp() {}
+
 
 initImages();
 renderShop();

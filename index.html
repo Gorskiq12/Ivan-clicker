@@ -1881,6 +1881,7 @@ const IMG_BORIS2 = "data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1
   <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px;">
     <button onclick="cheatSpawnMisho()" class="cheat-btn" style="border-color:#ff9900;color:#ff9900;">🔥 Spawn Мишо Frenzy</button>
     <button onclick="cheatAllFrenzy()" class="cheat-btn" style="border-color:#ff9900;color:#ff9900;">⚡ Активирай Frenzy веднага</button>
+    <button onclick="cheatResetMGCooldown()" class="cheat-btn" style="border-color:#00ccff;color:#00ccff;">⏰ Нулирай MG Cooldown</button>
     <button onclick="cheatPerClick(10)" class="cheat-btn" style="border-color:#ff9900;color:#ff9900;">👆 +10 NC на клик</button>
     <button onclick="cheatMaxAll()" class="cheat-btn" style="border-color:#00ff88;color:#00ff88;">👥 Купи всички персонажи</button>
   </div>
@@ -2122,11 +2123,11 @@ const IMG_BORIS2 = "data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1
   }
   .mm-mari {
     position: absolute;
-    width: 52px; height: 52px;
+    width: 36px; height: 36px;
     cursor: crosshair;
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    font-size: 28px;
+    font-size: 20px;
     transition: transform 0.05s;
     user-select: none;
     animation: mariFloat 0.3s ease-in-out infinite alternate;
@@ -3898,6 +3899,18 @@ function backToMGSelect() {
   currentMG = null;
 }
 function openMGGame(game) {
+  const COOLDOWN_MS = 24 * 60 * 60 * 1000;
+  const cooldownKey = 'mg_lastPlayed_' + game;
+  const lastPlayed = localStorage.getItem(cooldownKey);
+  const now = Date.now();
+  if (lastPlayed && (now - parseInt(lastPlayed)) < COOLDOWN_MS) {
+    const remaining = COOLDOWN_MS - (now - parseInt(lastPlayed));
+    const hrs = Math.floor(remaining / 3600000);
+    const mins = Math.floor((remaining % 3600000) / 60000);
+    showToast('⏳ Вече играхте! Опитай пак след ' + hrs + 'ч ' + mins + 'мин.');
+    return;
+  }
+  localStorage.setItem(cooldownKey, now.toString());
   document.getElementById('mg-select').style.display = 'none';
   document.getElementById('mg-game').classList.add('active');
   ['trivia','yasen','mari','boris'].forEach(g => {
@@ -4352,6 +4365,12 @@ function cheatAllFrenzy() {
   activateFrenzyEffect();
   playSound('frenzy');
   showToast('⚡ FRENZY АКТИВИРАН!');
+}
+function cheatResetMGCooldown() {
+  ['trivia','yasen','mari','boris'].forEach(g => {
+    localStorage.removeItem('mg_lastPlayed_' + g);
+  });
+  showToast('⏰ Cooldown на минигеймите е нулиран!');
 }
 </script>
 <!-- ===== MINIGAMES OVERLAY ===== -->

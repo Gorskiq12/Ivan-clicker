@@ -2897,12 +2897,19 @@ function showShopTooltip(e, u, price, cpsEach, cpsTotal, mult) {
 function moveShopTooltip(e) {
   const tt = document.getElementById('shop-tooltip');
   if (!tt) return;
-  const x = e.clientX + 18;
+  const ttW = tt.offsetWidth;
+  const ttH = tt.offsetHeight;
+  const margin = 10;
+  const spaceRight = window.innerWidth - e.clientX;
+  let x;
+  if (spaceRight < ttW + 28) {
+    x = e.clientX - ttW - 12;
+  } else {
+    x = e.clientX + 18;
+  }
   const y = e.clientY - 10;
-  const maxX = window.innerWidth - tt.offsetWidth - 10;
-  const maxY = window.innerHeight - tt.offsetHeight - 10;
-  tt.style.left = Math.min(x, maxX) + 'px';
-  tt.style.top = Math.max(10, Math.min(y, maxY)) + 'px';
+  tt.style.left = Math.max(margin, x) + 'px';
+  tt.style.top  = Math.max(margin, Math.min(y, window.innerHeight - ttH - margin)) + 'px';
 }
 function hideShopTooltip() {
   const tt = document.getElementById('shop-tooltip');

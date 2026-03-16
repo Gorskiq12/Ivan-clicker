@@ -1983,6 +1983,45 @@ const IMG_BORIS2 = "data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1
     color: #f0c040;
     margin-top: 4px;
   }
+  .mg-card.mg-locked {
+    cursor: not-allowed;
+    border-color: #2a1a4a;
+    opacity: 0.75;
+  }
+  .mg-card.mg-locked:hover {
+    border-color: #3d1a6e;
+    box-shadow: none;
+    transform: none;
+  }
+  .mg-lock-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(5, 2, 15, 0.55);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    backdrop-filter: blur(2px);
+  }
+  .mg-lock-icon {
+    font-size: 28px;
+    filter: drop-shadow(0 0 8px #aa44ff);
+  }
+  .mg-lock-timer {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    color: #cc88ff;
+    text-align: center;
+    line-height: 1.6;
+    text-shadow: 0 0 6px #8822cc;
+  }
+  .mg-lock-label {
+    font-size: 10px;
+    color: #7a5a9a;
+    letter-spacing: 1px;
+  }
 
   /* ──────── GAME SCREEN ──────── */
   #mg-game {
@@ -2123,14 +2162,23 @@ const IMG_BORIS2 = "data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1
   }
   .mm-mari {
     position: absolute;
-    width: 36px; height: 36px;
+    width: 48px; height: 48px;
     cursor: crosshair;
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     font-size: 20px;
+    overflow: hidden;
     transition: transform 0.05s;
     user-select: none;
     animation: mariFloat 0.3s ease-in-out infinite alternate;
+  }
+  .mm-mari img {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    object-position: center top;
+    border-radius: 50%;
+    pointer-events: none;
   }
   @keyframes mariFloat {
     from { transform: scale(1); }
@@ -2765,6 +2813,7 @@ function spawnBadge(u) {
 // ============ SHOP RENDER ============
 function renderShop() {
   const list = document.getElementById('shop-list');
+  const savedScroll = list.scrollTop;
   list.innerHTML = '';
 
   UPGRADES.forEach((u, idx) => {
@@ -2815,6 +2864,7 @@ function renderShop() {
     }
     list.appendChild(div);
   });
+  list.scrollTop = savedScroll;
 }
 
 // ===== SHOP TOOLTIP =====
@@ -3884,6 +3934,7 @@ let mgGameTimeout = null;
 function openMinigames() {
   document.getElementById('mg-overlay').classList.add('open');
   backToMGSelect();
+  refreshMGCards();
 }
 function closeMG() {
   stopMGGame();
@@ -3897,6 +3948,7 @@ function backToMGSelect() {
   document.getElementById('mg-select').style.display = 'block';
   document.getElementById('mg-game').classList.remove('active');
   currentMG = null;
+  refreshMGCards();
 }
 function openMGGame(game) {
   const COOLDOWN_MS = 24 * 60 * 60 * 1000;
@@ -4370,8 +4422,47 @@ function cheatResetMGCooldown() {
   ['trivia','yasen','mari','boris'].forEach(g => {
     localStorage.removeItem('mg_lastPlayed_' + g);
   });
+  refreshMGCards();
   showToast('⏰ Cooldown на минигеймите е нулиран!');
 }
+
+function refreshMGCards() {
+  const COOLDOWN_MS = 24 * 60 * 60 * 1000;
+  const now = Date.now();
+  ['trivia','yasen','mari','boris'].forEach(game => {
+    const card = document.getElementById('mg-card-' + game);
+    if (!card) return;
+    // Remove old overlay if any
+    const old = card.querySelector('.mg-lock-overlay');
+    if (old) old.remove();
+    card.classList.remove('mg-locked');
+
+    const lastPlayed = localStorage.getItem('mg_lastPlayed_' + game);
+    if (lastPlayed) {
+      const elapsed = now - parseInt(lastPlayed);
+      if (elapsed < COOLDOWN_MS) {
+        const remaining = COOLDOWN_MS - elapsed;
+        const hrs = Math.floor(remaining / 3600000);
+        const mins = Math.floor((remaining % 3600000) / 60000);
+        const secs = Math.floor((remaining % 60000) / 1000);
+        card.classList.add('mg-locked');
+        const overlay = document.createElement('div');
+        overlay.className = 'mg-lock-overlay';
+        overlay.innerHTML =
+          '<span class="mg-lock-icon">🔒</span>' +
+          '<span class="mg-lock-timer">ЗАКЛЮЧЕНО<br>' + hrs + 'ч ' + mins + 'мин ' + secs + 'сек</span>' +
+          '<span class="mg-lock-label">играй утре</span>';
+        card.appendChild(overlay);
+      }
+    }
+  });
+}
+
+// Auto-refresh timers every second while mg-select is visible
+setInterval(function() {
+  const sel = document.getElementById('mg-select');
+  if (sel && sel.style.display !== 'none') refreshMGCards();
+}, 1000);
 </script>
 <!-- ===== MINIGAMES OVERLAY ===== -->
 <div id="mg-overlay" onclick="mgOverlayClick(event)">
@@ -4382,25 +4473,25 @@ function cheatResetMGCooldown() {
     <div id="mg-select">
       <h2>🎮 МИНИГЕЙМИ</h2>
       <div class="mg-grid">
-        <div class="mg-card" onclick="openMGGame('trivia')">
+        <div class="mg-card" id="mg-card-trivia" onclick="openMGGame('trivia')">
           <span class="mc-icon">🧠</span>
           <span class="mc-title">TRIVIA</span>
           <span class="mc-desc">Познай правилния отговор на 5 въпроса!</span>
           <span class="mc-reward">🏆 до 50K NC награда</span>
         </div>
-        <div class="mg-card" onclick="openMGGame('yasen')">
+        <div class="mg-card" id="mg-card-yasen" onclick="openMGGame('yasen')">
           <span class="mc-icon">🔍</span>
           <span class="mc-title">ТАЙНАТА НА ЯСЕН</span>
           <span class="mc-desc">Разкрий скритата снимка с кликове!</span>
           <span class="mc-reward">🏆 до 30K NC награда</span>
         </div>
-        <div class="mg-card" onclick="openMGGame('mari')">
+        <div class="mg-card" id="mg-card-mari" onclick="openMGGame('mari')">
           <span class="mc-icon">💥</span>
           <span class="mc-title">УБИЙ МАРИ</span>
           <span class="mc-desc">Кликай върху Мари преди да избяга!</span>
           <span class="mc-reward">🏆 до 40K NC награда</span>
         </div>
-        <div class="mg-card" onclick="openMGGame('boris')">
+        <div class="mg-card" id="mg-card-boris" onclick="openMGGame('boris')">
           <span class="mc-icon">🏃</span>
           <span class="mc-title">ESCAPE FROM BORIS</span>
           <span class="mc-desc">Избягай от Борис! WASD / стрелки.</span>
